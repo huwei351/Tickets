@@ -46,7 +46,7 @@ void pre_display_dlt_submenu(void)
     printf("    %d  => Update DLT Result Database\n", PRE_MSG_DLT_UPDATE);
     printf("    %d  => Predict Latest DLT Result\n", PRE_MSG_DLT_PREDICT);
     printf("    %d  => Compare Actual Result with Predict Result\n", PRE_MSG_DLT_REPORT);
-    printf("    %d  => Quit Program\n", PRE_QUIT);    
+    printf("    %d  => Quit Program\n", PRE_QUIT);
 }
 
 int app_get_choice(const char *querystring)
@@ -95,31 +95,28 @@ int32_t main(int32_t argc, char *argv[])
 
         switch(choice) {
             case PRE_MSG_SSQ: {
-		    pre_display_ssq_submenu();
+                    pre_display_ssq_submenu();
                     ssq_index = app_get_choice("Select Function");
 
-		    switch(ssq_index) {
-			case PRE_MSG_SSQ_UPDATE:{
+                    switch(ssq_index) {
+                        case PRE_MSG_SSQ_UPDATE: {
+                            }
 
-			}
+                        case PRE_MSG_SSQ_PREDICT: {
+                            }
 
-			case PRE_MSG_SSQ_PREDICT:{
+                        case PRE_MSG_SSQ_REPORT: {
+                            }
 
-			}
+                        case PRE_QUIT: {
+                                printf("Quit SSQ Submenu\n");
+                                break;
+                            }
 
-			case PRE_MSG_SSQ_REPORT:{
-
-			}
-
-			case PRE_QUIT:{
-			    printf("Quit SSQ Submenu\n");
-			    break;
-			}
-
-			default:
-			    printf("Unknown choice:%d", ssq_index);
-			    break;
-		    }
+                        default:
+                            printf("Unknown choice:%d", ssq_index);
+                            break;
+                    }
 
                     break;
                 }
@@ -129,22 +126,19 @@ int32_t main(int32_t argc, char *argv[])
                     dlt_index = app_get_choice("Select Function");
 
                     switch(dlt_index) {
-                        case PRE_MSG_DLT_UPDATE:{
+                        case PRE_MSG_DLT_UPDATE: {
+                            }
 
-                        }
+                        case PRE_MSG_DLT_PREDICT: {
+                            }
 
-                        case PRE_MSG_DLT_PREDICT:{
+                        case PRE_MSG_DLT_REPORT: {
+                            }
 
-                        }
-
-                        case PRE_MSG_DLT_REPORT:{
-
-                        }
-
-                        case PRE_QUIT:{
-                            printf("Quit DLT Submenu\n");
-                            break;
-                        }
+                        case PRE_QUIT: {
+                                printf("Quit DLT Submenu\n");
+                                break;
+                            }
 
                         default:
                             printf("Unknown choice:%d", dlt_index);
@@ -153,7 +147,6 @@ int32_t main(int32_t argc, char *argv[])
 
                     break;
                 }
-
                 break;
 
             case PRE_QUIT:

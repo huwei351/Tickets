@@ -14,8 +14,8 @@ class BlueBall : public RefBase
         /* ball number 01-33 */
         int mNum;
 
-	/* the unit number, example: 12, unit is 2 */
-	int mUnit;
+        /* the unit number, example: 12, unit is 2 */
+        int mUnit;
 
         /* the decade number, example: 12, unit is 1 */
         int mDecade;
@@ -29,11 +29,11 @@ class BlueBall : public RefBase
         /* ZHI or HE */
         PrimeOrComposite mZhihe;
 
-	/* WuXing : JIN, MU, SHUI, HUO, TU */
-	Elememts mWuxing;
+        /* WuXing : JIN, MU, SHUI, HUO, TU */
+        Elememts mWuxing;
 
 
-	BlueBall() {
+        BlueBall() {
             mNum = 0;
             mUnit = 0;
             mDecade = 0;
@@ -41,22 +41,22 @@ class BlueBall : public RefBase
             mDaxiao = -1;
             mZhihe = -1;
             mWuxing = -1;
-	}
+        }
 
-	BlueBall(int num,
-		int unit,
-		int decade,
-		Property::Parity jiou,
-		Property::BigOrSmall daxiao,
-		Property::PrimeOrComposite zhihe,
-		Property::Elememts wuxing) {
-	    mNum = num;
-	    mUnit = unit;
-	    mDecade = decade;
-	    mJiou = jiou;
-	    mDaxiao = daxiao;
-	    mZhihe = zhihe;
-	    mWuxing = wuxing;
-	}
+        BlueBall(int num,
+                 int unit,
+                 int decade,
+                 Property::Parity jiou,
+                 Property::BigOrSmall daxiao,
+                 Property::PrimeOrComposite zhihe,
+                 Property::Elememts wuxing) {
+            mNum = num;
+            mUnit = unit;
+            mDecade = decade;
+            mJiou = jiou;
+            mDaxiao = daxiao;
+            mZhihe = zhihe;
+            mWuxing = wuxing;
+        }
 }
 

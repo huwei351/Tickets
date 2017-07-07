@@ -12,8 +12,8 @@ class Result : public RefBase
 {
     public:
 
-	/* red ball 1 */
-	RedBall mR1;
+        /* red ball 1 */
+        RedBall mR1;
 
         /* red ball 2 */
         RedBall mR2;
@@ -40,40 +40,40 @@ class Result : public RefBase
         BlueBall mB2;
 #endif
 
-	typedef enum {
+        typedef enum {
 #if defined(DLT)
-		ZERO_AND_TWO = 0,
-		ONE_AND_ONE,
-		TWO_AND_ZERO
-	} BlueRatio;
+            ZERO_AND_TWO = 0,
+            ONE_AND_ONE,
+            TWO_AND_ZERO
+        } BlueRatio;
 
         typedef enum {
-                ZERO_AND_FIVE = 0;
-                ONE_AND_FOUR,
-                TWO_AND_THREE,
-                THREE_AND_TWO,
-                FOUR_AND_ONE,
-                FIVE_AND_ZERO
-                ONE_AND_FIVE,
-                TWO_AND_FOUR,
-                THREE_AND_THREE,
-                FOUR_AND_TWO,
-                FIVE_AND_ONE,
-                SIX_AND_ZERO
+            ZERO_AND_FIVE = 0;
+            ONE_AND_FOUR,
+            TWO_AND_THREE,
+            THREE_AND_TWO,
+            FOUR_AND_ONE,
+            FIVE_AND_ZERO
+            ONE_AND_FIVE,
+            TWO_AND_FOUR,
+            THREE_AND_THREE,
+            FOUR_AND_TWO,
+            FIVE_AND_ONE,
+            SIX_AND_ZERO
 #endif
-	} RedRatio;
+        } RedRatio;
 
         /* Red ball sum */
         int mRedSum;
 
-	/* the sum of each red ball unit number */
-	int mUnitSum;
+        /* the sum of each red ball unit number */
+        int mUnitSum;
 
         /* the decade number, example: 12, unit is 1 */
 #if defined(SSQ)
-        int mRedSumAverage = mRedSum/6;
+        int mRedSumAverage = mRedSum / 6;
 #elif defined(DLT)
-	int mRedSumAverage = mRedSum/5;
+        int mRedSumAverage = mRedSum / 5;
 #endif
 
         /* parity JI or OU */
@@ -85,7 +85,7 @@ class Result : public RefBase
         /* ZHI or HE */
         RedRatio mZhiheRatio;
 
-	Result() {
+        Result() {
             mR1 = new RedBall();
             mR2 = new RedBall();
             mR3 = new RedBall();
@@ -93,7 +93,7 @@ class Result : public RefBase
             mR5 = new RedBall();
 #if defined(SSQ)
             mR6 = new RedBall();
-	    mB0 = new BlueBall();
+            mB0 = new BlueBall();
 #elif defined(DLT)
             mB1 = new BlueBall();
             mB2 = new BlueBall();
@@ -101,26 +101,26 @@ class Result : public RefBase
             mRedSum = 0;
             mUnitSum = 0;
             mRedSumAverage = 0;
-	    mJiouRatio = -1;
+            mJiouRatio = -1;
             mDaxiaoRatio = -1;
             mZhiheRatio = -1;
-	}
-/*
-	Result(int num,
-		int unit,
-		int decade,
-		Property::Parity jiou,
-		Property::BigOrSmall daxiao,
-		Property::PrimeOrComposite zhihe,
-		Property::Elememts wuxing) {
-	    mNum = num;
-	    mUnit = unit;
-	    mDecade = decade;
-	    mJiou = jiou;
-	    mDaxiao = daxiao;
-	    mZhihe = zhihe;
-	    mWuxing = wuxing;
-	}
-*/
+        }
+        /*
+            Result(int num,
+                int unit,
+                int decade,
+                Property::Parity jiou,
+                Property::BigOrSmall daxiao,
+                Property::PrimeOrComposite zhihe,
+                Property::Elememts wuxing) {
+                mNum = num;
+                mUnit = unit;
+                mDecade = decade;
+                mJiou = jiou;
+                mDaxiao = daxiao;
+                mZhihe = zhihe;
+                mWuxing = wuxing;
+            }
+        */
 }
 

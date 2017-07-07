@@ -6,30 +6,24 @@
 
 Algorithm::Algorithm()
 {
-
 }
 
 Result Algorithm::getLatestResultFromDatabase()
 {
-
 }
 
 Result Algorithm::getMaxProbabilityPredictResult()
 {
-
 }
 
 void Algorithm::calculateEveryRedBallProbability()
 {
-
 }
 
 void Algorithm::calculateEveryBlueBallProbability()
 {
-
 }
 
 void Algorithm::comparePredictResultWithActualResult()
 {
-
 }

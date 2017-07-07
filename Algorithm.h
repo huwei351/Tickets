@@ -4,24 +4,25 @@
 #include "MySqlOperator.h"
 #include "Result.h"
 
-class Algorithm {
+class Algorithm
+{
 
-	public:
+    public:
 
-		Algorithm();
+        Algorithm();
 
-		~Algorithm();
+        ~Algorithm();
 
-	private:
+    private:
 
-		Result getLatestResultFromDatabase();
+        Result getLatestResultFromDatabase();
 
-		Result getMaxProbabilityPredictResult();
+        Result getMaxProbabilityPredictResult();
 
-		void calculateEveryRedBallProbability();
+        void calculateEveryRedBallProbability();
 
-		void calculateEveryBlueBallProbability();
+        void calculateEveryBlueBallProbability();
 
-		void comparePredictResultWithActualResult();
+        void comparePredictResultWithActualResult();
 
 }
