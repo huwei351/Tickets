@@ -25,4 +25,7 @@ class Algorithm
 
         void comparePredictResultWithActualResult();
 
+        void calculateFirstRedballNumberProbability();
+
+        void calculateFirstRedballWuxingProbability();
 }

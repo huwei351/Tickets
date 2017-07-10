@@ -12,7 +12,7 @@ class RedBall : public RefBase
     public:
 
         /* ball number 01-33 */
-        int mNum;
+        RedNumbers mNum;
 
         /* the unit number, example: 12, unit is 2 */
         int mUnit;
@@ -43,7 +43,7 @@ class RedBall : public RefBase
             mWuxing = -1;
         }
 
-        RedBall(int num,
+        RedBall(RedNumbers num,
                 int unit,
                 int decade,
                 Property::Parity jiou,

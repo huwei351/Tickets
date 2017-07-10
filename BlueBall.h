@@ -12,7 +12,7 @@ class BlueBall : public RefBase
     public:
 
         /* ball number 01-33 */
-        int mNum;
+        BlueNumbers mNum;
 
         /* the unit number, example: 12, unit is 2 */
         int mUnit;
@@ -43,7 +43,7 @@ class BlueBall : public RefBase
             mWuxing = -1;
         }
 
-        BlueBall(int num,
+        BlueBall(BlueNumbers num,
                  int unit,
                  int decade,
                  Property::Parity jiou,
