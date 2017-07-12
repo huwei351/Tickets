@@ -43,6 +43,16 @@ class RedBall : public RefBase
             mWuxing = -1;
         }
 
+        RedBall(RedNumbers num) {
+            mNum = num;
+            mUnit = getUnitFromNum(num);
+            mDecade = getDecadeFromNum(num);
+            mJiou = getParityFromNum(num);
+            mDaxiao = getBigOrSmallFromNum(num);
+            mZhihe = getPrimeOrCompositeFromNum(num);
+            mWuxing = getElememtsFromNum(num);
+        }
+
         RedBall(RedNumbers num,
                 int unit,
                 int decade,
@@ -57,6 +67,30 @@ class RedBall : public RefBase
             mDaxiao = daxiao;
             mZhihe = zhihe;
             mWuxing = wuxing;
+        }
+
+        int getUnitFromNum(RedNumbers num) {
+
+        }
+
+        int getDecadeFromNum(RedNumbers num) {
+
+        }
+
+        Parity getParityFromNum(RedNumbers num) {
+
+        }
+
+        BigOrSmall getBigOrSmallFromNum(RedNumbers num) {
+
+        }
+
+        PrimeOrComposite getPrimeOrCompositeFromNum(RedNumbers num) {
+
+        }
+
+        Elememts getElememtsFromNum(RedNumbers num) {
+            
         }
 }
 

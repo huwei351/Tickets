@@ -25,7 +25,13 @@ class Algorithm
 
         void comparePredictResultWithActualResult();
 
-        void calculateFirstRedballNumberProbability();
+        void printRedballNumberProbability(std::vector<numStatistics> sta, int total);
 
-        void calculateFirstRedballWuxingProbability();
+        void printRedballWuxingProbability(std::vector<wuxingStatistics> sta, int total);
+
+        void calculateRedballNumberProbability();
+
+        void calculateRedballWuxingProbability();
+
+        std::vector<RedBall> getBallListFromDatabase(char field, int from, int end);
 }
