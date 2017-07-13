@@ -6,10 +6,8 @@
 #include <utils/Singleton.h>
 #include <utils/Mutex.h>
 #include <utils/String8.h>
-#include "LuciClient.h"
-#include "LuciGlobalDefine.h"
-#include "MessageLables.h"
 
+#include "Algorithm.h"
 
 enum {
     PRE_MSG_SSQ = 1,
@@ -89,6 +87,8 @@ int32_t main(int32_t argc, char *argv[])
     int ssq_index;
     int dlt_index;
 
+    Algorithm ai = new Algorithm();
+
     do {
         pre_display_main_menu();
         choice = app_get_choice("Select action");
@@ -100,10 +100,23 @@ int32_t main(int32_t argc, char *argv[])
 
                     switch(ssq_index) {
                         case PRE_MSG_SSQ_UPDATE: {
+                                bool success = ai.updateDatabase();
+                                if (!success)
+                                    printf("updatae database fail!\n");
                             }
+                            break;
 
                         case PRE_MSG_SSQ_PREDICT: {
+                                printf("\nPleaes Slelect SSQ Predict Result Display Numbers:\n");
+                                printf("    %d  => 5 Results\n", 5);
+                                printf("    %d  => 10 Results\n", 10);
+                                printf("    %d  => 20 Results\n", 20);
+                                printf("    %d  => 50 Results\n", 50);
+                                printf("    %d  => Quit Program\n", PRE_QUIT);
+                                int choice = app_get_choice("Select Numbers");
+                                ai.getMaxProbabilityPredictResult(choice);
                             }
+                            break;
 
                         case PRE_MSG_SSQ_REPORT: {
                             }

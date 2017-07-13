@@ -1,14 +1,11 @@
 #include <string>
 #include <vector>
-#include <utils/Singleton.h>
-#include <utils/Mutex.h>
-#include <utils/String8.h>
 
 #include "RedBall.h"
 #include "BlueBall.h"
 
 
-class Result : public RefBase
+class Result
 {
     public:
 
@@ -48,12 +45,14 @@ class Result : public RefBase
         } BlueRatio;
 
         typedef enum {
-            ZERO_AND_FIVE = 0;
+            ZERO_AND_FIVE = 0,
             ONE_AND_FOUR,
             TWO_AND_THREE,
             THREE_AND_TWO,
             FOUR_AND_ONE,
             FIVE_AND_ZERO
+#elif defined(SSQ)
+			ZERO_AND_SIX = 0,
             ONE_AND_FIVE,
             TWO_AND_FOUR,
             THREE_AND_THREE,
@@ -105,22 +104,33 @@ class Result : public RefBase
             mDaxiaoRatio = -1;
             mZhiheRatio = -1;
         }
-        /*
-            Result(int num,
-                int unit,
-                int decade,
-                Property::Parity jiou,
-                Property::BigOrSmall daxiao,
-                Property::PrimeOrComposite zhihe,
-                Property::Elememts wuxing) {
-                mNum = num;
-                mUnit = unit;
-                mDecade = decade;
-                mJiou = jiou;
-                mDaxiao = daxiao;
-                mZhihe = zhihe;
-                mWuxing = wuxing;
-            }
-        */
-}
+
+        Result(RedBall r1, RedBall r2, RedBall r3, RedBall r4, RedBall r5, 
+#if defined(SSQ)
+            RedBall r6, BlueBall b0)
+#elif defined(DLT)
+            BlueBall b1, BlueBall b2)
+#endif
+{
+			mR1 = r1;
+            mR2 = r2;
+            mR3 = r3;
+            mR4 = r4;
+            mR5 = r5;
+#if defined(SSQ)
+            mR6 = r6;
+            mB0 = b0;
+#elif defined(DLT)
+            mB1 = b1;
+            mB2 = b2;
+#endif
+            mRedSum = 0;
+            mUnitSum = 0;
+            mRedSumAverage = 0;
+            mJiouRatio = -1;
+            mDaxiaoRatio = -1;
+            mZhiheRatio = -1;
+        }
+
+};
 

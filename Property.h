@@ -1,9 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include <string>
 #include <vector>
-#include <utils/Singleton.h>
-#include <utils/Mutex.h>
-#include <utils/String8.h>
-
 
 class Property
 {
@@ -87,14 +85,12 @@ class Property
         } PrimeOrComposite;
 
         typedef enum {
-            METAL = 0x01;
-            WOOD = 0x02;
-            WATER = 0x04;
-            FIRE = 0x08;
-            EARTH = 0x1F;
+            METAL = 0x01,
+            WOOD = 0x02,
+            WATER = 0x04,
+            FIRE = 0x08,
+            EARTH = 0x1F
         } Elememts;
 
-
-
-}
+};
 

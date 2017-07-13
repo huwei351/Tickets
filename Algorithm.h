@@ -15,23 +15,38 @@ class Algorithm
 
     private:
 
+        bool updateDatabase();
+
         Result getLatestResultFromDatabase();
 
-        Result getMaxProbabilityPredictResult();
+        void rearrangePredictResult(std::vector<resultStatistics> resultSta, int top);
 
-        void calculateEveryRedBallProbability();
+        void printPredictResult(std::vector<resultStatistics> resultSta);
 
-        void calculateEveryBlueBallProbability();
+        Result getMaxProbabilityPredictResult(int top);
+
+        std::vector<redballStatistics> calculateRedBallProbability(int ballType);
+
+        std::vector<blueballStatistics> calculateBlueBallProbability(int ballType);
 
         void comparePredictResultWithActualResult();
 
-        void printRedballNumberProbability(std::vector<numStatistics> sta, int total);
+        std::string getLogTitleFromBalltype(int ballType);
 
-        void printRedballWuxingProbability(std::vector<wuxingStatistics> sta, int total);
+        void printRedballNumberProbability(std::vector<rnumStatistics> sta, int total, int ballType);
 
-        void calculateRedballNumberProbability();
+        void printBlueballNumberProbability(std::vector<bnumStatistics> sta, int total, int ballType);
 
-        void calculateRedballWuxingProbability();
+        void printBallWuxingProbability(std::vector<wuxingStatistics> sta, int total, int ballType);
 
-        std::vector<RedBall> getBallListFromDatabase(char field, int from, int end);
+        int calculateRedBallNumberProbability(int ballType, std::vector<rnumStatistics> staList);
+
+        int calculateBlueBallNumberProbability(int ballType, std::vector<bnumStatistics> staList);
+
+        int calculateBallWuxingProbability(int ballType, std::vector<wuxingStatistics> wuxingList);
+
+        std::vector<RedBall> getRedBallListFromDatabase(char field, int from, int end);
+
+        std::vector<BlueBall> getBlueBallListFromDatabase(char field, int from, int end);
+
 }
