@@ -6,6 +6,7 @@
 #include "Result.h"
 #include "RedBall.h"
 #include "BlueBall.h"
+#include "StringUtil.h"
 
 typedef enum {
 	REDBALL_FIRST = 1,
@@ -65,6 +66,35 @@ bool Algorithm::updateDatabase()
 
 Result Algorithm::getLatestResultFromDatabase()
 {
+	std::string str;
+	std::vector<std::string> lines;
+	Result result = NULL;
+    char rg = "\n"; // row 
+    char cg = ","; // field
+
+	updateDatabase();
+
+	MySqlOperator operator = new MySqlOperator();
+	if (operator != NULL) {
+		if(operator.ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+			str = operator.SelectData(TABLE_SSQ, NULL, 1);
+			if (!StringUtil::StringIsEmpty(str)) {
+				StringUtil::StringSplit(lines, str, cg);
+				RedNumbers r1 = (RedNumbers) atoi(lines[3].c_str());
+				RedNumbers r2 = (RedNumbers) atoi(lines[4].c_str());
+				RedNumbers r3 = (RedNumbers) atoi(lines[5].c_str());
+				RedNumbers r4 = (RedNumbers) atoi(lines[6].c_str());
+				RedNumbers r5 = (RedNumbers) atoi(lines[7].c_str());
+				RedNumbers r6 = (RedNumbers) atoi(lines[8].c_str());
+				BlueNumbers b0 = (BlueNumbers) atoi(lines[9].c_str());
+
+				result = new Result(new RedBall(r1),new RedBall(r2),new RedBall(r3),new RedBall(r4),new RedBall(r5),new RedBall(r6),new BlueBall(b0));
+			}
+		}
+		operator.CloseMySQLConn();
+	}
+	
+	return result;
 }
 
 void Algorithm::rearrangePredictResult(std::vector<resultStatistics> resultSta, int top)
@@ -415,12 +445,60 @@ int Algorithm::calculateBallWuxingProbability(int ballType, std::vector<wuxingSt
 	return totalCount;
 }
 
-std::vector<RedBall> Algorithm::getRedBallListFromDatabase(char field, int from, int end)
+std::vector<RedBall> Algorithm::getRedBallListFromDatabase(char field, int rnum)
 {
+	std::vector<RedBall> redList;
+	std::vector<std::string> lines;
+	std::string str;
+    char rg = "\n"; // row 
+    char cg = ","; // field
 
+	updateDatabase();
+
+	MySqlOperator operator = new MySqlOperator();
+	if (operator != NULL) {
+		if(operator.ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+			str = operator.SelectData(TABLE_SSQ, field, 500);
+			if (!StringUtil::StringIsEmpty(str)) {
+				StringUtil::StringSplit(lines, str, rg);
+				for (int i = 0; i < (int)lines.size(); i++) {
+					RedNumbers rn = (RedNumbers) atoi(lines[i].c_str());
+					RedBall rb = new RedBall(rn);
+					redList.push_back(rb);
+				}
+			}
+		}
+		operator.CloseMySQLConn();
+	}
+
+	return redList;
 }
 
-std::vector<BlueBall> Algorithm::getBlueBallListFromDatabase(char field, int from, int end)
+std::vector<BlueBall> Algorithm::getBlueBallListFromDatabase(char field, int rnum)
 {
+	std::vector<BlueBall> blueList;
+	std::vector<std::string> lines;
+	std::string str;
+    char rg = "\n"; // row 
+    char cg = ","; // field
 
+	updateDatabase();
+
+	MySqlOperator operator = new MySqlOperator();
+	if (operator != NULL) {
+		if(operator.ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+			str = operator.SelectData(TABLE_SSQ, field, 500);
+			if (!StringUtil::StringIsEmpty(str)) {
+				StringUtil::StringSplit(lines, str, rg);
+				for (int i = 0; i < (int)lines.size(); i++) {
+					BlueNumbers rn = (BlueNumbers) atoi(lines[i].c_str());
+					BlueBall rb = new BlueBall(rn);
+					blueList.push_back(rb);
+				}
+			}
+		}
+		operator.CloseMySQLConn();
+	}
+
+	return blueList;
 }

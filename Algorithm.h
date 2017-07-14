@@ -45,8 +45,8 @@ class Algorithm
 
         int calculateBallWuxingProbability(int ballType, std::vector<wuxingStatistics> wuxingList);
 
-        std::vector<RedBall> getRedBallListFromDatabase(char field, int from, int end);
+        std::vector<RedBall> getRedBallListFromDatabase(char field, int rnum);
 
-        std::vector<BlueBall> getBlueBallListFromDatabase(char field, int from, int end);
+        std::vector<BlueBall> getBlueBallListFromDatabase(char field, int rnum);
 
-}
+};
