@@ -8,8 +8,7 @@ class Property
     public:
 
         /* RedBall Numbers */
-        typedef enum 
-        {
+        typedef enum {
             RED_NUM_ONE = 1,
             RED_NUM_TWO,
             RED_NUM_THREE,
@@ -46,8 +45,7 @@ class Property
         } RedNumbers;
 
         /* BlueBall Numbers */
-        typedef enum 
-        {
+        typedef enum {
             BLUE_NUM_ONE = 1,
             BLUE_NUM_TWO,
             BLUE_NUM_THREE,

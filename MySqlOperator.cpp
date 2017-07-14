@@ -25,6 +25,7 @@ int MySqlOperator::ConnMySQL(char *host, char * port , char * Db, char * user, c
     }
 
     res = mysql_set_character_set(&mysql, "GBK") ;
+
     if(!res) {
         printf("mysql_set_character_set Error");
     }
@@ -40,21 +41,22 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
     MYSQL_FIELD *m_field;
     std::string str = "";
     int rnum , cnum;
-    char rg = "\n"; // row 
+    char rg = "\n"; // row
     char cg = ","; // field
-
     char sql[2048];
-	if (field == NULL)
-    	sprintf(sql, "select * from %s", table);
-	else
-		sprintf(sql, "select %s from %s", field, table);
+
+    if(field == NULL)
+    { sprintf(sql, "select * from %s", table); }
+    else
+    { sprintf(sql, "select %s from %s", field, table); }
+
     int res = mysql_query(&mysql, sql);
 
     if(!res) {
         mysql_error(&mysql);
         return "";
     } else {
-         m_res = mysql_store_result(&mysql);
+        m_res = mysql_store_result(&mysql);
 
         if(m_res == NULL) {
             mysql_error(&mysql);
@@ -65,17 +67,20 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
         rnum = mysql_num_rows(m_res) + 1;
         printf("column_num = %d, row_num = %d", cnum, rnum);
 
-        for (int i = rnum - rmax; i < rnum; i++) {
+        for(int i = rnum - rmax; i < rnum; i++) {
             m_row = mysql_fetch_row(m_res)
+
             for(int i = 0; i < cnum; i++) {
                 str += m_row[i];
                 str += cg;
             }
+
             str += rg;
         }
 
-        mysql_free_result(m_res);     
+        mysql_free_result(m_res);
     }
+
     return str;
 }
 
@@ -85,8 +90,8 @@ int MySqlOperator::InsertData(char * table, char * v_rid, char * v_date, char * 
     char sql[2048];
     SQL = "insert into vcaccesstest(ids,username,passwd,address) values(4,'我的','123210','测试地址')";
     sprintf(sql, "insert into %s values(\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')", table, v_rid, v_date, v_rb1, v_rb2, v_rb3, v_rb4, v_rb5, v_rb6, v_bb);
-
     int res = mysql_query(&mysql, sql);
+
     if(res != 0) {
         mysql_error(&mysql);
     }
@@ -99,8 +104,8 @@ int MySqlOperator::UpdateData(char * table, char * field, char * value, char * w
 {
     char sql[2048];
     sprintf(sql, "update %s set %s = \'%s\' where %s = \'%s\'", table, field, value, w_field, w_value);
-
     int res = mysql_query(&mysql, sql);
+
     if(res != 0) {
         mysql_error(&mysql);
     }
@@ -113,8 +118,8 @@ int MySqlOperator::DeleteData(char * table, char * field, char * value)
 {
     char sql[2048];
     sprintf(sql, "delete from %s where %s = %s", table, field, value);
-
     int res = mysql_query(&mysql, sql);
+
     if(res != 0) {
         mysql_error(&mysql);
     }

@@ -52,7 +52,7 @@ class Result
             FOUR_AND_ONE,
             FIVE_AND_ZERO
 #elif defined(SSQ)
-			ZERO_AND_SIX = 0,
+            ZERO_AND_SIX = 0,
             ONE_AND_FIVE,
             TWO_AND_FOUR,
             THREE_AND_THREE,
@@ -105,14 +105,14 @@ class Result
             mZhiheRatio = -1;
         }
 
-        Result(RedBall r1, RedBall r2, RedBall r3, RedBall r4, RedBall r5, 
+        Result(RedBall r1, RedBall r2, RedBall r3, RedBall r4, RedBall r5,
 #if defined(SSQ)
-            RedBall r6, BlueBall b0)
+               RedBall r6, BlueBall b0)
 #elif defined(DLT)
-            BlueBall b1, BlueBall b2)
+               BlueBall b1, BlueBall b2)
 #endif
-{
-			mR1 = r1;
+        {
+            mR1 = r1;
             mR2 = r2;
             mR3 = r3;
             mR4 = r4;

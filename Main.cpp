@@ -86,7 +86,6 @@ int32_t main(int32_t argc, char *argv[])
     int choice;
     int ssq_index;
     int dlt_index;
-
     Algorithm ai = new Algorithm();
 
     do {
@@ -101,8 +100,9 @@ int32_t main(int32_t argc, char *argv[])
                     switch(ssq_index) {
                         case PRE_MSG_SSQ_UPDATE: {
                                 bool success = ai.updateDatabase();
-                                if (!success)
-                                    printf("updatae database fail!\n");
+
+                                if(!success)
+                                { printf("updatae database fail!\n"); }
                             }
                             break;
 

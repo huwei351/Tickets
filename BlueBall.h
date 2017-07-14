@@ -42,8 +42,8 @@ class BlueBall
             mWuxing = -1;
         }
 
-       RedBall(BlueNumbers num) {
-			completeInstanceAccordingNum(num);
+        RedBall(BlueNumbers num) {
+            completeInstanceAccordingNum(num);
         }
 
         BlueBall(BlueNumbers num,
@@ -62,87 +62,83 @@ class BlueBall
             mWuxing = wuxing;
         }
 
-		void setNum(BlueNumbers num) {
-			mNum = num;
-		}
-		
-		void setUnit(int unit) {
-			mUnit = unit;
-		}
+        void setNum(BlueNumbers num) {
+            mNum = num;
+        }
 
-		void setDecade(int decade) {
-			mDecade = decade;
-		}
+        void setUnit(int unit) {
+            mUnit = unit;
+        }
 
-		void setParity(Parity jiou) {
-			mJiou = jiou;
-		}
+        void setDecade(int decade) {
+            mDecade = decade;
+        }
 
-		void setBigOrSmall(BigOrSmall daxiao) {
-			mDaxiao = daxiao;
-		}
+        void setParity(Parity jiou) {
+            mJiou = jiou;
+        }
 
-		void setPrimeOrComposite(PrimeOrComposite zhihe) {
-			mZhihe = zhihe;
-		}
+        void setBigOrSmall(BigOrSmall daxiao) {
+            mDaxiao = daxiao;
+        }
 
-		void setElememts(Elememts wuxing) {
-			mWuxing = wuxing;
-		}
+        void setPrimeOrComposite(PrimeOrComposite zhihe) {
+            mZhihe = zhihe;
+        }
 
-		void setVariableValue(BlueNumbers num,
-                 int unit,
-                 int decade,
-                 Parity jiou,
-                 BigOrSmall daxiao,
-                 PrimeOrComposite zhihe,
-                 Elememts wuxing) {
-			setNum(num);
-			setUnit(unit);
-			setDecade(decade);
-			setParity(jiou);
-			setBigOrSmall(daxiao);
-			setPrimeOrComposite(zhihe);
-			setElememts(wuxing);
-		}
+        void setElememts(Elememts wuxing) {
+            mWuxing = wuxing;
+        }
 
-		void completeInstanceAccordingNum(BlueNumbers num) {
-			switch (num) {
-				case BLUE_NUM_ONE:
-					setVariableValue(num, 1, 0, ODD, SMALL, PRIME, WATER);
-					break;
-				case BLUE_NUM_TWO:
-					setVariableValue(num, 2, 0, EVEN, SMALL, PRIME, WATER);
-					break;
-				//TODO
-				default:
-					break;
-			}
-		}
+        void setVariableValue(BlueNumbers num,
+                              int unit,
+                              int decade,
+                              Parity jiou,
+                              BigOrSmall daxiao,
+                              PrimeOrComposite zhihe,
+                              Elememts wuxing) {
+            setNum(num);
+            setUnit(unit);
+            setDecade(decade);
+            setParity(jiou);
+            setBigOrSmall(daxiao);
+            setPrimeOrComposite(zhihe);
+            setElememts(wuxing);
+        }
+
+        void completeInstanceAccordingNum(BlueNumbers num) {
+            switch(num) {
+                case BLUE_NUM_ONE:
+                    setVariableValue(num, 1, 0, ODD, SMALL, PRIME, WATER);
+                    break;
+
+                case BLUE_NUM_TWO:
+                    setVariableValue(num, 2, 0, EVEN, SMALL, PRIME, WATER);
+                    break;
+
+                    //TODO
+                default:
+                    break;
+            }
+        }
 #if 0
-       int getUnitFromNum(BlueNumbers num) {
-
+        int getUnitFromNum(BlueNumbers num) {
         }
 
         int getDecadeFromNum(BlueNumbers num) {
-
         }
 
         Parity getParityFromNum(BlueNumbers num) {
-
         }
 
         BigOrSmall getBigOrSmallFromNum(BlueNumbers num) {
-
         }
 
         PrimeOrComposite getPrimeOrCompositeFromNum(BlueNumbers num) {
-
         }
 
         Elememts getElememtsFromNum(BlueNumbers num) {
-            
         }
-#endif 
+#endif
 };
 
