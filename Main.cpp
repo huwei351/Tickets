@@ -3,9 +3,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <string>
-#include <utils/Singleton.h>
-#include <utils/Mutex.h>
-#include <utils/String8.h>
 
 #include "Algorithm.h"
 
@@ -86,7 +83,7 @@ int32_t main(int32_t argc, char *argv[])
     int choice;
     int ssq_index;
     int dlt_index;
-    Algorithm ai = new Algorithm();
+    Algorithm *ai = new Algorithm();
 
     do {
         pre_display_main_menu();
@@ -99,7 +96,7 @@ int32_t main(int32_t argc, char *argv[])
 
                     switch(ssq_index) {
                         case PRE_MSG_SSQ_UPDATE: {
-                                bool success = ai.updateDatabase();
+                                bool success = ai->updateDatabase();
 
                                 if(!success)
                                 { printf("updatae database fail!\n"); }
@@ -114,7 +111,7 @@ int32_t main(int32_t argc, char *argv[])
                                 printf("    %d  => 50 Results\n", 50);
                                 printf("    %d  => Quit Program\n", PRE_QUIT);
                                 int choice = app_get_choice("Select Numbers");
-                                ai.getMaxProbabilityPredictResult(choice);
+                                ai->getMaxProbabilityPredictResult(choice);
                             }
                             break;
 

@@ -1,3 +1,6 @@
+#ifndef BLUEBALL_H
+#define BLUEBALL_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -33,16 +36,16 @@ class BlueBall
 
 
         BlueBall() {
-            mNum = 0;
+            mNum = BLUE_NUM_INVALID;
             mUnit = 0;
             mDecade = 0;
-            mJiou = -1;
-            mDaxiao = -1;
-            mZhihe = -1;
-            mWuxing = -1;
+            mJiou = PARITY_UNKNOWN;
+            mDaxiao = BIG_SMALL_UNKNOWN;
+            mZhihe = PRIME_COMPOSITE_UNKNOWN;
+            mWuxing = ELEMEMTS_UNKNOWN;
         }
 
-        RedBall(BlueNumbers num) {
+        BlueBall(BlueNumbers num) {
             completeInstanceAccordingNum(num);
         }
 
@@ -108,69 +111,69 @@ class BlueBall
 
         void completeInstanceAccordingNum(BlueNumbers num) {
             switch(num) {
-				case BLUE_NUM_ONE:
-					setVariableValue(num, 1, 0, ODD, SMALL, PRIME, WATER);
-					break;
-				
-				case BLUE_NUM_TWO:
-					setVariableValue(num, 2, 0, EVEN, SMALL, PRIME, EARTH);
-					break;
-				
-				case BLUE_NUM_THREE:
-					setVariableValue(num, 3, 0, ODD, SMALL, PRIME, WOOD);
-					break;
-				
-				case BLUE_NUM_FOUR:
-					setVariableValue(num, 4, 0, EVEN, SMALL, COMPOSITE, WOOD);
-					break;
-					
-				case BLUE_NUM_FIVE:
-					setVariableValue(num, 5, 0, ODD, SMALL, PRIME, EARTH);
-					break;
-					
-				case BLUE_NUM_SIX:
-					setVariableValue(num, 6, 0, EVEN, SMALL, COMPOSITE, FIRE);
-					break;
-					
-				case BLUE_NUM_SEVEN:
-					setVariableValue(num, 7, 0, ODD, SMALL, PRIME, FIRE);
-					break;
-					
-				case BLUE_NUM_EIGHT:
-					setVariableValue(num, 8, 0, EVEN, SMALL, COMPOSITE, EARTH);
-					break;
-					
-				case BLUE_NUM_NINE:
-					setVariableValue(num, 9, 0, ODD, BIG, COMPOSITE, METAL);
-					break;
-					
-				case BLUE_NUM_TEN:
-					setVariableValue(num, 0, 1, EVEN, BIG, COMPOSITE, METAL);
-					break;
-				
-				case BLUE_NUM_ELEVEN:
-					setVariableValue(num, 1, 1, ODD, BIG, PRIME, EARTH);
-					break;
-				
-				case BLUE_NUM_TWELVE:
-					setVariableValue(num, 2, 1, EVEN, BIG, COMPOSITE, WATER);
-					break;
-				
-				case BLUE_NUM_THIRTEEN:
-					setVariableValue(num, 3, 1, ODD, BIG, PRIME, WATER);
-					break;
-				
-				case BLUE_NUM_FOURTEEN:
-					setVariableValue(num, 4, 1, EVEN, BIG, COMPOSITE, EARTH);
-					break;
-					
-				case BLUE_NUM_FIFTEEN:
-					setVariableValue(num, 5, 1, ODD, BIG, COMPOSITE, WOOD);
-					break;
-					
-				case BLUE_NUM_SIXTEEN:
-					setVariableValue(num, 6, 1, EVEN, BIG, COMPOSITE, WOOD);
-					break;
+                case BLUE_NUM_ONE:
+                    setVariableValue(num, 1, 0, ODD, SMALL, PRIME, WATER);
+                    break;
+
+                case BLUE_NUM_TWO:
+                    setVariableValue(num, 2, 0, EVEN, SMALL, PRIME, EARTH);
+                    break;
+
+                case BLUE_NUM_THREE:
+                    setVariableValue(num, 3, 0, ODD, SMALL, PRIME, WOOD);
+                    break;
+
+                case BLUE_NUM_FOUR:
+                    setVariableValue(num, 4, 0, EVEN, SMALL, COMPOSITE, WOOD);
+                    break;
+
+                case BLUE_NUM_FIVE:
+                    setVariableValue(num, 5, 0, ODD, SMALL, PRIME, EARTH);
+                    break;
+
+                case BLUE_NUM_SIX:
+                    setVariableValue(num, 6, 0, EVEN, SMALL, COMPOSITE, FIRE);
+                    break;
+
+                case BLUE_NUM_SEVEN:
+                    setVariableValue(num, 7, 0, ODD, SMALL, PRIME, FIRE);
+                    break;
+
+                case BLUE_NUM_EIGHT:
+                    setVariableValue(num, 8, 0, EVEN, SMALL, COMPOSITE, EARTH);
+                    break;
+
+                case BLUE_NUM_NINE:
+                    setVariableValue(num, 9, 0, ODD, BIG, COMPOSITE, METAL);
+                    break;
+
+                case BLUE_NUM_TEN:
+                    setVariableValue(num, 0, 1, EVEN, BIG, COMPOSITE, METAL);
+                    break;
+
+                case BLUE_NUM_ELEVEN:
+                    setVariableValue(num, 1, 1, ODD, BIG, PRIME, EARTH);
+                    break;
+
+                case BLUE_NUM_TWELVE:
+                    setVariableValue(num, 2, 1, EVEN, BIG, COMPOSITE, WATER);
+                    break;
+
+                case BLUE_NUM_THIRTEEN:
+                    setVariableValue(num, 3, 1, ODD, BIG, PRIME, WATER);
+                    break;
+
+                case BLUE_NUM_FOURTEEN:
+                    setVariableValue(num, 4, 1, EVEN, BIG, COMPOSITE, EARTH);
+                    break;
+
+                case BLUE_NUM_FIFTEEN:
+                    setVariableValue(num, 5, 1, ODD, BIG, COMPOSITE, WOOD);
+                    break;
+
+                case BLUE_NUM_SIXTEEN:
+                    setVariableValue(num, 6, 1, EVEN, BIG, COMPOSITE, WOOD);
+                    break;
 
                 default:
                     break;
@@ -196,4 +199,6 @@ class BlueBall
         }
 #endif
 };
+
+#endif
 

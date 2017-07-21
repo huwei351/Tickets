@@ -1,53 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
 
-#include "Property.h"
+//#include "Property.h"
+#include "Algorithm.h"
 #include "MySqlOperator.h"
 #include "Result.h"
 #include "RedBall.h"
 #include "BlueBall.h"
 #include "StringUtil.h"
 
-typedef enum {
-    REDBALL_FIRST = 1,
-    REDBALL_SECOND,
-    REDBALL_THIRD,
-    REDBALL_FOURTH,
-    REDBALL_FIFTH,
-    REDBALL_SIXTH,
-    BLUEBALL_FIRST,
-    BLUEBALL_SECOND = 8
-};
-
-typedef struct rnumStatistics {
-    RedNumbers rn;
-    int count;
-};
-
-typedef struct bnumStatistics {
-    BlueNumbers bn;
-    int count;
-};
-
-typedef struct wuxingStatistics {
-    Elememts wuxing;
-    int count;
-};
-
-typedef struct redballStatistics {
-    RedBall redball;
-    float probability;
-};
-
-typedef struct blueballStatistics {
-    BlueBall blueball;
-    float probability;
-};
-
-typedef struct resultStatistics {
-    Result result;
-    float probability;
-};
 
 Algorithm::Algorithm()
 {
@@ -58,19 +20,19 @@ bool Algorithm::updateDatabase()
     return true;
 }
 
-Result Algorithm::getLatestResultFromDatabase()
+Result* Algorithm::getLatestResultFromDatabase()
 {
     std::string str;
     std::vector<std::string> lines;
-    Result result = NULL;
-    char rg = "\n"; // row
-    char cg = ","; // field
+    Result *result = NULL;
+    char *rg = "\n";
+    char *cg = ",";
     updateDatabase();
-    MySqlOperator operator = new MySqlOperator();
+    MySqlOperator *sql = new MySqlOperator();
 
-    if(operator != NULL) {
-        if(operator.ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
-            str = operator.SelectData(TABLE_SSQ, NULL, 1);
+    if(sql != NULL) {
+        if(sql->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+            str = sql->SelectData(TABLE_SSQ, NULL, 1);
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, cg);
@@ -85,7 +47,7 @@ Result Algorithm::getLatestResultFromDatabase()
             }
         }
 
-        operator.CloseMySQLConn();
+        sql->CloseMySQLConn();
     }
 
     return result;
@@ -98,7 +60,7 @@ void Algorithm::rearrangePredictResult(std::vector<resultStatistics> resultSta, 
     for(int i = 0; i < size - 1; i++) {
         for(int j = 0; j < size - i - 1; j++) {
             if(resultSta[j].probability < resultSta[j + 1].probability) {
-                swap(resultSta[j], resultSta[j + 1]);
+                std::swap(resultSta[j], resultSta[j + 1]);
             }
         }
     }
@@ -109,19 +71,19 @@ void Algorithm::rearrangePredictResult(std::vector<resultStatistics> resultSta, 
 void Algorithm::printPredictResult(std::vector<resultStatistics> resultSta)
 {
     for(int i = 0; i < (int)resultSta.size(); i++) {
-        Result result = resultSta[i].result;
-        RedNumbers rnum1 = result.mR1.mNum;
-        RedNumbers rnum2 = result.mR2.mNum;
-        RedNumbers rnum3 = result.mR3.mNum;
-        RedNumbers rnum4 = result.mR4.mNum;
-        RedNumbers rnum5 = result.mR5.mNum;
-        RedNumbers rnum6 = result.mR6.mNum;
-        BlueNumbers bnum = result.mB0.mNum;
+        Result *result = resultSta[i].result;
+        RedNumbers rnum1 = result->mR1->mNum;
+        RedNumbers rnum2 = result->mR2->mNum;
+        RedNumbers rnum3 = result->mR3->mNum;
+        RedNumbers rnum4 = result->mR4->mNum;
+        RedNumbers rnum5 = result->mR5->mNum;
+        RedNumbers rnum6 = result->mR6->mNum;
+        BlueNumbers bnum = result->mB0->mNum;
         printf("[%d] %2d %2d %2d %2d %2d %2d + %2d  probability = %0.3f", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
     }
 }
 
-Result Algorithm::getMaxProbabilityPredictResult(int top)
+std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
 {
     std::vector<resultStatistics> resultSta;
     std::vector<redballStatistics> rsta1 = calculateRedBallProbability(REDBALL_FIRST);
@@ -139,7 +101,7 @@ Result Algorithm::getMaxProbabilityPredictResult(int top)
                     for(int n = 0; n < (int)rsta5.size(); n++) {
                         for(int r = 0; r < (int)rsta6.size(); r++) {
                             for(int s = 0; s < (int)bsta.size(); s++) {
-                                Result result = new Result(rsta1[i].redball, rsta2[j].redball, rsta3[k].redball, rsta4[m].redball, rsta5[n].redball, rsta6[r].redball, bsta[s].blueball);
+                                Result *result = new Result(rsta1[i].redball, rsta2[j].redball, rsta3[k].redball, rsta4[m].redball, rsta5[n].redball, rsta6[r].redball, bsta[s].blueball);
                                 float prob = rsta1[i].probability * rsta2[j].probability * rsta3[k].probability * rsta4[m].probability * rsta5[n].probability * rsta6[r].probability * bsta[s].probability;
                                 resultStatistics sta;
                                 sta.result = result;
@@ -170,28 +132,29 @@ std::vector<redballStatistics> Algorithm::calculateRedBallProbability(int ballTy
     float PROBABILITY_WATER = 0;
     float PROBABILITY_FIRE = 0;
     float PROBABILITY_EARTH = 0;
-    int total1 = calculateBallNumberProbability(ballType, rnumList);
+    float prob = 0;
+    int total1 = calculateRedBallNumberProbability(ballType, rnumList);
     int total2 = calculateBallWuxingProbability(ballType, wuxingList);
 
     for(int i = 0; i < (int)wuxingList.size(); i++) {
         switch(wuxingList[i].wuxing) {
-            case Elememts.METAL:
+            case METAL:
                 PROBABILITY_METAL = (float)wuxingList[i].count / total2;
                 break;
 
-            case Elememts.WOOD:
+            case WOOD:
                 PROBABILITY_WOOD = (float)wuxingList[i].count / total2;
                 break;
 
-            case Elememts.WATER:
+            case WATER:
                 PROBABILITY_WATER = (float)wuxingList[i].count / total2;
                 break;
 
-            case Elememts.FIRE:
+            case FIRE:
                 PROBABILITY_FIRE = (float)wuxingList[i].count / total2;
                 break;
 
-            case Elememts.EARTH:
+            case EARTH:
                 PROBABILITY_EARTH = (float)wuxingList[i].count / total2;
                 break;
 
@@ -201,27 +164,27 @@ std::vector<redballStatistics> Algorithm::calculateRedBallProbability(int ballTy
     }
 
     for(int j = 0; j < (int)rnumList.size(); j++) {
-        RedBall redball = new RedBall(rnumList[i].rn);
+        RedBall *redball = new RedBall(rnumList[j].rn);
 
-        switch(redball.mWuxing) {
-            case Elememts.METAL:
-                prob = (float) rnumList[i].count / total1 * PROBABILITY_METAL;
+        switch(redball->mWuxing) {
+            case METAL:
+                prob = (float) rnumList[j].count / total1 * PROBABILITY_METAL;
                 break;
 
-            case Elememts.WOOD:
-                prob = (float) rnumList[i].count / total1 * PROBABILITY_WOOD;
+            case WOOD:
+                prob = (float) rnumList[j].count / total1 * PROBABILITY_WOOD;
                 break;
 
-            case Elememts.WATER:
-                prob = (float) rnumList[i].count / total1 * PROBABILITY_WATER;
+            case WATER:
+                prob = (float) rnumList[j].count / total1 * PROBABILITY_WATER;
                 break;
 
-            case Elememts.FIRE:
-                prob = (float) rnumList[i].count / total1 * PROBABILITY_FIRE;
+            case FIRE:
+                prob = (float) rnumList[j].count / total1 * PROBABILITY_FIRE;
                 break;
 
-            case Elememts.EARTH:
-                prob = (float) rnumList[i].count / total1 * PROBABILITY_EARTH;
+            case EARTH:
+                prob = (float) rnumList[j].count / total1 * PROBABILITY_EARTH;
                 break;
 
             default:
@@ -249,28 +212,29 @@ std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(int ball
     float PROBABILITY_WATER = 0;
     float PROBABILITY_FIRE = 0;
     float PROBABILITY_EARTH = 0;
-    int total1 = calculateBallNumberProbability(ballType, bnumList);
+    float prob = 0;
+    int total1 = calculateBlueBallNumberProbability(ballType, bnumList);
     int total2 = calculateBallWuxingProbability(ballType, wuxingList);
 
     for(int i = 0; i < (int)wuxingList.size(); i++) {
         switch(wuxingList[i].wuxing) {
-            case Elememts.METAL:
+            case METAL:
                 PROBABILITY_METAL = (float)wuxingList[i].count / total2;
                 break;
 
-            case Elememts.WOOD:
+            case WOOD:
                 PROBABILITY_WOOD = (float)wuxingList[i].count / total2;
                 break;
 
-            case Elememts.WATER:
+            case WATER:
                 PROBABILITY_WATER = (float)wuxingList[i].count / total2;
                 break;
 
-            case Elememts.FIRE:
+            case FIRE:
                 PROBABILITY_FIRE = (float)wuxingList[i].count / total2;
                 break;
 
-            case Elememts.EARTH:
+            case EARTH:
                 PROBABILITY_EARTH = (float)wuxingList[i].count / total2;
                 break;
 
@@ -280,27 +244,27 @@ std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(int ball
     }
 
     for(int j = 0; j < (int)bnumList.size(); j++) {
-        BlueBall blueball = new BlueBall(bnumList[i].bn);
+        BlueBall *blueball = new BlueBall(bnumList[j].bn);
 
-        switch(blueball.mWuxing) {
-            case Elememts.METAL:
-                prob = (float) bnumList[i].count / total1 * PROBABILITY_METAL;
+        switch(blueball->mWuxing) {
+            case METAL:
+                prob = (float) bnumList[j].count / total1 * PROBABILITY_METAL;
                 break;
 
-            case Elememts.WOOD:
-                prob = (float) bnumList[i].count / total1 * PROBABILITY_WOOD;
+            case WOOD:
+                prob = (float) bnumList[j].count / total1 * PROBABILITY_WOOD;
                 break;
 
-            case Elememts.WATER:
-                prob = (float) bnumList[i].count / total1 * PROBABILITY_WATER;
+            case WATER:
+                prob = (float) bnumList[j].count / total1 * PROBABILITY_WATER;
                 break;
 
-            case Elememts.FIRE:
-                prob = (float) bnumList[i].count / total1 * PROBABILITY_FIRE;
+            case FIRE:
+                prob = (float) bnumList[j].count / total1 * PROBABILITY_FIRE;
                 break;
 
-            case Elememts.EARTH:
-                prob = (float) bnumList[i].count / total1 * PROBABILITY_EARTH;
+            case EARTH:
+                prob = (float) bnumList[j].count / total1 * PROBABILITY_EARTH;
                 break;
 
             default:
@@ -359,7 +323,7 @@ void Algorithm::printRedballNumberProbability(std::vector<rnumStatistics> sta, i
     std::string title = getLogTitleFromBalltype(ballType);
 
     for(int i = 0; i < (int)sta.size(); i++) {
-        printf("%s [%d] : num = %d, count = %d, probability = %0.3f\n", title, i + 1, sta[i].rn, sta[i].count, (float)sta[i].count / total);
+        printf("%s [%d] : num = %d, count = %d, probability = %0.3f\n", title.c_str(), i + 1, sta[i].rn, sta[i].count, (float)sta[i].count / total);
     }
 }
 
@@ -368,7 +332,7 @@ void Algorithm::printBlueballNumberProbability(std::vector<bnumStatistics> sta, 
     std::string title = getLogTitleFromBalltype(ballType);
 
     for(int i = 0; i < (int)sta.size(); i++) {
-        printf("%s [%d] : num = %d, count = %d, probability = %0.3f\n", title, i + 1, sta[i].rn, sta[i].count, (float)sta[i].count / total);
+        printf("%s [%d] : num = %d, count = %d, probability = %0.3f\n", title.c_str(), i + 1, sta[i].bn, sta[i].count, (float)sta[i].count / total);
     }
 }
 
@@ -377,26 +341,26 @@ void Algorithm::printBallWuxingProbability(std::vector<wuxingStatistics> sta, in
     std::string title = getLogTitleFromBalltype(ballType);
 
     for(int i = 0; i < (int)sta.size(); i++) {
-        printf("%s [%d] : wuxing = %d, count = %d, probability = %0.3f\n", title, i + 1, sta[i].wuxing, sta[i].count, (float)sta[i].count / total);
+        printf("%s [%d] : wuxing = %d, count = %d, probability = %0.3f\n", title.c_str(), i + 1, sta[i].wuxing, sta[i].count, (float)sta[i].count / total);
     }
 }
 
 int Algorithm::calculateRedBallNumberProbability(int ballType, std::vector<rnumStatistics> staList)
 {
-    Result result = getLatestResultFromDatabase();
-    RedBall rb = result.mR1;
-    RedNumbers num = rb.mNum;
-    std::vector<RedBall> mList = getBallListFromDatabase("", 0, 0);
+    Result *result = getLatestResultFromDatabase();
+    RedBall *rb = result->mR1;
+    RedNumbers num = rb->mNum;
+    std::vector<RedBall*> mList = getRedBallListFromDatabase("", 0);
     int totalCount = 0;
 
     for(int i = 0; i < (int)mList.size(); i++) {
-        if(num == mList[i].mNum) {
+        if(num == mList[i]->mNum) {
             for(int j = 0; j < (int) staList.size(); j++) {
-                if(mList[i + 1].mNum == staList[j].rn) {
+                if(mList[i + 1]->mNum == staList[j].rn) {
                     staList[j].count ++;
                 } else {
                     rnumStatistics sta;
-                    sta.rn = mList[i + 1].mNum;
+                    sta.rn = mList[i + 1]->mNum;
                     sta.count = 0;
                     staList.push_back(sta);
                 }
@@ -412,20 +376,20 @@ int Algorithm::calculateRedBallNumberProbability(int ballType, std::vector<rnumS
 
 int Algorithm::calculateBlueBallNumberProbability(int ballType, std::vector<bnumStatistics> staList)
 {
-    Result result = getLatestResultFromDatabase();
-    BlueBall bb = result.mB0;
-    BlueNumbers num = bb.mNum;
-    std::vector<BlueBall> mList = getBallListFromDatabase("", 0, 0);
+    Result *result = getLatestResultFromDatabase();
+    BlueBall *bb = result->mB0;
+    BlueNumbers num = bb->mNum;
+    std::vector<BlueBall*> mList = getBlueBallListFromDatabase("", 0);
     int totalCount = 0;
 
     for(int i = 0; i < (int)mList.size(); i++) {
-        if(num == mList[i].mNum) {
+        if(num == mList[i]->mNum) {
             for(int j = 0; j < (int) staList.size(); j++) {
-                if(mList[i + 1].mNum == staList[j].rn) {
+                if(mList[i + 1]->mNum == staList[j].bn) {
                     staList[j].count ++;
                 } else {
                     bnumStatistics sta;
-                    sta.bn = mList[i + 1].mNum;
+                    sta.bn = mList[i + 1]->mNum;
                     sta.count = 0;
                     staList.push_back(sta);
                 }
@@ -442,29 +406,47 @@ int Algorithm::calculateBlueBallNumberProbability(int ballType, std::vector<bnum
 int Algorithm::calculateBallWuxingProbability(int ballType, std::vector<wuxingStatistics> wuxingList)
 {
     int totalCount = 0;
-    Result result = getLatestResultFromDatabase();
-    RedBall rb = result.mR1;
-    Elememts wuxing = rb.mWuxing;
+    Result *result = getLatestResultFromDatabase();
+    RedBall *rb = result->mR1;
+    Elememts wuxing = rb->mWuxing;
 
-    if(ballType > 0 && ballType < BLUEBALL_FIRST)
-    { std::vector<RedBall> mList = getRedBallListFromDatabase("", 0, 0); }
-    else
-    { std::vector<BlueBall> mList = getBlueBallListFromDatabase("", 0, 0); }
+    if(ballType > 0 && ballType < BLUEBALL_FIRST) {
+        std::vector<RedBall*> mList = getRedBallListFromDatabase("", 0);
 
-    for(int i = 0; i < (int)mList.size(); i++) {
-        if(wuxing == mList[i].mWuxing) {
-            for(int j = 0; j < (int) wuxingList.size(); j++) {
-                if(mList[i + 1].mWuxing == wuxingList[j].wuxing) {
-                    wuxingList[j].count ++;
-                } else {
-                    wuxingStatistics sta;
-                    sta.wuxing = mList[i + 1].mWuxing;
-                    sta.count = 0;
-                    wuxingList.push_back(sta);
+        for(int i = 0; i < (int)mList.size(); i++) {
+            if(wuxing == mList[i]->mWuxing) {
+                for(int j = 0; j < (int) wuxingList.size(); j++) {
+                    if(mList[i + 1]->mWuxing == wuxingList[j].wuxing) {
+                        wuxingList[j].count ++;
+                    } else {
+                        wuxingStatistics sta;
+                        sta.wuxing = mList[i + 1]->mWuxing;
+                        sta.count = 0;
+                        wuxingList.push_back(sta);
+                    }
                 }
-            }
 
-            totalCount++;
+                totalCount++;
+            }
+        }
+    } else {
+        std::vector<BlueBall*> mList = getBlueBallListFromDatabase("", 0);
+
+        for(int i = 0; i < (int)mList.size(); i++) {
+            if(wuxing == mList[i]->mWuxing) {
+                for(int j = 0; j < (int) wuxingList.size(); j++) {
+                    if(mList[i + 1]->mWuxing == wuxingList[j].wuxing) {
+                        wuxingList[j].count ++;
+                    } else {
+                        wuxingStatistics sta;
+                        sta.wuxing = mList[i + 1]->mWuxing;
+                        sta.count = 0;
+                        wuxingList.push_back(sta);
+                    }
+                }
+
+                totalCount++;
+            }
         }
     }
 
@@ -472,63 +454,63 @@ int Algorithm::calculateBallWuxingProbability(int ballType, std::vector<wuxingSt
     return totalCount;
 }
 
-std::vector<RedBall> Algorithm::getRedBallListFromDatabase(char field, int rnum)
+std::vector<RedBall*> Algorithm::getRedBallListFromDatabase(char *field, int rnum)
 {
-    std::vector<RedBall> redList;
+    std::vector<RedBall*> redList;
     std::vector<std::string> lines;
     std::string str;
-    char rg = "\n"; // row
-    char cg = ","; // field
+    char *rg = "\n"; // row
+    char *cg = ","; // field
     updateDatabase();
-    MySqlOperator operator = new MySqlOperator();
+    MySqlOperator *sql = new MySqlOperator();
 
-    if(operator != NULL) {
-        if(operator.ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
-            str = operator.SelectData(TABLE_SSQ, field, 500);
+    if(sql != NULL) {
+        if(sql->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+            str = sql->SelectData(TABLE_SSQ, field, 500);
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, rg);
 
                 for(int i = 0; i < (int)lines.size(); i++) {
                     RedNumbers rn = (RedNumbers) atoi(lines[i].c_str());
-                    RedBall rb = new RedBall(rn);
+                    RedBall *rb = new RedBall(rn);
                     redList.push_back(rb);
                 }
             }
         }
 
-        operator.CloseMySQLConn();
+        sql->CloseMySQLConn();
     }
 
     return redList;
 }
 
-std::vector<BlueBall> Algorithm::getBlueBallListFromDatabase(char field, int rnum)
+std::vector<BlueBall*> Algorithm::getBlueBallListFromDatabase(char *field, int rnum)
 {
-    std::vector<BlueBall> blueList;
+    std::vector<BlueBall*> blueList;
     std::vector<std::string> lines;
     std::string str;
-    char rg = "\n"; // row
-    char cg = ","; // field
+    char *rg = "\n"; // row
+    char *cg = ","; // field
     updateDatabase();
-    MySqlOperator operator = new MySqlOperator();
+    MySqlOperator *sql = new MySqlOperator();
 
-    if(operator != NULL) {
-        if(operator.ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
-            str = operator.SelectData(TABLE_SSQ, field, 500);
+    if(sql != NULL) {
+        if(sql->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+            str = sql->SelectData(TABLE_SSQ, field, 500);
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, rg);
 
                 for(int i = 0; i < (int)lines.size(); i++) {
-                    BlueNumbers rn = (BlueNumbers) atoi(lines[i].c_str());
-                    BlueBall rb = new BlueBall(rn);
-                    blueList.push_back(rb);
+                    BlueNumbers bn = (BlueNumbers) atoi(lines[i].c_str());
+                    BlueBall *bb = new BlueBall(bn);
+                    blueList.push_back(bb);
                 }
             }
         }
 
-        operator.CloseMySQLConn();
+        sql->CloseMySQLConn();
     }
 
     return blueList;

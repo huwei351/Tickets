@@ -1,3 +1,6 @@
+#ifndef REDBALL_H
+#define REDBALL_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
@@ -33,13 +36,13 @@ class RedBall
 
 
         RedBall() {
-            mNum = 0;
+            mNum = RED_NUM_INVALID;
             mUnit = 0;
             mDecade = 0;
-            mJiou = -1;
-            mDaxiao = -1;
-            mZhihe = -1;
-            mWuxing = -1;
+            mJiou = PARITY_UNKNOWN;
+            mDaxiao = BIG_SMALL_UNKNOWN;
+            mZhihe = PRIME_COMPOSITE_UNKNOWN;
+            mWuxing = ELEMEMTS_UNKNOWN;
         }
 
         RedBall(RedNumbers num) {
@@ -116,37 +119,37 @@ class RedBall
                     setVariableValue(num, 2, 0, EVEN, SMALL, PRIME, EARTH);
                     break;
 
-				case RED_NUM_THREE:
-					setVariableValue(num, 3, 0, ODD, SMALL, PRIME, WOOD);
-					break;
+                case RED_NUM_THREE:
+                    setVariableValue(num, 3, 0, ODD, SMALL, PRIME, WOOD);
+                    break;
 
-				case RED_NUM_FOUR:
-					setVariableValue(num, 4, 0, EVEN, SMALL, COMPOSITE, WOOD);
-					break;
-					
-				case RED_NUM_FIVE:
-					setVariableValue(num, 5, 0, ODD, SMALL, PRIME, EARTH);
-					break;
-					
-				case RED_NUM_SIX:
-					setVariableValue(num, 6, 0, EVEN, SMALL, COMPOSITE, FIRE);
-					break;
-					
-				case RED_NUM_SEVEN:
-					setVariableValue(num, 7, 0, ODD, SMALL, PRIME, FIRE);
-					break;
-					
-				case RED_NUM_EIGHT:
-					setVariableValue(num, 8, 0, EVEN, SMALL, COMPOSITE, EARTH);
-					break;
-					
-				case RED_NUM_NINE:
-					setVariableValue(num, 9, 0, ODD, SMALL, COMPOSITE, METAL);
-					break;
-					
-				case RED_NUM_TEN:
-					setVariableValue(num, 0, 1, EVEN, SMALL, COMPOSITE, METAL);
-					break;
+                case RED_NUM_FOUR:
+                    setVariableValue(num, 4, 0, EVEN, SMALL, COMPOSITE, WOOD);
+                    break;
+
+                case RED_NUM_FIVE:
+                    setVariableValue(num, 5, 0, ODD, SMALL, PRIME, EARTH);
+                    break;
+
+                case RED_NUM_SIX:
+                    setVariableValue(num, 6, 0, EVEN, SMALL, COMPOSITE, FIRE);
+                    break;
+
+                case RED_NUM_SEVEN:
+                    setVariableValue(num, 7, 0, ODD, SMALL, PRIME, FIRE);
+                    break;
+
+                case RED_NUM_EIGHT:
+                    setVariableValue(num, 8, 0, EVEN, SMALL, COMPOSITE, EARTH);
+                    break;
+
+                case RED_NUM_NINE:
+                    setVariableValue(num, 9, 0, ODD, SMALL, COMPOSITE, METAL);
+                    break;
+
+                case RED_NUM_TEN:
+                    setVariableValue(num, 0, 1, EVEN, SMALL, COMPOSITE, METAL);
+                    break;
 
                 case RED_NUM_ELEVEN:
                     setVariableValue(num, 1, 1, ODD, SMALL, PRIME, EARTH);
@@ -156,89 +159,89 @@ class RedBall
                     setVariableValue(num, 2, 1, EVEN, SMALL, COMPOSITE, WATER);
                     break;
 
-				case RED_NUM_THIRTEEN:
-					setVariableValue(num, 3, 1, ODD, SMALL, PRIME, WATER);
-					break;
+                case RED_NUM_THIRTEEN:
+                    setVariableValue(num, 3, 1, ODD, SMALL, PRIME, WATER);
+                    break;
 
-				case RED_NUM_FOURTEEN:
-					setVariableValue(num, 4, 1, EVEN, SMALL, COMPOSITE, EARTH);
-					break;
-					
-				case RED_NUM_FIFTEEN:
-					setVariableValue(num, 5, 1, ODD, SMALL, COMPOSITE, WOOD);
-					break;
-					
-				case RED_NUM_SIXTEEN:
-					setVariableValue(num, 6, 1, EVEN, SMALL, COMPOSITE, WOOD);
-					break;
-					
-				case RED_NUM_SEVENTEEN:
-					setVariableValue(num, 7, 1, ODD, BIG, PRIME, EARTH);
-					break;
-					
-				case RED_NUM_EIGHTEEN:
-					setVariableValue(num, 8, 1, EVEN, BIG, COMPOSITE, FIRE);
-					break;
-					
-				case RED_NUM_NINETEEN:
-					setVariableValue(num, 9, 1, ODD, BIG, PRIME, FIRE);
-					break;
-					
-				case RED_NUM_TWENTY:
-					setVariableValue(num, 0, 2, EVEN, BIG, COMPOSITE, EARTH);
-					break;
+                case RED_NUM_FOURTEEN:
+                    setVariableValue(num, 4, 1, EVEN, SMALL, COMPOSITE, EARTH);
+                    break;
 
-				case RED_NUM_TWENTY_ONE:
-					setVariableValue(num, 1, 2, ODD, BIG, COMPOSITE, METAL);
-					break;
-				
-				case RED_NUM_TWENTY_TWO:
-					setVariableValue(num, 2, 2, EVEN, BIG, COMPOSITE, METAL);
-					break;
-				
-				case RED_NUM_TWENTY_THREE:
-					setVariableValue(num, 3, 2, ODD, BIG, PRIME, EARTH);
-					break;
-				
-				case RED_NUM_TWENTY_FOUR:
-					setVariableValue(num, 4, 2, EVEN, BIG, COMPOSITE, WATER);
-					break;
-					
-				case RED_NUM_TWENTY_FIVE:
-					setVariableValue(num, 5, 2, ODD, BIG, COMPOSITE, WATER);
-					break;
-					
-				case RED_NUM_TWENTY_SIX:
-					setVariableValue(num, 6, 2, EVEN, BIG, COMPOSITE, EARTH);
-					break;
-					
-				case RED_NUM_TWENTY_SEVEN:
-					setVariableValue(num, 7, 2, ODD, BIG, COMPOSITE, WOOD);
-					break;
-					
-				case RED_NUM_TWENTY_EIGHT:
-					setVariableValue(num, 8, 2, EVEN, BIG, COMPOSITE, WOOD);
-					break;
-					
-				case RED_NUM_TWENTY_NINE:
-					setVariableValue(num, 9, 2, ODD, BIG, PRIME, EARTH);
-					break;
-					
-				case RED_NUM_THIRTY:
-					setVariableValue(num, 0, 3, EVEN, BIG, COMPOSITE, FIRE);
-					break;
+                case RED_NUM_FIFTEEN:
+                    setVariableValue(num, 5, 1, ODD, SMALL, COMPOSITE, WOOD);
+                    break;
 
-				case RED_NUM_THIRTY_ONE:
-					setVariableValue(num, 1, 3, ODD, BIG, PRIME, FIRE);
-					break;
-					
-				case RED_NUM_THIRTY_TWO:
-					setVariableValue(num, 2, 3, EVEN, BIG, COMPOSITE, EARTH);
-					break;
-					
-				case RED_NUM_THIRTY_THREE:
-					setVariableValue(num, 3, 3, ODD, BIG, COMPOSITE, METAL);
-					break;
+                case RED_NUM_SIXTEEN:
+                    setVariableValue(num, 6, 1, EVEN, SMALL, COMPOSITE, WOOD);
+                    break;
+
+                case RED_NUM_SEVENTEEN:
+                    setVariableValue(num, 7, 1, ODD, BIG, PRIME, EARTH);
+                    break;
+
+                case RED_NUM_EIGHTEEN:
+                    setVariableValue(num, 8, 1, EVEN, BIG, COMPOSITE, FIRE);
+                    break;
+
+                case RED_NUM_NINTEEN:
+                    setVariableValue(num, 9, 1, ODD, BIG, PRIME, FIRE);
+                    break;
+
+                case RED_NUM_TWENTY:
+                    setVariableValue(num, 0, 2, EVEN, BIG, COMPOSITE, EARTH);
+                    break;
+
+                case RED_NUM_TWENTY_ONE:
+                    setVariableValue(num, 1, 2, ODD, BIG, COMPOSITE, METAL);
+                    break;
+
+                case RED_NUM_TWENTY_TWO:
+                    setVariableValue(num, 2, 2, EVEN, BIG, COMPOSITE, METAL);
+                    break;
+
+                case RED_NUM_TWENTY_THREE:
+                    setVariableValue(num, 3, 2, ODD, BIG, PRIME, EARTH);
+                    break;
+
+                case RED_NUM_TWENTY_FOUR:
+                    setVariableValue(num, 4, 2, EVEN, BIG, COMPOSITE, WATER);
+                    break;
+
+                case RED_NUM_TWENTY_FIVE:
+                    setVariableValue(num, 5, 2, ODD, BIG, COMPOSITE, WATER);
+                    break;
+
+                case RED_NUM_TWENTY_SIX:
+                    setVariableValue(num, 6, 2, EVEN, BIG, COMPOSITE, EARTH);
+                    break;
+
+                case RED_NUM_TWENTY_SEVEN:
+                    setVariableValue(num, 7, 2, ODD, BIG, COMPOSITE, WOOD);
+                    break;
+
+                case RED_NUM_TWENTY_EIGHT:
+                    setVariableValue(num, 8, 2, EVEN, BIG, COMPOSITE, WOOD);
+                    break;
+
+                case RED_NUM_TWENTY_NINE:
+                    setVariableValue(num, 9, 2, ODD, BIG, PRIME, EARTH);
+                    break;
+
+                case RED_NUM_THIRTY:
+                    setVariableValue(num, 0, 3, EVEN, BIG, COMPOSITE, FIRE);
+                    break;
+
+                case RED_NUM_THIRTY_ONE:
+                    setVariableValue(num, 1, 3, ODD, BIG, PRIME, FIRE);
+                    break;
+
+                case RED_NUM_THIRTY_TWO:
+                    setVariableValue(num, 2, 3, EVEN, BIG, COMPOSITE, EARTH);
+                    break;
+
+                case RED_NUM_THIRTY_THREE:
+                    setVariableValue(num, 3, 3, ODD, BIG, COMPOSITE, METAL);
+                    break;
 
                 default:
                     break;
@@ -265,4 +268,6 @@ class RedBall
         }
 #endif
 };
+
+#endif
 

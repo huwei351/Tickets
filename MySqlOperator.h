@@ -1,13 +1,16 @@
+#ifndef MYSQL_OPERATOR_H
+#define MYSQL_OPERATOR_H
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
 #include <iostream>
 
-#include <mysql.h>
+#include <mysql/mysql.h>
 
 
 #define HOST "localhost"
-#define PORT 3306
+#define PORT "3306"
 #define USER "root"
 #define PASSWORD  "huwei351"
 #define DATABASE "ssq"
@@ -32,8 +35,11 @@ class MySqlOperator
 
         MYSQL mysql;
 
-        MySqlOperator();
-        ~MySqlOperator();
+        MySqlOperator() {
+        }
+
+        ~MySqlOperator() {
+        }
 
 
         int ConnMySQL(char *host, char * port, char * Db, char * user, char* passwd, char * charset);
@@ -49,3 +55,5 @@ class MySqlOperator
         void CloseMySQLConn();
 
 };
+
+#endif

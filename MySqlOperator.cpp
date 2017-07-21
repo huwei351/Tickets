@@ -1,14 +1,6 @@
 #include "MySqlOperator.h"
 
 
-MySqlOperator::MySqlOperator()
-{
-}
-
-MySqlOperator::~MySqlOperator()
-{
-}
-
 //Init MySQL
 int MySqlOperator::ConnMySQL(char *host, char * port , char * Db, char * user, char* passwd, char * charset)
 {
@@ -41,8 +33,8 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
     MYSQL_FIELD *m_field;
     std::string str = "";
     int rnum , cnum;
-    char rg = "\n"; // row
-    char cg = ","; // field
+    char *rg = "\n"; // row
+    char *cg = ","; // field
     char sql[2048];
 
     if(field == NULL)
@@ -68,7 +60,7 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
         printf("column_num = %d, row_num = %d", cnum, rnum);
 
         for(int i = rnum - rmax; i < rnum; i++) {
-            m_row = mysql_fetch_row(m_res)
+            m_row = mysql_fetch_row(m_res);
 
             for(int i = 0; i < cnum; i++) {
                 str += m_row[i];
@@ -88,7 +80,6 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
 int MySqlOperator::InsertData(char * table, char * v_rid, char * v_date, char * v_rb1, char * v_rb2, char * v_rb3, char * v_rb4, char * v_rb5, char * v_rb6, char * v_bb)
 {
     char sql[2048];
-    SQL = "insert into vcaccesstest(ids,username,passwd,address) values(4,'我的','123210','测试地址')";
     sprintf(sql, "insert into %s values(\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\',\'%s\')", table, v_rid, v_date, v_rb1, v_rb2, v_rb3, v_rb4, v_rb5, v_rb6, v_bb);
     int res = mysql_query(&mysql, sql);
 

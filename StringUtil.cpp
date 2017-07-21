@@ -1,16 +1,14 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <sys/types.h>
-#include <utils/Log.h>
 #include <stdlib.h>
 #include <string>
 #include <algorithm>
+#include <string.h>
 
 
 #include "StringUtil.h"
 
-
-using namespace android;
 
 bool StringUtil::StringIsEmpty(std::string string)
 {

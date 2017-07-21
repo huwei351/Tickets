@@ -3,13 +3,11 @@
 
 #include <string>
 #include <vector>
-#include <utils/Singleton.h>
-#include <utils/Mutex.h>
-#include <utils/String8.h>
+//#include <utils/Singleton.h>
+//#include <utils/Mutex.h>
+//#include <utils/String8.h>
 
 
-namespace android
-{
 class StringUtil
 {
     public:
@@ -19,5 +17,5 @@ class StringUtil
         static bool StringEndsWith(std::string string, const char* prefix);
         static void StringFindValue(std::string string, std::string &value, std::string index);
 };
-}
+
 #endif
