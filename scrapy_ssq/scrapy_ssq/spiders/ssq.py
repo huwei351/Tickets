@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import scrapy
 from bs4 import BeautifulSoup
 from scrapy.http import Request
@@ -31,26 +33,26 @@ class myspider(scrapy.Spider):
         content = BeautifulSoup(response.text, 'lxml')
         rows = content.findAll('tr')
         for row in rows:
-        if re.search("em class", str(row)):
-            columns = row.findAll('td')
-            rid = re.findall(r'(\d+)', str(columns[1]))[0]
-            date = str(columns[0])[19:29]
-            balls = re.findall(r'(\d+)', str(columns[2]))
-            rb1 = balls[1]
-            rb2 = balls[2]
-            rb3 = balls[3]
-            rb4 = balls[4]
-            rb5 = balls[5]
-            rb6 = balls[6]
-            bb = balls[7]
-            print("rid=" + rid + ", date=" + date + ", rb1=" + rb1 + ", rb2=" + rb2 + ", rb3=" + rb3 + ", rb4=" + rb4 + ", rb5=" + rb5 + ", rb6=" + rb6 + ", bb=" + bb)
-            item['rid'] = rid
-            item['date'] = date
-            item['rb1'] = rb1
-            item['rb2'] = rb2
-            item['rb3'] = rb3
-            item['rb4'] = rb4
-            item['rb5'] = rb5
-            item['rb6'] = rb6
-            item['bb'] = bb
-            yield item
+            if re.search("em class", str(row)):
+                columns = row.findAll('td')
+                rid = re.findall(r'(\d+)', str(columns[1]))[0]
+                date = str(columns[0])[19:29]
+                balls = re.findall(r'(\d+)', str(columns[2]))
+                rb1 = balls[1]
+                rb2 = balls[2]
+                rb3 = balls[3]
+                rb4 = balls[4]
+                rb5 = balls[5]
+                rb6 = balls[6]
+                bb = balls[7]
+                print("rid=" + rid + ", date=" + date + ", rb1=" + rb1 + ", rb2=" + rb2 + ", rb3=" + rb3 + ", rb4=" + rb4 + ", rb5=" + rb5 + ", rb6=" + rb6 + ", bb=" + bb)
+                item['rid'] = rid
+                item['date'] = date
+                item['rb1'] = rb1
+                item['rb2'] = rb2
+                item['rb3'] = rb3
+                item['rb4'] = rb4
+                item['rb5'] = rb5
+                item['rb6'] = rb6
+                item['bb'] = bb
+                yield item

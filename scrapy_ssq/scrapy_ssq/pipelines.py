@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import MySQLdb
 import mysql.connector
 from scrapy_ssq import settings
 # Define your item pipelines here
@@ -17,9 +18,8 @@ cur = cnx.cursor(buffered=True)
 
 class Sql:
     @classmethod
-    def insert_tenement_message(cls,rid,date,rb1,rb2,rb3,rb4,rb5,rb6,bb):
-        sql = 'INSERT INTO tenement_message(`rid`,`date`,`rb1`,`rb2`,`rb3`,`rb4`,`rb5`,`rb6`,`bb`) 
-VALUES (%(rid)s,%(date)s,%(rb1)s,%(rb2)s,%(rb3)s,%(rb4)s,%(rb5)s,%(rb6)s,%(bb)s)'
+    def insert_ssq_result(cls,rid,date,rb1,rb2,rb3,rb4,rb5,rb6,bb):
+        sql = 'INSERT INTO ssq_result (`rid`,`date`,`rb1`,`rb2`,`rb3`,`rb4`,`rb5`,`rb6`,`bb`) VALUES (%(rid)s,%(date)s,%(rb1)s,%(rb2)s,%(rb3)s,%(rb4)s,%(rb5)s,%(rb6)s,%(bb)s)'
         value = {
             'rid':rid,
             'date':date,
@@ -29,13 +29,13 @@ VALUES (%(rid)s,%(date)s,%(rb1)s,%(rb2)s,%(rb3)s,%(rb4)s,%(rb5)s,%(rb6)s,%(bb)s)
             'rb4':rb4,
             'rb5':rb5,
             'rb6':rb6,
-	    'bb':bb,
+            'bb':bb,
         }
         cur.execute(sql,value)
         cnx.commit()
     @classmethod
     def select_title(cls,date):#这个是利用标题去重的，虽然按照区域划分应该不会重复，只是预防万一
-        sql= 'SELECT EXISTS (SELECT 1 FROM tenement_message WHERE date = %(date)s)'
+        sql= 'SELECT EXISTS (SELECT 1 FROM ssq_result WHERE date = %(date)s)'
         value = {
             'date':date
         }
@@ -48,7 +48,6 @@ class ScrapySsqPipeline(object):
         date = item['date']
         ret = Sql.select_title(date)
         if ret[0] ==1:
-
             print('result already exsisted')
         else:
             rid = item['rid']
@@ -58,7 +57,7 @@ class ScrapySsqPipeline(object):
             rb4 = item['rb4']
             rb5 = item ['rb5']
             rb6 = item['rb6']
-	    bb = item['bb']
-            Sql.insert_tenement_message(rid,date,rb1,rb2,rb3,rb4,rb5,rb6,bb)
+            bb = item['bb']
+            Sql.insert_ssq_result(rid,date,rb1,rb2,rb3,rb4,rb5,rb6,bb)
             print('starting save results')
         return item
