@@ -169,6 +169,7 @@ int32_t main(int32_t argc, char *argv[])
         }
     } while(choice != PRE_QUIT);  /* While user don't exit application */
 
+    delete ai;
     printf(" Result Predict Program is quiting...\n");
     return 0;
 }

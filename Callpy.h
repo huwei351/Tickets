@@ -6,7 +6,11 @@
 #include <string>
 #include <iostream>
 
+#ifdef WINDOWS
+#include <Python.h>
+#else
 #include <python2.7/Python.h>
+#endif
 
 
 class Callpy

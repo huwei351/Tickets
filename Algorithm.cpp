@@ -13,6 +13,12 @@
 
 Algorithm::Algorithm()
 {
+    mMySqlOperator = new MySqlOperator();
+}
+
+Algorithm::~Algorithm()
+{
+    delete mMySqlOperator;
 }
 
 bool Algorithm::updateDatabase()
@@ -28,11 +34,10 @@ Result* Algorithm::getLatestResultFromDatabase()
     char *rg = "\n";
     char *cg = ",";
     updateDatabase();
-    MySqlOperator *sql = new MySqlOperator();
 
-    if(sql != NULL) {
-        if(sql->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
-            str = sql->SelectData(TABLE_SSQ, NULL, 1);
+    if(mMySqlOperator!= NULL) {
+        if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+            str = mMySqlOperator->SelectData(TABLE_SSQ, NULL, 1);
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, cg);
@@ -47,7 +52,7 @@ Result* Algorithm::getLatestResultFromDatabase()
             }
         }
 
-        sql->CloseMySQLConn();
+        mMySqlOperator->CloseMySQLConn();
     }
 
     return result;
@@ -318,6 +323,40 @@ std::string Algorithm::getLogTitleFromBalltype(int ballType)
     return "";
 }
 
+char* Algorithm::Balltype2FieldName(int ballType)
+{
+    switch(ballType) {
+        case REDBALL_FIRST:
+            return FIELD_RB_FIRST;
+
+        case REDBALL_SECOND:
+            return FIELD_RB_SECOND;
+
+        case REDBALL_THIRD:
+            return FIELD_RB_THIRD;
+
+        case REDBALL_FOURTH:
+            return FIELD_RB_FOURTH;
+
+        case REDBALL_FIFTH:
+            return FIELD_RB_FIFTH;
+
+        case REDBALL_SIXTH:
+            return FIELD_RB_SIXTH;
+
+        case BLUEBALL_FIRST:
+            return FIELD_BB;
+
+        case BLUEBALL_SECOND:
+            return "2nd BlueBall";
+
+        default:
+            break;
+    }
+
+    return "";
+}
+
 void Algorithm::printRedballNumberProbability(std::vector<rnumStatistics> sta, int total, int ballType)
 {
     std::string title = getLogTitleFromBalltype(ballType);
@@ -350,7 +389,7 @@ int Algorithm::calculateRedBallNumberProbability(int ballType, std::vector<rnumS
     Result *result = getLatestResultFromDatabase();
     RedBall *rb = result->mR1;
     RedNumbers num = rb->mNum;
-    std::vector<RedBall*> mList = getRedBallListFromDatabase("", 0);
+    std::vector<RedBall*> mList = getRedBallListFromDatabase(Balltype2FieldName(ballType), 500);
     int totalCount = 0;
 
     for(int i = 0; i < (int)mList.size(); i++) {
@@ -379,7 +418,7 @@ int Algorithm::calculateBlueBallNumberProbability(int ballType, std::vector<bnum
     Result *result = getLatestResultFromDatabase();
     BlueBall *bb = result->mB0;
     BlueNumbers num = bb->mNum;
-    std::vector<BlueBall*> mList = getBlueBallListFromDatabase("", 0);
+    std::vector<BlueBall*> mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), 500);
     int totalCount = 0;
 
     for(int i = 0; i < (int)mList.size(); i++) {
@@ -411,7 +450,7 @@ int Algorithm::calculateBallWuxingProbability(int ballType, std::vector<wuxingSt
     Elememts wuxing = rb->mWuxing;
 
     if(ballType > 0 && ballType < BLUEBALL_FIRST) {
-        std::vector<RedBall*> mList = getRedBallListFromDatabase("", 0);
+        std::vector<RedBall*> mList = getRedBallListFromDatabase(Balltype2FieldName(ballType), 500);
 
         for(int i = 0; i < (int)mList.size(); i++) {
             if(wuxing == mList[i]->mWuxing) {
@@ -430,7 +469,7 @@ int Algorithm::calculateBallWuxingProbability(int ballType, std::vector<wuxingSt
             }
         }
     } else {
-        std::vector<BlueBall*> mList = getBlueBallListFromDatabase("", 0);
+        std::vector<BlueBall*> mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), 500);
 
         for(int i = 0; i < (int)mList.size(); i++) {
             if(wuxing == mList[i]->mWuxing) {
@@ -462,11 +501,10 @@ std::vector<RedBall*> Algorithm::getRedBallListFromDatabase(char *field, int rnu
     char *rg = "\n"; // row
     char *cg = ","; // field
     updateDatabase();
-    MySqlOperator *sql = new MySqlOperator();
 
-    if(sql != NULL) {
-        if(sql->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
-            str = sql->SelectData(TABLE_SSQ, field, 500);
+    if(mMySqlOperator!= NULL) {
+        if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+            str = mMySqlOperator->SelectData(TABLE_SSQ, field, rnum);
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, rg);
@@ -479,7 +517,7 @@ std::vector<RedBall*> Algorithm::getRedBallListFromDatabase(char *field, int rnu
             }
         }
 
-        sql->CloseMySQLConn();
+        mMySqlOperator->CloseMySQLConn();
     }
 
     return redList;
@@ -493,11 +531,10 @@ std::vector<BlueBall*> Algorithm::getBlueBallListFromDatabase(char *field, int r
     char *rg = "\n"; // row
     char *cg = ","; // field
     updateDatabase();
-    MySqlOperator *sql = new MySqlOperator();
 
-    if(sql != NULL) {
-        if(sql->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
-            str = sql->SelectData(TABLE_SSQ, field, 500);
+    if(mMySqlOperator!= NULL) {
+        if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+            str = mMySqlOperator->SelectData(TABLE_SSQ, field, rnum);
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, rg);
@@ -510,7 +547,7 @@ std::vector<BlueBall*> Algorithm::getBlueBallListFromDatabase(char *field, int r
             }
         }
 
-        sql->CloseMySQLConn();
+        mMySqlOperator->CloseMySQLConn();
     }
 
     return blueList;

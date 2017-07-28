@@ -3,8 +3,8 @@
 #include "Callpy.h"
 #include "StringUtil.h"
 
-#define SSQ_PY_PATH "scrapy_ssq/scrapy_ssq/spiders"
-#define SSQ_PY_MODULE_NAME "ssq"
+#define SSQ_PY_PATH "/home/wesley/project_gitLab/Tickets/"
+#define SSQ_PY_MODULE_NAME "ssq_spider"
 
 int Callpy::runPythonFunction(std::string func_name, std::string func_args)
 {
@@ -49,14 +49,15 @@ int Callpy::runPythonFunction(std::string func_name, std::string func_args)
 
     // check if function call success
     if(pRet) {
-        long result = PyInt_AsLong(pRet);
+        //long result = PyInt_AsLong(pRet);
+        long result = PyLong_AsLong(pRet);
         printf("result: %d\n", result);
     } else {
         printf("[ERROR] Python call function failed.\n");
         return -1;
     }
 
-    Py_Finalize();      //释放资源
+    Py_Finalize(); 
     return 0;
 }
 
@@ -70,7 +71,8 @@ void Callpy::swicthPythonPath(std::string path)
 
 PyObject* Callpy::loadPythonModule(std::string name)
 {
-    PyObject* moduleName = PyString_FromString(name.c_str());
+    //PyObject* moduleName = PyString_FromString(name.c_str());
+    PyObject* moduleName = PyBytes_FromString(name.c_str());
     PyObject* module = PyImport_Import(moduleName);
     return module;
 }
@@ -87,19 +89,21 @@ PyObject* Callpy::constructPythonFuctionArgs(std::string argString)
     int i = 1;
     PyObject* args;
     std::vector<std::string> lines;
-    StringUtil::StringSplit(lines, argString, "\n");
-    arg_num = atoi(lines[0].c_str());
-    args = PyTuple_New(arg_num);
+	if (!StringUtil::StringIsEmpty(argString)) {
+	    StringUtil::StringSplit(lines, argString, "\n");
+	    arg_num = atoi(lines[0].c_str());
+	    args = PyTuple_New(arg_num);
 
-    for(int i; i < (int)lines.size(); i++) {
-        PyObject* arg = PyInt_FromLong(atoi(lines[i].c_str()));
-        PyTuple_SetItem(args, i - 1, arg);
-    }
+	    for(int i; i < (int)lines.size(); i++) {
+	        //PyObject* arg = PyInt_FromLong(atoi(lines[i].c_str()));
+	        PyObject* arg = PyLong_FromLong(atoi(lines[i].c_str()));
+	        PyTuple_SetItem(args, i - 1, arg);
+	    }
 
-    if(i - 2 != arg_num) {
-        printf("constructPythonFuctionArgs error!\n");
-        args = NULL;
-    }
-
+	    if(i - 2 != arg_num) {
+	        printf("constructPythonFuctionArgs error!\n");
+	        args = NULL;
+	    }
+	}
     return args;
 }

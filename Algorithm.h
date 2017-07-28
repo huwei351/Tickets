@@ -74,6 +74,7 @@ class Algorithm
         void comparePredictResultWithActualResult();
 
         std::string getLogTitleFromBalltype(int ballType);
+		char* Balltype2FieldName(int ballType);
 
         void printRedballNumberProbability(std::vector<rnumStatistics> sta, int total, int ballType);
 
@@ -90,6 +91,10 @@ class Algorithm
         std::vector<RedBall*> getRedBallListFromDatabase(char *field, int rnum);
 
         std::vector<BlueBall*> getBlueBallListFromDatabase(char *field, int rnum);
+
+    private:
+
+        MySqlOperator* mMySqlOperator;
 
 };
 

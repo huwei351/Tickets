@@ -6,7 +6,11 @@
 #include <string>
 #include <iostream>
 
+#ifdef WINDOWS
+#include <mysql.h>
+#else
 #include <mysql/mysql.h>
+#endif
 
 
 #define HOST "localhost"
@@ -16,8 +20,8 @@
 #define DATABASE "ssq"
 #define CHARSET "utf8"
 
-#define TABLE_SSQ "ssq"
-#define TABLE_DLT "dlt"
+#define TABLE_SSQ "ssq_result"
+#define TABLE_DLT "dlt_result"
 
 #define FIELD_RID "rid"
 #define FIELD_DATE "date"
