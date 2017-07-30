@@ -9,40 +9,8 @@
 enum {
     PRE_MSG_SSQ = 1,
     PRE_MSG_DLT,
-    PRE_MSG_SSQ_UPDATE,
-    PRE_MSG_SSQ_PREDICT,
-    PRE_MSG_SSQ_REPORT,
-    PRE_MSG_DLT_UPDATE,
-    PRE_MSG_DLT_PREDICT,
-    PRE_MSG_DLT_REPORT,
     PRE_QUIT = 99
 };
-
-void pre_display_main_menu(void)
-{
-    printf("\nResult Predict MsgID Menu:\n");
-    printf("    %d  => Enter SSQ Submenu\n", PRE_MSG_SSQ);
-    printf("    %d  => Enter DLT Submenu \n", PRE_MSG_DLT);
-    printf("    %d  => Quit Program\n", PRE_QUIT);
-}
-
-void pre_display_ssq_submenu(void)
-{
-    printf("\nSSQ Predict Submenu:\n");
-    printf("    %d  => Update SSQ Result Database\n", PRE_MSG_SSQ_UPDATE);
-    printf("    %d  => Predict Latest SSQ Result\n", PRE_MSG_SSQ_PREDICT);
-    printf("    %d  => Compare Actual Result with Predict Result\n", PRE_MSG_SSQ_REPORT);
-    printf("    %d  => Quit Program\n", PRE_QUIT);
-}
-
-void pre_display_dlt_submenu(void)
-{
-    printf("\nDLT Predict Submenu:\n");
-    printf("    %d  => Update DLT Result Database\n", PRE_MSG_DLT_UPDATE);
-    printf("    %d  => Predict Latest DLT Result\n", PRE_MSG_DLT_PREDICT);
-    printf("    %d  => Compare Actual Result with Predict Result\n", PRE_MSG_DLT_REPORT);
-    printf("    %d  => Quit Program\n", PRE_QUIT);
-}
 
 int app_get_choice(const char *querystring)
 {
@@ -86,24 +54,28 @@ int32_t main(int32_t argc, char *argv[])
     Algorithm *ai = new Algorithm();
 
     do {
-        pre_display_main_menu();
+        printf("\nResult Predict MsgID Menu:\n");
+    	printf("    %d  => Enter SSQ Submenu\n", 1);
+    	printf("    %d  => Enter DLT Submenu \n", 2);
+    	printf("    %d  => Quit Program\n", 99);
         choice = app_get_choice("Select action");
 
         switch(choice) {
             case PRE_MSG_SSQ: {
-                    pre_display_ssq_submenu();
+                    printf("\nSSQ Predict Submenu:\n");
+    				printf("    %d  => Predict Latest SSQ Result\n", 1);
+    				printf("    %d  => Compare Actual Result with Predict Result\n", 2);
+    				printf("    %d  => Quit Program\n", PRE_QUIT);
                     ssq_index = app_get_choice("Select Function");
+					// update database first					
+					if(!ai->updateDatabase())
+					{ 
+						printf("updatae database fail!\n");
+						break;
+					}
 
                     switch(ssq_index) {
-                        case PRE_MSG_SSQ_UPDATE: {
-                                bool success = ai->updateDatabase();
-
-                                if(!success)
-                                { printf("updatae database fail!\n"); }
-                            }
-                            break;
-
-                        case PRE_MSG_SSQ_PREDICT: {
+                        case 1: {
                                 printf("\nPleaes Slelect SSQ Predict Result Display Numbers:\n");
                                 printf("    %d  => 5 Results\n", 5);
                                 printf("    %d  => 10 Results\n", 10);
@@ -115,7 +87,7 @@ int32_t main(int32_t argc, char *argv[])
                             }
                             break;
 
-                        case PRE_MSG_SSQ_REPORT: {
+                        case 2: {
                             }
 
                         case PRE_QUIT: {
@@ -132,17 +104,17 @@ int32_t main(int32_t argc, char *argv[])
                 }
 
             case PRE_MSG_DLT: {
-                    pre_display_dlt_submenu();
+					printf("\nDLT Predict Submenu:\n");
+					printf("	%d	=> Predict Latest DLT Result\n", 1);
+					printf("	%d	=> Compare Actual Result with Predict Result\n", 2);
+					printf("	%d	=> Quit Program\n", PRE_QUIT);
                     dlt_index = app_get_choice("Select Function");
 
                     switch(dlt_index) {
-                        case PRE_MSG_DLT_UPDATE: {
+                        case 1: {
                             }
 
-                        case PRE_MSG_DLT_PREDICT: {
-                            }
-
-                        case PRE_MSG_DLT_REPORT: {
+                        case 2: {
                             }
 
                         case PRE_QUIT: {

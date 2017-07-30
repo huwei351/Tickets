@@ -34,6 +34,7 @@ class RedBall
         /* WuXing : JIN, MU, SHUI, HUO, TU */
         Elememts mWuxing;
 
+		BallType mBalltype;
 
         RedBall() {
             mNum = RED_NUM_INVALID;
@@ -43,10 +44,17 @@ class RedBall
             mDaxiao = BIG_SMALL_UNKNOWN;
             mZhihe = PRIME_COMPOSITE_UNKNOWN;
             mWuxing = ELEMEMTS_UNKNOWN;
+			mBalltype = BALLTYPE_UNKNOWN;
         }
 
         RedBall(RedNumbers num) {
             completeInstanceAccordingNum(num);
+			setBallType(BALLTYPE_UNKNOWN);
+        }
+
+        RedBall(RedNumbers num, BallType balltype) {
+            completeInstanceAccordingNum(num);
+			setBallType(balltype);
         }
 
         RedBall(RedNumbers num,
@@ -63,7 +71,27 @@ class RedBall
             mDaxiao = daxiao;
             mZhihe = zhihe;
             mWuxing = wuxing;
+			mBalltype = BALLTYPE_UNKNOWN;
         }
+
+        RedBall(RedNumbers num,
+                int unit,
+                int decade,
+                Parity jiou,
+                BigOrSmall daxiao,
+                PrimeOrComposite zhihe,
+                Elememts wuxing,
+                BallType balltype) {
+            mNum = num;
+            mUnit = unit;
+            mDecade = decade;
+            mJiou = jiou;
+            mDaxiao = daxiao;
+            mZhihe = zhihe;
+            mWuxing = wuxing;
+			mBalltype = balltype;
+        }
+
 
         void setNum(RedNumbers num) {
             mNum = num;
@@ -92,6 +120,10 @@ class RedBall
         void setElememts(Elememts wuxing) {
             mWuxing = wuxing;
         }
+
+		void setBallType(BallType balltype) {
+			mBalltype = balltype;
+		}
 
         void setVariableValue(RedNumbers num,
                               int unit,

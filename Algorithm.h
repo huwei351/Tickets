@@ -6,7 +6,7 @@
 
 #include "MySqlOperator.h"
 #include "Result.h"
-
+/*
 enum {
     REDBALL_FIRST = 1,
     REDBALL_SECOND,
@@ -17,7 +17,7 @@ enum {
     BLUEBALL_FIRST,
     BLUEBALL_SECOND = 8
 };
-
+*/
 struct rnumStatistics {
     RedNumbers rn;
     int count;
@@ -67,26 +67,30 @@ class Algorithm
 
         std::vector<resultStatistics> getMaxProbabilityPredictResult(int top);
 
-        std::vector<redballStatistics> calculateRedBallProbability(int ballType);
+        std::vector<redballStatistics> calculateRedBallProbability(RedBall *rb);
 
-        std::vector<blueballStatistics> calculateBlueBallProbability(int ballType);
+        std::vector<blueballStatistics> calculateBlueBallProbability(BlueBall *bb);
 
         void comparePredictResultWithActualResult();
 
-        std::string getLogTitleFromBalltype(int ballType);
-		char* Balltype2FieldName(int ballType);
+        //std::string getLogTitleFromBalltype(int ballType);
+		//char* Balltype2FieldName(int ballType);
 
-        void printRedballNumberProbability(std::vector<rnumStatistics> sta, int total, int ballType);
+        void printRedballNumberProbability(std::vector<rnumStatistics> *sta, int total, BallType ballType);
 
-        void printBlueballNumberProbability(std::vector<bnumStatistics> sta, int total, int ballType);
+        void printBlueballNumberProbability(std::vector<bnumStatistics> *sta, int total, BallType ballType);
 
-        void printBallWuxingProbability(std::vector<wuxingStatistics> sta, int total, int ballType);
+        void printBallWuxingProbability(std::vector<wuxingStatistics> *sta, int total, BallType ballType);
+		int calculateRedBallNumberAndWuxingProbability(RedBall *rb, int &total_rnum, int &total_wuxing,
+				std::vector<rnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList);
+		int calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &total_bnum, int &total_wuxing,
+			std::vector<bnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList);
 
-        int calculateRedBallNumberProbability(int ballType, std::vector<rnumStatistics> staList);
+        //int calculateRedBallNumberProbability(int ballType, std::vector<rnumStatistics> *staList);
 
-        int calculateBlueBallNumberProbability(int ballType, std::vector<bnumStatistics> staList);
+        //int calculateBlueBallNumberProbability(int ballType, std::vector<bnumStatistics> staList);
 
-        int calculateBallWuxingProbability(int ballType, std::vector<wuxingStatistics> wuxingList);
+        //int calculateBallWuxingProbability(int ballType, std::vector<wuxingStatistics> wuxingList);
 
         std::vector<RedBall*> getRedBallListFromDatabase(char *field, int rnum);
 
@@ -95,6 +99,7 @@ class Algorithm
     private:
 
         MySqlOperator* mMySqlOperator;
+		Result *mLatestResult;
 
 };
 

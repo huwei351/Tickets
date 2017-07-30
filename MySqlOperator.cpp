@@ -4,24 +4,24 @@
 //Init MySQL
 int MySqlOperator::ConnMySQL(char *host, char * port , char * Db, char * user, char* passwd, char * charset)
 {
-    int res;
+    int res = 0;
 
     if(mysql_init(&mysql) == NULL) {
         printf("inital mysql handle error");
         res = -1;
     }
 
-    if(mysql_real_connect(&mysql, host, user, passwd, Db, 0, NULL, 0) == NULL) {
+    if(mysql_real_connect(&mysql, host, user, passwd, Db, atoi(port), NULL, 0) == NULL) {
         printf("Failed to connect to database: Error");
         res = -2;
     }
-
+/*
     res = mysql_set_character_set(&mysql, "GBK") ;
 
     if(!res) {
-        printf("mysql_set_character_set Error");
+        printf("mysql_set_character_set Error\n");
     }
-
+*/
     return res;
 }
 
@@ -43,8 +43,9 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
     { sprintf(sql, "select %s from %s order by date DESC", field, table); }
 
     int res = mysql_query(&mysql, sql);
+	printf("mysql_query: sql=\"%s\", res=%d\n", sql, res);
 
-    if(!res) {
+    if(res) {
         mysql_error(&mysql);
         return "";
     } else {
@@ -57,7 +58,7 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
 
         cnum = mysql_num_fields(m_res);
         rnum = mysql_num_rows(m_res) + 1;
-        printf("column_num = %d, row_num = %d", cnum, rnum);
+        printf("column_num = %d, row_num = %d\n", cnum, rnum);
 
         for(int i = rnum - rmax; i < rnum; i++) {
             m_row = mysql_fetch_row(m_res);

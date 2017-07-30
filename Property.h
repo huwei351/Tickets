@@ -96,5 +96,86 @@ enum Elememts {
     EARTH = 4
 };
 
+enum BallType {
+	BALLTYPE_UNKNOWN = 0,
+    REDBALL_FIRST = 1,
+    REDBALL_SECOND,
+    REDBALL_THIRD,
+    REDBALL_FOURTH,
+    REDBALL_FIFTH,
+    REDBALL_SIXTH,
+    BLUEBALL_FIRST,
+    BLUEBALL_SECOND = 8
+};
+
+static std::string getLogTitleFromBalltype(BallType ballType)
+{
+    switch(ballType) {
+        case REDBALL_FIRST:
+            return "1st RedBall";
+
+        case REDBALL_SECOND:
+            return "2nd RedBall";
+
+        case REDBALL_THIRD:
+            return "3rd RedBall";
+
+        case REDBALL_FOURTH:
+            return "4th RedBall";
+
+        case REDBALL_FIFTH:
+            return "5th RedBall";
+
+        case REDBALL_SIXTH:
+            return "6th RedBall";
+
+        case BLUEBALL_FIRST:
+            return "BlueBall";
+
+        case BLUEBALL_SECOND:
+            return "2nd BlueBall";
+
+        default:
+            break;
+    }
+
+    return "";
+}
+
+static char* Balltype2FieldName(BallType ballType)
+{
+    switch(ballType) {
+        case REDBALL_FIRST:
+            return FIELD_RB_FIRST;
+
+        case REDBALL_SECOND:
+            return FIELD_RB_SECOND;
+
+        case REDBALL_THIRD:
+            return FIELD_RB_THIRD;
+
+        case REDBALL_FOURTH:
+            return FIELD_RB_FOURTH;
+
+        case REDBALL_FIFTH:
+            return FIELD_RB_FIFTH;
+
+        case REDBALL_SIXTH:
+            return FIELD_RB_SIXTH;
+
+        case BLUEBALL_FIRST:
+            return FIELD_BB;
+
+        case BLUEBALL_SECOND:
+            return "2nd BlueBall";
+
+        default:
+            break;
+    }
+
+    return "";
+}
+
+
 #endif
 
