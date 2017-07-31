@@ -33,6 +33,11 @@
 #define FIELD_RB_SIXTH "rb6"
 #define FIELD_BB "bb"
 
+#define ROW_G "\n"
+#define COLUMN_G ","
+#define CR_G ",\n"
+
+
 class MySqlOperator
 {
     public:

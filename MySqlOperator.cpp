@@ -33,8 +33,6 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
     MYSQL_FIELD *m_field;
     std::string str = "";
     int rnum , cnum;
-    char *rg = "\n"; // row
-    char *cg = ","; // field
     char sql[2048];
 
     if(field == NULL)
@@ -43,7 +41,7 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
     { sprintf(sql, "select %s from %s order by date DESC", field, table); }
 
     int res = mysql_query(&mysql, sql);
-	printf("mysql_query: sql=\"%s\", res=%d\n", sql, res);
+	//printf("mysql_query: sql=\"%s\", res=%d\n", sql, res);
 
     if(res) {
         mysql_error(&mysql);
@@ -58,17 +56,17 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
 
         cnum = mysql_num_fields(m_res);
         rnum = mysql_num_rows(m_res) + 1;
-        printf("column_num = %d, row_num = %d\n", cnum, rnum);
+        //printf("column_num = %d, row_num = %d\n", cnum, rnum);
 
         for(int i = rnum - rmax; i < rnum; i++) {
             m_row = mysql_fetch_row(m_res);
 
             for(int j = 0; j < cnum; j++) {
                 str += m_row[j];
-                str += cg;
+                str += COLUMN_G;
             }
 
-            str += rg;
+            str += ROW_G;
         }
 
         mysql_free_result(m_res);

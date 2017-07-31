@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <vector>
+#include <string.h>
 
 //#include "Property.h"
 #include "Algorithm.h"
@@ -33,16 +34,13 @@ Result* Algorithm::getLatestResultFromDatabase()
     std::string str;
     std::vector<std::string> lines;
     Result *result;
-    char *rg = "\n";
-    char *cg = ",";
-    updateDatabase();
 
     if(mMySqlOperator!= NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
             str = mMySqlOperator->SelectData(TABLE_SSQ, NULL, 1);
 
             if(!StringUtil::StringIsEmpty(str)) {
-                StringUtil::StringSplit(lines, str, cg);
+                StringUtil::StringSplit(lines, str, COLUMN_G);
                 RedNumbers r1 = (RedNumbers) atoi(lines[3].c_str());
                 RedNumbers r2 = (RedNumbers) atoi(lines[4].c_str());
                 RedNumbers r3 = (RedNumbers) atoi(lines[5].c_str());
@@ -51,7 +49,9 @@ Result* Algorithm::getLatestResultFromDatabase()
                 RedNumbers r6 = (RedNumbers) atoi(lines[8].c_str());
                 BlueNumbers b0 = (BlueNumbers) atoi(lines[9].c_str());
 				printf("r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", r1, r2, r3, r4, r5, r6, b0);
-                result = new Result(new RedBall(r1), new RedBall(r2), new RedBall(r3), new RedBall(r4), new RedBall(r5), new RedBall(r6), new BlueBall(b0));
+                result = new Result(new RedBall(r1, REDBALL_FIRST), new RedBall(r2, REDBALL_SECOND), new RedBall(r3, REDBALL_THIRD),
+						new RedBall(r4, REDBALL_FOURTH), new RedBall(r5, REDBALL_FIFTH), new RedBall(r6, REDBALL_SIXTH),
+						new BlueBall(b0, BLUEBALL_FIRST));
             }
         }
 
@@ -124,7 +124,7 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
     }
 
     rearrangePredictResult(resultSta, top);
-    //printPredictResult(resultSta);
+    printPredictResult(resultSta);
     return resultSta;
 }
 
@@ -387,7 +387,7 @@ void Algorithm::printBallWuxingProbability(std::vector<wuxingStatistics> *sta, i
     std::string title = getLogTitleFromBalltype(ballType);
 
     for(int i = 0; i < (int)sta->size(); i++) {
-        printf("%s [%d] : wuxing = %d, count = %d, probability = %0.3f\n", title.c_str(), i + 1, sta->at(i).wuxing, sta->at(i).count, (float)sta->at(i).count / total);
+        printf("%s [%d] : wuxing = %s, count = %d, probability = %0.3f\n", title.c_str(), i + 1, Elememts2String(sta->at(i).wuxing).c_str(), sta->at(i).count, (float)sta->at(i).count / total);
     }
 }
 
@@ -399,33 +399,55 @@ int Algorithm::calculateRedBallNumberAndWuxingProbability(RedBall *rb, int &tota
 	BallType ballType = rb->mBalltype;
     std::vector<RedBall*> mList = getRedBallListFromDatabase(Balltype2FieldName(ballType), 500);
 
-    for(int i = 0; i < (int)mList.size(); i++) {
+    for(int i = (int)mList.size()-1; i > 0; i--) {
         if(num == mList[i]->mNum) {
-            for(int j = 0; j < (int) staList->size(); j++) {
-                if(mList[i + 1]->mNum == staList->at(j).rn) {
-                    staList->at(j).count ++;
-                } else {
-                    rnumStatistics sta;
-                    sta.rn = mList[i + 1]->mNum;
-                    sta.count = 0;
-                    staList->push_back(sta);
-                }
-            }
+			if ((int)staList->size() == 0) {
+	            rnumStatistics sta;
+	            sta.rn = mList[i-1]->mNum;
+	            sta.count = 1;
+	            staList->push_back(sta);
+			} else {
+				bool exist = false;
+		        for(int j = 0; j < (int)staList->size(); j++) {
+		            if(mList[i-1]->mNum == staList->at(j).rn) {
+		                staList->at(j).count ++;
+						exist= true;
+						break;
+		            }
+		        }
+				if (!exist) {
+		            rnumStatistics sta;
+		            sta.rn = mList[i-1]->mNum;
+		            sta.count = 1;
+		            staList->push_back(sta);
+				}
+			}
 
             total_rnum++;
         }
 
         if(wuxing == mList[i]->mWuxing) {
-            for(int j = 0; j < (int) wuxingList->size(); j++) {
-                if(mList[i + 1]->mWuxing == wuxingList->at(j).wuxing) {
-                    wuxingList->at(j).count ++;
-                } else {
-                    wuxingStatistics sta;
-                    sta.wuxing = mList[i + 1]->mWuxing;
-                    sta.count = 0;
-                    wuxingList->push_back(sta);
-                }
-            }
+			if ((int)wuxingList->size() == 0) {
+                wuxingStatistics sta;
+                sta.wuxing = mList[i-1]->mWuxing;
+                sta.count = 1;
+                wuxingList->push_back(sta);
+			} else {
+				bool found = false;
+	            for(int j = 0; j < (int) wuxingList->size(); j++) {
+	                if(mList[i-1]->mWuxing == wuxingList->at(j).wuxing) {
+	                    wuxingList->at(j).count ++;
+						found = true;
+						break;
+	                }
+	            }
+				if (!found) {
+	                wuxingStatistics sta;
+	                sta.wuxing = mList[i-1]->mWuxing;
+	                sta.count = 1;
+	                wuxingList->push_back(sta);
+				}
+			}
 
             total_wuxing++;
         }
@@ -443,33 +465,55 @@ int Algorithm::calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &to
 	BallType ballType = bb->mBalltype;
     std::vector<BlueBall*> mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), 500);
 
-    for(int i = 0; i < (int)mList.size(); i++) {
+    for(int i = (int)mList.size(); i > 0; i--) {
         if(num == mList[i]->mNum) {
-            for(int j = 0; j < (int) staList->size(); j++) {
-                if(mList[i + 1]->mNum == staList->at(j).bn) {
-                    staList->at(j).count ++;
-                } else {
-                    bnumStatistics sta;
-                    sta.bn = mList[i + 1]->mNum;
-                    sta.count = 0;
-                    staList->push_back(sta);
-                }
-            }
+			if ((int)staList->size() == 0) {
+				bnumStatistics sta;
+				sta.bn = mList[i-1]->mNum;
+				sta.count = 1;
+				staList->push_back(sta);
+			} else {
+				bool exist = false;
+	            for(int j = 0; j < (int)staList->size(); j++) {
+	                if(mList[i-1]->mNum == staList->at(j).bn) {
+	                    staList->at(j).count ++;
+						exist = true;
+						break;
+	                }
+	            }
+				if (!exist) {
+					bnumStatistics sta;
+					sta.bn = mList[i-1]->mNum;
+					sta.count = 1;
+					staList->push_back(sta);
+				}
+			}
 
             total_bnum++;
         }
 
         if(wuxing == mList[i]->mWuxing) {
-            for(int j = 0; j < (int) wuxingList->size(); j++) {
-                if(mList[i + 1]->mWuxing == wuxingList->at(j).wuxing) {
-                    wuxingList->at(j).count ++;
-                } else {
-                    wuxingStatistics sta;
-                    sta.wuxing = mList[i + 1]->mWuxing;
-                    sta.count = 0;
-                    wuxingList->push_back(sta);
-                }
-            }
+			if ((int)wuxingList->size() == 0) {
+				wuxingStatistics sta;
+				sta.wuxing = mList[i-1]->mWuxing;
+				sta.count = 1;
+				wuxingList->push_back(sta);
+			} else {
+				bool found = false;
+	            for(int j = 0; j < (int)wuxingList->size(); j++) {
+	                if(mList[i-1]->mWuxing == wuxingList->at(j).wuxing) {
+	                    wuxingList->at(j).count ++;
+						found = true;
+						break;
+	                }
+	            }
+				if (!found) {
+					wuxingStatistics sta;
+					sta.wuxing = mList[i-1]->mWuxing;
+					sta.count = 1;
+					wuxingList->push_back(sta);
+				}
+			}
 
             total_wuxing++;
         }
@@ -593,18 +637,16 @@ std::vector<RedBall*> Algorithm::getRedBallListFromDatabase(char *field, int rnu
     std::vector<RedBall*> redList;
     std::vector<std::string> lines;
     std::string str;
-    char *rg = "\n"; // row
-    char *cg = ","; // field
 
     if(mMySqlOperator!= NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
             str = mMySqlOperator->SelectData(TABLE_SSQ, field, rnum);
 
             if(!StringUtil::StringIsEmpty(str)) {
-                StringUtil::StringSplit(lines, str, rg);
+                StringUtil::StringSplit(lines, str, CR_G);
 
                 for(int i = 0; i < (int)lines.size(); i++) {
-                    RedNumbers rn = (RedNumbers) atoi(lines[i].c_str());
+					RedNumbers rn = (RedNumbers) atoi(lines[i].c_str());
                     RedBall *rb = new RedBall(rn);
                     redList.push_back(rb);
                 }
@@ -622,15 +664,13 @@ std::vector<BlueBall*> Algorithm::getBlueBallListFromDatabase(char *field, int r
     std::vector<BlueBall*> blueList;
     std::vector<std::string> lines;
     std::string str;
-    char *rg = "\n"; // row
-    char *cg = ","; // field
 
     if(mMySqlOperator!= NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
             str = mMySqlOperator->SelectData(TABLE_SSQ, field, rnum);
 
             if(!StringUtil::StringIsEmpty(str)) {
-                StringUtil::StringSplit(lines, str, rg);
+                StringUtil::StringSplit(lines, str, CR_G);
 
                 for(int i = 0; i < (int)lines.size(); i++) {
                     BlueNumbers bn = (BlueNumbers) atoi(lines[i].c_str());
