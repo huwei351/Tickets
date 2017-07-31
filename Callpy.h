@@ -16,11 +16,15 @@
 class Callpy
 {
     public:
-        static int runPythonFunction(std::string func_name, std::string func_args);
-        static void swicthPythonPath(std::string path);
-        static PyObject* loadPythonModule(std::string name);
-        static PyObject* loadPythonFunction(PyObject* module, std::string func_name);
-        static PyObject* constructPythonFuctionArgs(std::string argString);
+		Callpy() {
+		}
+		~Callpy() {
+		}
+        int runPythonFunction(std::string func_name, std::string func_args);
+        void swicthPythonPath(std::string path);
+        PyObject* loadPythonModule(std::string name);
+        PyObject* loadPythonFunction(PyObject* module, std::string func_name);
+        PyObject* constructPythonFuctionArgs(std::string argString);
 };
 
 #endif

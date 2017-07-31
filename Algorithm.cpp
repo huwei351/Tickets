@@ -10,6 +10,7 @@
 #include "RedBall.h"
 #include "BlueBall.h"
 #include "StringUtil.h"
+#include "Callpy.h"
 
 
 Algorithm::Algorithm()
@@ -24,9 +25,19 @@ Algorithm::~Algorithm()
 
 bool Algorithm::updateDatabase()
 {
-	//TODO: update database
 	mLatestResult = getLatestResultFromDatabase();
-    return true;
+	int qid = mLatestResult->getQid();
+	char cqid[128];
+	sprintf(cqid, "%d", qid);
+	Callpy *py = new Callpy();
+	int res = py->runPythonFunction(std::string("update_database"), std::string("1")+std::string("\n")+std::string(cqid)+std::string("\n"));
+	delete py;
+                if (res == 0) {
+                    mLatestResult = getLatestResultFromDatabase();
+                    return true;
+                } else {
+                    return false;
+                }
 }
 
 Result* Algorithm::getLatestResultFromDatabase()
@@ -41,6 +52,8 @@ Result* Algorithm::getLatestResultFromDatabase()
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, COLUMN_G);
+				int qid = atoi(lines[1].c_str());
+				std::string date = lines[2];
                 RedNumbers r1 = (RedNumbers) atoi(lines[3].c_str());
                 RedNumbers r2 = (RedNumbers) atoi(lines[4].c_str());
                 RedNumbers r3 = (RedNumbers) atoi(lines[5].c_str());
@@ -48,10 +61,12 @@ Result* Algorithm::getLatestResultFromDatabase()
                 RedNumbers r5 = (RedNumbers) atoi(lines[7].c_str());
                 RedNumbers r6 = (RedNumbers) atoi(lines[8].c_str());
                 BlueNumbers b0 = (BlueNumbers) atoi(lines[9].c_str());
-				printf("r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", r1, r2, r3, r4, r5, r6, b0);
+				printf("qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, r6, b0);
                 result = new Result(new RedBall(r1, REDBALL_FIRST), new RedBall(r2, REDBALL_SECOND), new RedBall(r3, REDBALL_THIRD),
 						new RedBall(r4, REDBALL_FOURTH), new RedBall(r5, REDBALL_FIFTH), new RedBall(r6, REDBALL_SIXTH),
 						new BlueBall(b0, BLUEBALL_FIRST));
+				result->setDate(date);
+				result->setQid(qid);
             }
         }
 

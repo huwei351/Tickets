@@ -67,15 +67,9 @@ int32_t main(int32_t argc, char *argv[])
     				printf("    %d  => Compare Actual Result with Predict Result\n", 2);
     				printf("    %d  => Quit Program\n", PRE_QUIT);
                     ssq_index = app_get_choice("Select Function");
-					// update database first					
-					if(!ai->updateDatabase())
-					{ 
-						printf("updatae database fail!\n");
-						break;
-					}
 
                     switch(ssq_index) {
-                        case 1: {
+                        case 1: {				
                                 printf("\nPleaes Slelect SSQ Predict Result Display Numbers:\n");
                                 printf("    %d  => 5 Results\n", 5);
                                 printf("    %d  => 10 Results\n", 10);
@@ -83,6 +77,7 @@ int32_t main(int32_t argc, char *argv[])
                                 printf("    %d  => 50 Results\n", 50);
                                 printf("    %d  => Quit Program\n", PRE_QUIT);
                                 int choice = app_get_choice("Select Numbers");
+                                ai->updateDatabase();
                                 ai->getMaxProbabilityPredictResult(choice);
                             }
                             break;

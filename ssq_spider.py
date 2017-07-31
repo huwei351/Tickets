@@ -17,6 +17,29 @@ MYSQL_DB = 'ssq'
 cnx = mysql.connector.connect(user = MYSQL_USER,password= MYSQL_PASSWORD,host =MYSQL_HOSTS,database=MYSQL_DB)
 cur = cnx.cursor(buffered=True)
 
+def update_database(qid):
+    url='http://kaijiang.zhcw.com/zhcw/html/ssq/list_1.html'
+    html = requests.get(url) 
+    content=BeautifulSoup(html.text, 'lxml')
+    rows = content.findAll('tr')
+    for row in rows:
+        if re.search("em class", str(row)):
+            columns = row.findAll('td')
+            rid = re.findall(r'(\d+)', str(columns[1]))[0]
+            date = str(columns[0])[19:29]
+            balls = re.findall(r'(\d+)', str(columns[2]))
+            rb1 = balls[1]
+            rb2 = balls[2]
+            rb3 = balls[3]
+            rb4 = balls[4]
+            rb5 = balls[5]
+            rb6 = balls[6]
+            bb = balls[7]
+            print("rid=" + rid + ", date=" + date + ", rb1=" + rb1 + ", rb2=" + rb2 + ", rb3=" + rb3 + ", rb4=" + rb4 + ", rb5=" + rb5 + ", rb6=" + rb6 + ", bb=" + bb)
+            dict = {'rid':rid, 'date':date, 'rb1':rb1, 'rb2':rb2, 'rb3':rb3, 'rb4':rb4, 'rb5':rb5, 'rb6':rb6, 'bb':bb}
+            if rid > qid:
+                save_result_into_database(dict)
+
 def start_spider():
     #theme_url='http://shuangseqiu.cjcp.com.cn/kaijiang/'#爬虫开始的页面
     theme_url='http://kaijiang.zhcw.com/zhcw/html/ssq/list_1.html'
