@@ -162,7 +162,7 @@ static std::string getLogTitleFromBalltype(BallType ballType)
             return "6th RedBall";
 
         case BLUEBALL_FIRST:
-            return "BlueBall";
+            return "ssq BlueBall";
 
         case BLUEBALL_SECOND:
             return "2nd BlueBall";

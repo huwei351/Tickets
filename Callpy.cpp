@@ -3,7 +3,7 @@
 #include "Callpy.h"
 #include "StringUtil.h"
 
-#define SSQ_PY_PATH "/home/wesley/project_gitLab/Tickets/"
+#define SSQ_PY_PATH "./"
 //#define SSQ_PY_MODULE_NAME "ssq_spider"
 #define SSQ_PY_MODULE_NAME "ssq"
 
