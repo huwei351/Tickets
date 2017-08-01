@@ -87,6 +87,8 @@ void Algorithm::rearrangePredictResult(std::vector<resultStatistics> resultSta, 
                 std::swap(resultSta[j], resultSta[j + 1]);
             }
         }
+
+        printf("\rRearrangePredictResult Processing...%d/%d[%0.1f%%]", i, size, (float)i / size * 100);
     }
 
     resultSta.erase(resultSta.begin() + top, resultSta.end());
@@ -94,7 +96,10 @@ void Algorithm::rearrangePredictResult(std::vector<resultStatistics> resultSta, 
 
 void Algorithm::printPredictResult(std::vector<resultStatistics> resultSta)
 {
-    for(int i = 0; i < (int)resultSta.size(); i++) {
+    int size = (int) resultSta.size();
+    printf("printPredictResult-->size=%d\n", size);
+
+    for(int i = 0; i < size; i++) {
         Result *result = resultSta[i].result;
         RedNumbers rnum1 = result->mR1->mNum;
         RedNumbers rnum2 = result->mR2->mNum;
@@ -103,7 +108,7 @@ void Algorithm::printPredictResult(std::vector<resultStatistics> resultSta)
         RedNumbers rnum5 = result->mR5->mNum;
         RedNumbers rnum6 = result->mR6->mNum;
         BlueNumbers bnum = result->mB0->mNum;
-        printf("[%d] %2d %2d %2d %2d %2d %2d + %2d  probability = %0.3f", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
+        printf("PredictResult[%d] %2d %2d %2d %2d %2d %2d + %2d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
     }
 }
 
@@ -117,6 +122,7 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
     std::vector<redballStatistics> rsta5 = calculateRedBallProbability(mLatestResult->mR5);
     std::vector<redballStatistics> rsta6 = calculateRedBallProbability(mLatestResult->mR6);
     std::vector<blueballStatistics> bsta = calculateBlueBallProbability(mLatestResult->mB0);
+    printf("start create resultStatistics...\n");
 
     for(int i = 0; i < (int)rsta1.size(); i++) {
         for(int j = 0; j < (int)rsta2.size(); j++) {
@@ -125,12 +131,20 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
                     for(int n = 0; n < (int)rsta5.size(); n++) {
                         for(int r = 0; r < (int)rsta6.size(); r++) {
                             for(int s = 0; s < (int)bsta.size(); s++) {
-                                Result *result = new Result(rsta1[i].redball, rsta2[j].redball, rsta3[k].redball, rsta4[m].redball, rsta5[n].redball, rsta6[r].redball, bsta[s].blueball);
-                                float prob = rsta1[i].probability * rsta2[j].probability * rsta3[k].probability * rsta4[m].probability * rsta5[n].probability * rsta6[r].probability * bsta[s].probability;
-                                resultStatistics sta;
-                                sta.result = result;
-                                sta.probability = prob;
-                                resultSta.push_back(sta);
+                                if(rsta1[i].redball->mNum < rsta2[j].redball->mNum &&
+                                    rsta2[j].redball->mNum < rsta3[k].redball->mNum &&
+                                    rsta3[k].redball->mNum < rsta4[m].redball->mNum &&
+                                    rsta4[m].redball->mNum < rsta5[n].redball->mNum &&
+                                    rsta5[n].redball->mNum < rsta6[r].redball->mNum) {
+                                    Result *result = new Result(rsta1[i].redball, rsta2[j].redball, rsta3[k].redball,
+                                                                rsta4[m].redball, rsta5[n].redball, rsta6[r].redball, bsta[s].blueball);
+                                    float prob = rsta1[i].probability + rsta2[j].probability + rsta3[k].probability + rsta4[m].probability
+                                                 + rsta5[n].probability + rsta6[r].probability + bsta[s].probability;
+                                    resultStatistics sta;
+                                    sta.result = result;
+                                    sta.probability = prob;
+                                    resultSta.push_back(sta);
+                                }
                             }
                         }
                     }
@@ -139,8 +153,10 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
         }
     }
 
+    printf("create resultStatistics complete!\n");
+    //printPredictResult(resultSta);// before reaffange
     rearrangePredictResult(resultSta, top);
-    printPredictResult(resultSta);
+    printPredictResult(resultSta);// after reaffange
     return resultSta;
 }
 
@@ -194,23 +210,23 @@ std::vector<redballStatistics> Algorithm::calculateRedBallProbability(RedBall *r
 
         switch(redball->mWuxing) {
             case METAL:
-                prob = (float) rnumList[j].count / total1 * PROBABILITY_METAL;
+                prob = (float) rnumList[j].count / total1 * NUM_WEIGHT + PROBABILITY_METAL * WUXING_WEIGHT;
                 break;
 
             case WOOD:
-                prob = (float) rnumList[j].count / total1 * PROBABILITY_WOOD;
+                prob = (float) rnumList[j].count / total1 * NUM_WEIGHT + PROBABILITY_WOOD * WUXING_WEIGHT;
                 break;
 
             case WATER:
-                prob = (float) rnumList[j].count / total1 * PROBABILITY_WATER;
+                prob = (float) rnumList[j].count / total1 * NUM_WEIGHT + PROBABILITY_WATER * WUXING_WEIGHT;
                 break;
 
             case FIRE:
-                prob = (float) rnumList[j].count / total1 * PROBABILITY_FIRE;
+                prob = (float) rnumList[j].count / total1 * NUM_WEIGHT + PROBABILITY_FIRE * WUXING_WEIGHT;
                 break;
 
             case EARTH:
-                prob = (float) rnumList[j].count / total1 * PROBABILITY_EARTH;
+                prob = (float) rnumList[j].count / total1 * NUM_WEIGHT + PROBABILITY_EARTH * WUXING_WEIGHT;
                 break;
 
             default:
@@ -276,23 +292,23 @@ std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(BlueBall
 
         switch(blueball->mWuxing) {
             case METAL:
-                prob = (float) bnumList[j].count / total1 * PROBABILITY_METAL;
+                prob = (float) bnumList[j].count / total1 * NUM_WEIGHT + PROBABILITY_METAL * WUXING_WEIGHT;
                 break;
 
             case WOOD:
-                prob = (float) bnumList[j].count / total1 * PROBABILITY_WOOD;
+                prob = (float) bnumList[j].count / total1 * NUM_WEIGHT + PROBABILITY_WOOD * WUXING_WEIGHT;
                 break;
 
             case WATER:
-                prob = (float) bnumList[j].count / total1 * PROBABILITY_WATER;
+                prob = (float) bnumList[j].count / total1 * NUM_WEIGHT + PROBABILITY_WATER * WUXING_WEIGHT;
                 break;
 
             case FIRE:
-                prob = (float) bnumList[j].count / total1 * PROBABILITY_FIRE;
+                prob = (float) bnumList[j].count / total1 * NUM_WEIGHT + PROBABILITY_FIRE * WUXING_WEIGHT;
                 break;
 
             case EARTH:
-                prob = (float) bnumList[j].count / total1 * PROBABILITY_EARTH;
+                prob = (float) bnumList[j].count / total1 * NUM_WEIGHT + PROBABILITY_EARTH * WUXING_WEIGHT;
                 break;
 
             default:
@@ -485,7 +501,7 @@ int Algorithm::calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &to
     BallType ballType = bb->mBalltype;
     std::vector<BlueBall*> mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), 500);
 
-    for(int i = (int)mList.size()-1; i > 0; i--) {
+    for(int i = (int)mList.size() - 1; i > 0; i--) {
         if(num == mList[i]->mNum) {
             if((int)staList->size() == 0) {
                 bnumStatistics sta;
