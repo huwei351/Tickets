@@ -62,7 +62,9 @@ class Algorithm
 
         Result* getLatestResultFromDatabase();
 
-        void rearrangePredictResult(std::vector<resultStatistics> resultSta, int top);
+        static bool sortByPro(const resultStatistics &rs1, const resultStatistics &rs2);
+
+        void rearrangePredictResult(std::vector<resultStatistics> *resultSta, int top);
 
         void printPredictResult(std::vector<resultStatistics> resultSta);
 

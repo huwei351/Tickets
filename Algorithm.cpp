@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <vector>
 #include <string.h>
+#include <algorithm>
+#include <iostream>
 
 //#include "Property.h"
 #include "Algorithm.h"
@@ -77,29 +79,20 @@ Result* Algorithm::getLatestResultFromDatabase()
     return result;
 }
 
-void Algorithm::rearrangePredictResult(std::vector<resultStatistics> resultSta, int top)
+bool Algorithm::sortByPro(const resultStatistics &rs1, const resultStatistics &rs2)
 {
-    int size = (int) resultSta.size();
+    return rs1.probability > rs2.probability;
+}
 
-    for(int i = 0; i < size - 1; i++) {
-        for(int j = 0; j < size - i - 1; j++) {
-            if(resultSta[j].probability < resultSta[j + 1].probability) {
-                std::swap(resultSta[j], resultSta[j + 1]);
-            }
-        }
-
-        printf("\rRearrangePredictResult Processing...%d/%d[%0.1f%%]", i, size, (float)i / size * 100);
-    }
-
-    resultSta.erase(resultSta.begin() + top, resultSta.end());
+void Algorithm::rearrangePredictResult(std::vector<resultStatistics> *resultSta, int top)
+{
+    std::sort(resultSta->begin(), resultSta->end(), sortByPro);
+    resultSta->erase(resultSta->begin() + top, resultSta->end());
 }
 
 void Algorithm::printPredictResult(std::vector<resultStatistics> resultSta)
 {
-    int size = (int) resultSta.size();
-    printf("printPredictResult-->size=%d\n", size);
-
-    for(int i = 0; i < size; i++) {
+    for(int i = 0; i < (int)resultSta.size(); i++) {
         Result *result = resultSta[i].result;
         RedNumbers rnum1 = result->mR1->mNum;
         RedNumbers rnum2 = result->mR2->mNum;
@@ -108,7 +101,7 @@ void Algorithm::printPredictResult(std::vector<resultStatistics> resultSta)
         RedNumbers rnum5 = result->mR5->mNum;
         RedNumbers rnum6 = result->mR6->mNum;
         BlueNumbers bnum = result->mB0->mNum;
-        printf("PredictResult[%d] %2d %2d %2d %2d %2d %2d + %2d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
+        printf("PredictResult[%2d] %2d %2d %2d %2d %2d %2d + %2d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
     }
 }
 
@@ -155,7 +148,7 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
 
     printf("create resultStatistics complete!\n");
     //printPredictResult(resultSta);// before reaffange
-    rearrangePredictResult(resultSta, top);
+    rearrangePredictResult(&resultSta, top);
     printPredictResult(resultSta);// after reaffange
     return resultSta;
 }
@@ -401,7 +394,7 @@ void Algorithm::printRedballNumberProbability(std::vector<rnumStatistics> *sta, 
     std::string title = getLogTitleFromBalltype(ballType);
 
     for(int i = 0; i < (int)sta->size(); i++) {
-        printf("%s [%d] : num = %d, count = %d, probability = %0.3f\n", title.c_str(), i + 1, sta->at(i).rn, sta->at(i).count, (float)sta->at(i).count / total);
+        printf("%s [%2d] : num = %d, count = %d, probability = %0.3f\n", title.c_str(), i + 1, sta->at(i).rn, sta->at(i).count, (float)sta->at(i).count / total);
     }
 }
 
@@ -410,7 +403,7 @@ void Algorithm::printBlueballNumberProbability(std::vector<bnumStatistics> *sta,
     std::string title = getLogTitleFromBalltype(ballType);
 
     for(int i = 0; i < (int)sta->size(); i++) {
-        printf("%s [%d] : num = %d, count = %d, probability = %0.3f\n", title.c_str(), i + 1, sta->at(i).bn, sta->at(i).count, (float)sta->at(i).count / total);
+        printf("%s [%2d] : num = %d, count = %d, probability = %0.3f\n", title.c_str(), i + 1, sta->at(i).bn, sta->at(i).count, (float)sta->at(i).count / total);
     }
 }
 
@@ -419,7 +412,7 @@ void Algorithm::printBallWuxingProbability(std::vector<wuxingStatistics> *sta, i
     std::string title = getLogTitleFromBalltype(ballType);
 
     for(int i = 0; i < (int)sta->size(); i++) {
-        printf("%s [%d] : wuxing = %s, count = %d, probability = %0.3f\n", title.c_str(), i + 1, Elememts2String(sta->at(i).wuxing).c_str(), sta->at(i).count, (float)sta->at(i).count / total);
+        printf("%s [%2d] : wuxing = %s, count = %d, probability = %0.3f\n", title.c_str(), i + 1, Elememts2String(sta->at(i).wuxing).c_str(), sta->at(i).count, (float)sta->at(i).count / total);
     }
 }
 
