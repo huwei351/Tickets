@@ -97,7 +97,7 @@ enum Elememts {
 };
 
 enum BallType {
-	BALLTYPE_UNKNOWN = 0,
+    BALLTYPE_UNKNOWN = 0,
     REDBALL_FIRST = 1,
     REDBALL_SECOND,
     REDBALL_THIRD,
@@ -110,27 +110,34 @@ enum BallType {
 
 static std::string Elememts2String(Elememts elememt)
 {
-	std::string str = "UNKNOWN";
-	switch(elememt) {
-		case METAL:
-			str = "metal";
-			break;
-		case WOOD:
-			str = "wood";
-			break;
-		case WATER:
-			str = "water";
-			break;
-		case FIRE:
-			str = "fire";
-			break;
-		case EARTH:
-			str = "earth";
-			break;
-		default:
-			break;
-	}
-	return str;
+    std::string str = "UNKNOWN";
+
+    switch(elememt) {
+        case METAL:
+            str = "metal";
+            break;
+
+        case WOOD:
+            str = "wood";
+            break;
+
+        case WATER:
+            str = "water";
+            break;
+
+        case FIRE:
+            str = "fire";
+            break;
+
+        case EARTH:
+            str = "earth";
+            break;
+
+        default:
+            break;
+    }
+
+    return str;
 }
 
 static std::string getLogTitleFromBalltype(BallType ballType)

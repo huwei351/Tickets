@@ -55,21 +55,21 @@ int32_t main(int32_t argc, char *argv[])
 
     do {
         printf("\nResult Predict MsgID Menu:\n");
-    	printf("    %d  => Enter SSQ Submenu\n", 1);
-    	printf("    %d  => Enter DLT Submenu \n", 2);
-    	printf("    %d  => Quit Program\n", 99);
+        printf("    %d  => Enter SSQ Submenu\n", 1);
+        printf("    %d  => Enter DLT Submenu \n", 2);
+        printf("    %d  => Quit Program\n", 99);
         choice = app_get_choice("Select action");
 
         switch(choice) {
             case PRE_MSG_SSQ: {
                     printf("\nSSQ Predict Submenu:\n");
-    				printf("    %d  => Predict Latest SSQ Result\n", 1);
-    				printf("    %d  => Compare Actual Result with Predict Result\n", 2);
-    				printf("    %d  => Quit Program\n", PRE_QUIT);
+                    printf("    %d  => Predict Latest SSQ Result\n", 1);
+                    printf("    %d  => Compare Actual Result with Predict Result\n", 2);
+                    printf("    %d  => Quit Program\n", PRE_QUIT);
                     ssq_index = app_get_choice("Select Function");
 
                     switch(ssq_index) {
-                        case 1: {				
+                        case 1: {
                                 printf("\nPleaes Slelect SSQ Predict Result Display Numbers:\n");
                                 printf("    %d  => 5 Results\n", 5);
                                 printf("    %d  => 10 Results\n", 10);
@@ -99,10 +99,10 @@ int32_t main(int32_t argc, char *argv[])
                 }
 
             case PRE_MSG_DLT: {
-					printf("\nDLT Predict Submenu:\n");
-					printf("	%d	=> Predict Latest DLT Result\n", 1);
-					printf("	%d	=> Compare Actual Result with Predict Result\n", 2);
-					printf("	%d	=> Quit Program\n", PRE_QUIT);
+                    printf("\nDLT Predict Submenu:\n");
+                    printf("	%d	=> Predict Latest DLT Result\n", 1);
+                    printf("	%d	=> Compare Actual Result with Predict Result\n", 2);
+                    printf("	%d	=> Quit Program\n", PRE_QUIT);
                     dlt_index = app_get_choice("Select Function");
 
                     switch(dlt_index) {

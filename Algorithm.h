@@ -74,17 +74,17 @@ class Algorithm
         void comparePredictResultWithActualResult();
 
         //std::string getLogTitleFromBalltype(int ballType);
-		//char* Balltype2FieldName(int ballType);
+        //char* Balltype2FieldName(int ballType);
 
         void printRedballNumberProbability(std::vector<rnumStatistics> *sta, int total, BallType ballType);
 
         void printBlueballNumberProbability(std::vector<bnumStatistics> *sta, int total, BallType ballType);
 
         void printBallWuxingProbability(std::vector<wuxingStatistics> *sta, int total, BallType ballType);
-		int calculateRedBallNumberAndWuxingProbability(RedBall *rb, int &total_rnum, int &total_wuxing,
-				std::vector<rnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList);
-		int calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &total_bnum, int &total_wuxing,
-			std::vector<bnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList);
+        int calculateRedBallNumberAndWuxingProbability(RedBall *rb, int &total_rnum, int &total_wuxing,
+                                                       std::vector<rnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList);
+        int calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &total_bnum, int &total_wuxing,
+                                                        std::vector<bnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList);
 
         //int calculateRedBallNumberProbability(int ballType, std::vector<rnumStatistics> *staList);
 
@@ -99,7 +99,7 @@ class Algorithm
     private:
 
         MySqlOperator* mMySqlOperator;
-		Result *mLatestResult;
+        Result *mLatestResult;
 
 };
 

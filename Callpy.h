@@ -16,10 +16,10 @@
 class Callpy
 {
     public:
-		Callpy() {
-		}
-		~Callpy() {
-		}
+        Callpy() {
+        }
+        ~Callpy() {
+        }
         int runPythonFunction(std::string func_name, std::string func_args);
         void swicthPythonPath(std::string path);
         PyObject* loadPythonModule(std::string name);

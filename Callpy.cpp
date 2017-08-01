@@ -58,7 +58,7 @@ int Callpy::runPythonFunction(std::string func_name, std::string func_args)
         return -1;
     }
 
-    Py_Finalize(); 
+    Py_Finalize();
     return 0;
 }
 
@@ -90,21 +90,23 @@ PyObject* Callpy::constructPythonFuctionArgs(std::string argString)
     int i = 1;
     PyObject* args;
     std::vector<std::string> lines;
-	if (!StringUtil::StringIsEmpty(argString)) {
-	    StringUtil::StringSplit(lines, argString, "\n");
-	    arg_num = atoi(lines[0].c_str());
-	    args = PyTuple_New(arg_num);
 
-	    for(i; i < (int)lines.size(); i++) {
-	        PyObject* arg = PyInt_FromLong(atoi(lines[i].c_str()));
-	        //PyObject* arg = PyLong_FromLong(atoi(lines[i].c_str()));
-	        PyTuple_SetItem(args, i - 1, arg);
-	    }
+    if(!StringUtil::StringIsEmpty(argString)) {
+        StringUtil::StringSplit(lines, argString, "\n");
+        arg_num = atoi(lines[0].c_str());
+        args = PyTuple_New(arg_num);
 
-	    if(i-1 != arg_num) {
-	        printf("constructPythonFuctionArgs error!\n");
-	        args = NULL;
-	    }
-	}
+        for(i; i < (int)lines.size(); i++) {
+            PyObject* arg = PyInt_FromLong(atoi(lines[i].c_str()));
+            //PyObject* arg = PyLong_FromLong(atoi(lines[i].c_str()));
+            PyTuple_SetItem(args, i - 1, arg);
+        }
+
+        if(i - 1 != arg_num) {
+            printf("constructPythonFuctionArgs error!\n");
+            args = NULL;
+        }
+    }
+
     return args;
 }

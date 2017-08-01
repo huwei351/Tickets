@@ -14,11 +14,11 @@ class Result
 {
     public:
 
-		/* kaijiang qihao */
-		int mQid;
+        /* kaijiang qihao */
+        int mQid;
 
-		/* kaijiang date */
-		std::string mDate;
+        /* kaijiang date */
+        std::string mDate;
 
         /* red ball 1 */
         RedBall *mR1;
@@ -119,8 +119,8 @@ class Result
             mJiouRatio = RED_RATIO_UNKNOWN;
             mDaxiaoRatio = RED_RATIO_UNKNOWN;
             mZhiheRatio = RED_RATIO_UNKNOWN;
-			mQid = 0;
-			mDate = "1997-01-01";
+            mQid = 0;
+            mDate = "1997-01-01";
         }
 
         Result(RedBall *r1, RedBall *r2, RedBall *r3, RedBall *r4, RedBall *r5,
@@ -148,25 +148,25 @@ class Result
             mJiouRatio = RED_RATIO_UNKNOWN;
             mDaxiaoRatio = RED_RATIO_UNKNOWN;
             mZhiheRatio = RED_RATIO_UNKNOWN;
-			mQid = 0;
-			mDate = "1997-01-01";
+            mQid = 0;
+            mDate = "1997-01-01";
         }
 
-		void setQid(int qid) {
-			mQid = qid;
-		}
+        void setQid(int qid) {
+            mQid = qid;
+        }
 
-		void setDate(std::string date) {
-			mDate = date;
-		}
+        void setDate(std::string date) {
+            mDate = date;
+        }
 
-		int getQid() {
-			return mQid;
-		}
+        int getQid() {
+            return mQid;
+        }
 
-		std::string getDate() {
-			return mDate;
-		}
+        std::string getDate() {
+            return mDate;
+        }
 
 };
 

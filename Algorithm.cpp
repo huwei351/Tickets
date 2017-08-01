@@ -25,19 +25,20 @@ Algorithm::~Algorithm()
 
 bool Algorithm::updateDatabase()
 {
-	mLatestResult = getLatestResultFromDatabase();
-	int qid = mLatestResult->getQid();
-	char cqid[128];
-	sprintf(cqid, "%d", qid);
-	Callpy *py = new Callpy();
-	int res = py->runPythonFunction(std::string("update_database"), std::string("1")+std::string("\n")+std::string(cqid)+std::string("\n"));
-	delete py;
-                if (res == 0) {
-                    mLatestResult = getLatestResultFromDatabase();
-                    return true;
-                } else {
-                    return false;
-                }
+    mLatestResult = getLatestResultFromDatabase();
+    int qid = mLatestResult->getQid();
+    char cqid[128];
+    sprintf(cqid, "%d", qid);
+    Callpy *py = new Callpy();
+    int res = py->runPythonFunction(std::string("update_database"), std::string("1") + std::string("\n") + std::string(cqid) + std::string("\n"));
+    delete py;
+
+    if(res == 0) {
+        mLatestResult = getLatestResultFromDatabase();
+        return true;
+    } else {
+        return false;
+    }
 }
 
 Result* Algorithm::getLatestResultFromDatabase()
@@ -46,14 +47,14 @@ Result* Algorithm::getLatestResultFromDatabase()
     std::vector<std::string> lines;
     Result *result;
 
-    if(mMySqlOperator!= NULL) {
+    if(mMySqlOperator != NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
             str = mMySqlOperator->SelectData(TABLE_SSQ, NULL, 1);
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, COLUMN_G);
-				int qid = atoi(lines[1].c_str());
-				std::string date = lines[2];
+                int qid = atoi(lines[1].c_str());
+                std::string date = lines[2];
                 RedNumbers r1 = (RedNumbers) atoi(lines[3].c_str());
                 RedNumbers r2 = (RedNumbers) atoi(lines[4].c_str());
                 RedNumbers r3 = (RedNumbers) atoi(lines[5].c_str());
@@ -61,12 +62,12 @@ Result* Algorithm::getLatestResultFromDatabase()
                 RedNumbers r5 = (RedNumbers) atoi(lines[7].c_str());
                 RedNumbers r6 = (RedNumbers) atoi(lines[8].c_str());
                 BlueNumbers b0 = (BlueNumbers) atoi(lines[9].c_str());
-				printf("qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, r6, b0);
+                printf("qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, r6, b0);
                 result = new Result(new RedBall(r1, REDBALL_FIRST), new RedBall(r2, REDBALL_SECOND), new RedBall(r3, REDBALL_THIRD),
-						new RedBall(r4, REDBALL_FOURTH), new RedBall(r5, REDBALL_FIFTH), new RedBall(r6, REDBALL_SIXTH),
-						new BlueBall(b0, BLUEBALL_FIRST));
-				result->setDate(date);
-				result->setQid(qid);
+                                    new RedBall(r4, REDBALL_FOURTH), new RedBall(r5, REDBALL_FIFTH), new RedBall(r6, REDBALL_SIXTH),
+                                    new BlueBall(b0, BLUEBALL_FIRST));
+                result->setDate(date);
+                result->setQid(qid);
             }
         }
 
@@ -158,8 +159,8 @@ std::vector<redballStatistics> Algorithm::calculateRedBallProbability(RedBall *r
     float prob = 0;
     //int total1 = calculateRedBallNumberProbability(ballType, &rnumList);
     //int total2 = calculateBallWuxingProbability(ballType, wuxingList);
-	int total1 = 0, total2 = 0;
-	calculateRedBallNumberAndWuxingProbability(rb, total1, total2, &rnumList, &wuxingList);
+    int total1 = 0, total2 = 0;
+    calculateRedBallNumberAndWuxingProbability(rb, total1, total2, &rnumList, &wuxingList);
 
     for(int i = 0; i < (int)wuxingList.size(); i++) {
         switch(wuxingList[i].wuxing) {
@@ -240,8 +241,8 @@ std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(BlueBall
     float prob = 0;
     //int total1 = calculateBlueBallNumberProbability(ballType, bnumList);
     //int total2 = calculateBallWuxingProbability(ballType, wuxingList);
-	int total1 = 0, total2 = 0;
-	calculateBlueBallNumberAndWuxingProbability(bb, total1, total2, &bnumList, &wuxingList);
+    int total1 = 0, total2 = 0;
+    calculateBlueBallNumberAndWuxingProbability(bb, total1, total2, &bnumList, &wuxingList);
 
     for(int i = 0; i < (int)wuxingList.size(); i++) {
         switch(wuxingList[i].wuxing) {
@@ -407,135 +408,143 @@ void Algorithm::printBallWuxingProbability(std::vector<wuxingStatistics> *sta, i
 }
 
 int Algorithm::calculateRedBallNumberAndWuxingProbability(RedBall *rb, int &total_rnum, int &total_wuxing,
-	std::vector<rnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList)
+                                                          std::vector<rnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList)
 {
     RedNumbers num = rb->mNum;
-	Elememts wuxing = rb->mWuxing;
-	BallType ballType = rb->mBalltype;
+    Elememts wuxing = rb->mWuxing;
+    BallType ballType = rb->mBalltype;
     std::vector<RedBall*> mList = getRedBallListFromDatabase(Balltype2FieldName(ballType), 500);
 
-    for(int i = (int)mList.size()-1; i > 0; i--) {
+    for(int i = (int)mList.size() - 1; i > 0; i--) {
         if(num == mList[i]->mNum) {
-			if ((int)staList->size() == 0) {
-	            rnumStatistics sta;
-	            sta.rn = mList[i-1]->mNum;
-	            sta.count = 1;
-	            staList->push_back(sta);
-			} else {
-				bool exist = false;
-		        for(int j = 0; j < (int)staList->size(); j++) {
-		            if(mList[i-1]->mNum == staList->at(j).rn) {
-		                staList->at(j).count ++;
-						exist= true;
-						break;
-		            }
-		        }
-				if (!exist) {
-		            rnumStatistics sta;
-		            sta.rn = mList[i-1]->mNum;
-		            sta.count = 1;
-		            staList->push_back(sta);
-				}
-			}
+            if((int)staList->size() == 0) {
+                rnumStatistics sta;
+                sta.rn = mList[i - 1]->mNum;
+                sta.count = 1;
+                staList->push_back(sta);
+            } else {
+                bool exist = false;
+
+                for(int j = 0; j < (int)staList->size(); j++) {
+                    if(mList[i - 1]->mNum == staList->at(j).rn) {
+                        staList->at(j).count ++;
+                        exist = true;
+                        break;
+                    }
+                }
+
+                if(!exist) {
+                    rnumStatistics sta;
+                    sta.rn = mList[i - 1]->mNum;
+                    sta.count = 1;
+                    staList->push_back(sta);
+                }
+            }
 
             total_rnum++;
         }
 
         if(wuxing == mList[i]->mWuxing) {
-			if ((int)wuxingList->size() == 0) {
+            if((int)wuxingList->size() == 0) {
                 wuxingStatistics sta;
-                sta.wuxing = mList[i-1]->mWuxing;
+                sta.wuxing = mList[i - 1]->mWuxing;
                 sta.count = 1;
                 wuxingList->push_back(sta);
-			} else {
-				bool found = false;
-	            for(int j = 0; j < (int) wuxingList->size(); j++) {
-	                if(mList[i-1]->mWuxing == wuxingList->at(j).wuxing) {
-	                    wuxingList->at(j).count ++;
-						found = true;
-						break;
-	                }
-	            }
-				if (!found) {
-	                wuxingStatistics sta;
-	                sta.wuxing = mList[i-1]->mWuxing;
-	                sta.count = 1;
-	                wuxingList->push_back(sta);
-				}
-			}
+            } else {
+                bool found = false;
+
+                for(int j = 0; j < (int) wuxingList->size(); j++) {
+                    if(mList[i - 1]->mWuxing == wuxingList->at(j).wuxing) {
+                        wuxingList->at(j).count ++;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if(!found) {
+                    wuxingStatistics sta;
+                    sta.wuxing = mList[i - 1]->mWuxing;
+                    sta.count = 1;
+                    wuxingList->push_back(sta);
+                }
+            }
 
             total_wuxing++;
         }
     }
 
     printRedballNumberProbability(staList, total_rnum, ballType);
-	printBallWuxingProbability(wuxingList, total_wuxing, ballType);
+    printBallWuxingProbability(wuxingList, total_wuxing, ballType);
 }
 
 int Algorithm::calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &total_bnum, int &total_wuxing,
-	std::vector<bnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList)
+                                                           std::vector<bnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList)
 {
     BlueNumbers num = bb->mNum;
-	Elememts wuxing = bb->mWuxing;
-	BallType ballType = bb->mBalltype;
+    Elememts wuxing = bb->mWuxing;
+    BallType ballType = bb->mBalltype;
     std::vector<BlueBall*> mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), 500);
 
-    for(int i = (int)mList.size(); i > 0; i--) {
+    for(int i = (int)mList.size()-1; i > 0; i--) {
         if(num == mList[i]->mNum) {
-			if ((int)staList->size() == 0) {
-				bnumStatistics sta;
-				sta.bn = mList[i-1]->mNum;
-				sta.count = 1;
-				staList->push_back(sta);
-			} else {
-				bool exist = false;
-	            for(int j = 0; j < (int)staList->size(); j++) {
-	                if(mList[i-1]->mNum == staList->at(j).bn) {
-	                    staList->at(j).count ++;
-						exist = true;
-						break;
-	                }
-	            }
-				if (!exist) {
-					bnumStatistics sta;
-					sta.bn = mList[i-1]->mNum;
-					sta.count = 1;
-					staList->push_back(sta);
-				}
-			}
+            if((int)staList->size() == 0) {
+                bnumStatistics sta;
+                sta.bn = mList[i - 1]->mNum;
+                sta.count = 1;
+                staList->push_back(sta);
+            } else {
+                bool exist = false;
+
+                for(int j = 0; j < (int)staList->size(); j++) {
+                    if(mList[i - 1]->mNum == staList->at(j).bn) {
+                        staList->at(j).count ++;
+                        exist = true;
+                        break;
+                    }
+                }
+
+                if(!exist) {
+                    bnumStatistics sta;
+                    sta.bn = mList[i - 1]->mNum;
+                    sta.count = 1;
+                    staList->push_back(sta);
+                }
+            }
 
             total_bnum++;
         }
 
         if(wuxing == mList[i]->mWuxing) {
-			if ((int)wuxingList->size() == 0) {
-				wuxingStatistics sta;
-				sta.wuxing = mList[i-1]->mWuxing;
-				sta.count = 1;
-				wuxingList->push_back(sta);
-			} else {
-				bool found = false;
-	            for(int j = 0; j < (int)wuxingList->size(); j++) {
-	                if(mList[i-1]->mWuxing == wuxingList->at(j).wuxing) {
-	                    wuxingList->at(j).count ++;
-						found = true;
-						break;
-	                }
-	            }
-				if (!found) {
-					wuxingStatistics sta;
-					sta.wuxing = mList[i-1]->mWuxing;
-					sta.count = 1;
-					wuxingList->push_back(sta);
-				}
-			}
+            if((int)wuxingList->size() == 0) {
+                wuxingStatistics sta;
+                sta.wuxing = mList[i - 1]->mWuxing;
+                sta.count = 1;
+                wuxingList->push_back(sta);
+            } else {
+                bool found = false;
+
+                for(int j = 0; j < (int)wuxingList->size(); j++) {
+                    if(mList[i - 1]->mWuxing == wuxingList->at(j).wuxing) {
+                        wuxingList->at(j).count ++;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if(!found) {
+                    wuxingStatistics sta;
+                    sta.wuxing = mList[i - 1]->mWuxing;
+                    sta.count = 1;
+                    wuxingList->push_back(sta);
+                }
+            }
 
             total_wuxing++;
         }
     }
 
     printBlueballNumberProbability(staList, total_bnum, ballType);
-	printBallWuxingProbability(wuxingList, total_wuxing, ballType);
+    printBallWuxingProbability(wuxingList, total_wuxing, ballType);
 }
 /*
 int Algorithm::calculateRedBallNumberProbability(int ballType, std::vector<rnumStatistics> *staList)
@@ -653,7 +662,7 @@ std::vector<RedBall*> Algorithm::getRedBallListFromDatabase(char *field, int rnu
     std::vector<std::string> lines;
     std::string str;
 
-    if(mMySqlOperator!= NULL) {
+    if(mMySqlOperator != NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
             str = mMySqlOperator->SelectData(TABLE_SSQ, field, rnum);
 
@@ -661,7 +670,7 @@ std::vector<RedBall*> Algorithm::getRedBallListFromDatabase(char *field, int rnu
                 StringUtil::StringSplit(lines, str, CR_G);
 
                 for(int i = 0; i < (int)lines.size(); i++) {
-					RedNumbers rn = (RedNumbers) atoi(lines[i].c_str());
+                    RedNumbers rn = (RedNumbers) atoi(lines[i].c_str());
                     RedBall *rb = new RedBall(rn);
                     redList.push_back(rb);
                 }
@@ -680,7 +689,7 @@ std::vector<BlueBall*> Algorithm::getBlueBallListFromDatabase(char *field, int r
     std::vector<std::string> lines;
     std::string str;
 
-    if(mMySqlOperator!= NULL) {
+    if(mMySqlOperator != NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
             str = mMySqlOperator->SelectData(TABLE_SSQ, field, rnum);
 

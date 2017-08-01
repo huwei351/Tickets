@@ -34,7 +34,7 @@ class BlueBall
         /* WuXing : JIN, MU, SHUI, HUO, TU */
         Elememts mWuxing;
 
-		BallType mBalltype;
+        BallType mBalltype;
 
         BlueBall() {
             mNum = BLUE_NUM_INVALID;
@@ -44,17 +44,17 @@ class BlueBall
             mDaxiao = BIG_SMALL_UNKNOWN;
             mZhihe = PRIME_COMPOSITE_UNKNOWN;
             mWuxing = ELEMEMTS_UNKNOWN;
-			mBalltype = BALLTYPE_UNKNOWN;
+            mBalltype = BALLTYPE_UNKNOWN;
         }
 
         BlueBall(BlueNumbers num) {
             completeInstanceAccordingNum(num);
-			setBallType(BALLTYPE_UNKNOWN);
+            setBallType(BALLTYPE_UNKNOWN);
         }
 
         BlueBall(BlueNumbers num, BallType balltype) {
             completeInstanceAccordingNum(num);
-			setBallType(balltype);
+            setBallType(balltype);
         }
 
         BlueBall(BlueNumbers num,
@@ -71,7 +71,7 @@ class BlueBall
             mDaxiao = daxiao;
             mZhihe = zhihe;
             mWuxing = wuxing;
-			mBalltype = BALLTYPE_UNKNOWN;
+            mBalltype = BALLTYPE_UNKNOWN;
         }
 
         void setNum(BlueNumbers num) {
@@ -102,9 +102,9 @@ class BlueBall
             mWuxing = wuxing;
         }
 
-		void setBallType(BallType balltype) {
-			mBalltype = balltype;
-		}
+        void setBallType(BallType balltype) {
+            mBalltype = balltype;
+        }
 
         void setVariableValue(BlueNumbers num,
                               int unit,

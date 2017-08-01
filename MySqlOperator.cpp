@@ -15,13 +15,14 @@ int MySqlOperator::ConnMySQL(char *host, char * port , char * Db, char * user, c
         printf("Failed to connect to database: Error");
         res = -2;
     }
-/*
-    res = mysql_set_character_set(&mysql, "GBK") ;
 
-    if(!res) {
-        printf("mysql_set_character_set Error\n");
-    }
-*/
+    /*
+        res = mysql_set_character_set(&mysql, "GBK") ;
+
+        if(!res) {
+            printf("mysql_set_character_set Error\n");
+        }
+    */
     return res;
 }
 
@@ -41,7 +42,7 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
     { sprintf(sql, "select %s from %s order by date DESC", field, table); }
 
     int res = mysql_query(&mysql, sql);
-	//printf("mysql_query: sql=\"%s\", res=%d\n", sql, res);
+    //printf("mysql_query: sql=\"%s\", res=%d\n", sql, res);
 
     if(res) {
         mysql_error(&mysql);
