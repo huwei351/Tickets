@@ -84,6 +84,31 @@ bool Algorithm::sortByPro(const resultStatistics &rs1, const resultStatistics &r
     return rs1.probability > rs2.probability;
 }
 
+bool Algorithm::sortByPro1(const redballStatistics &rs1, const redballStatistics &rs2)
+{
+    return rs1.probability > rs2.probability;
+}
+
+bool Algorithm::sortByPro2(const blueballStatistics &bs1, const blueballStatistics &bs2)
+{
+    return bs1.probability > bs2.probability;
+}
+
+bool Algorithm::sortByCount(const wuxingStatistics &ws1, const wuxingStatistics &ws2)
+{
+	return ws1.count > ws2.count;
+}
+
+bool Algorithm::sortByCount1(const rnumStatistics &rs1, const rnumStatistics &rs2)
+{
+	return rs1.count > rs2.count;
+}
+
+bool Algorithm::sortByCount2(const bnumStatistics &bs1, const bnumStatistics &bs2)
+{
+	return bs1.count > bs2.count;
+}
+
 void Algorithm::rearrangePredictResult(std::vector<resultStatistics> *resultSta, int top)
 {
     std::sort(resultSta->begin(), resultSta->end(), sortByPro);
@@ -232,6 +257,8 @@ std::vector<redballStatistics> Algorithm::calculateRedBallProbability(RedBall *r
         rBallList.push_back(rsta);
     }
 
+	std::sort(rBallList.begin(), rBallList.end(), sortByPro1);
+	printRedballPredictTable(rb->mBalltype, rnumList, wuxingList, rBallList);
     return rBallList;
 }
 
@@ -314,6 +341,8 @@ std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(BlueBall
         bBallList.push_back(bsta);
     }
 
+	std::sort(bBallList.begin(), bBallList.end(), sortByPro2);
+	printBlueballPredictTable(bb->mBalltype, bnumList, wuxingList, bBallList);
     return bBallList;
 }
 
@@ -482,8 +511,10 @@ int Algorithm::calculateRedBallNumberAndWuxingProbability(RedBall *rb, int &tota
         }
     }
 
-    printRedballNumberProbability(staList, total_rnum, ballType);
-    printBallWuxingProbability(wuxingList, total_wuxing, ballType);
+	std::sort(staList->begin(), staList->end(), sortByCount1);
+	std::sort(wuxingList->begin(), wuxingList->end(), sortByCount);
+    //printRedballNumberProbability(staList, total_rnum, ballType);
+    //printBallWuxingProbability(wuxingList, total_wuxing, ballType);
 }
 
 int Algorithm::calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &total_bnum, int &total_wuxing,
@@ -552,8 +583,10 @@ int Algorithm::calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &to
         }
     }
 
-    printBlueballNumberProbability(staList, total_bnum, ballType);
-    printBallWuxingProbability(wuxingList, total_wuxing, ballType);
+	std::sort(staList->begin(), staList->end(), sortByCount2);
+	std::sort(wuxingList->begin(), wuxingList->end(), sortByCount);
+    //printBlueballNumberProbability(staList, total_bnum, ballType);
+    //printBallWuxingProbability(wuxingList, total_wuxing, ballType);
 }
 /*
 int Algorithm::calculateRedBallNumberProbability(int ballType, std::vector<rnumStatistics> *staList)
@@ -718,3 +751,71 @@ std::vector<BlueBall*> Algorithm::getBlueBallListFromDatabase(char *field, int r
 
     return blueList;
 }
+
+void Algorithm::printRedballPredictTable(BallType type, std::vector<rnumStatistics> rsList,
+	std::vector<wuxingStatistics> wsList, std::vector<redballStatistics> rbList)
+{
+	int sort = 0;
+
+	printf("%s| wuxing |", Balltype2FieldName(type));
+	for (int i=0; i < (int)wsList.size(); i++)
+		printf(" %5s |", Elememts2String(wsList[i].wuxing).c_str());
+	printf("\n");
+
+	printf("num|  count |");
+	for (int j=0; j < (int)wsList.size(); j++)
+		printf("   %2d  |", wsList[j].count);
+	printf("\n");
+
+	for (int k=0; k < (int)rsList.size(); k++) {
+		printf("%2d |   %2d   |", rsList[k].rn, rsList[k].count);
+		for (int m=0; m < (int)wsList.size(); m++) {
+			if(RedNumber2Elememt(rsList[k].rn) == wsList[m].wuxing) {
+				for (int n = 0; n < (int)rbList.size(); n++) {
+					if (rbList[n].redball->mNum == rsList[k].rn) {
+						printf(" %0.3f |", rbList[n].probability);
+						sort = n+1;
+					}
+				}
+			} else {
+				printf("	    |");
+			}
+		}
+		printf(" %2d |\n", sort);
+	}
+}
+
+void Algorithm::printBlueballPredictTable(BallType type, std::vector<bnumStatistics> bsList,
+	std::vector<wuxingStatistics> wsList, std::vector<blueballStatistics> bbList)
+{
+
+	int sort = 0;
+
+	printf("%s | wuxing |", Balltype2FieldName(type));
+	for (int i=0; i < (int)wsList.size(); i++)
+		printf(" %5s |", Elememts2String(wsList[i].wuxing).c_str());
+	printf("\n");
+
+	printf("num|  count |");
+	for (int j=0; j < (int)wsList.size(); j++)
+		printf("   %2d  |", wsList[j].count);
+	printf("\n");
+
+	for (int k=0; k < (int)bsList.size(); k++) {
+		printf("%2d |   %2d   |", bsList[k].bn, bsList[k].count);
+		for (int m=0; m < (int)wsList.size(); m++) {
+			if(BlueNumber2Elememt(bsList[k].bn) == wsList[m].wuxing) {
+				for (int n = 0; n < (int)bbList.size(); n++) {
+					if (bbList[n].blueball->mNum == bsList[k].bn) {
+						printf(" %0.3f |", bbList[n].probability);
+						sort = n+1;
+					}
+				}
+			} else {
+				printf("	    |");
+			}
+		}
+		printf(" %2d |\n", sort);
+	}
+}
+
