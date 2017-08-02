@@ -63,16 +63,16 @@ class Algorithm
         Result* getLatestResultFromDatabase();
 
         static bool sortByPro(const resultStatistics &rs1, const resultStatistics &rs2);
-		
-		static bool sortByPro1(const redballStatistics &rs1, const redballStatistics &rs2);
-		
-		static bool sortByPro2(const blueballStatistics &bs1, const blueballStatistics &bs2);
-				
-		static bool sortByCount(const wuxingStatistics &ws1, const wuxingStatistics &ws2);
 
-		static bool sortByCount1(const rnumStatistics &rs1, const rnumStatistics &rs2);
+        static bool sortByPro1(const redballStatistics &rs1, const redballStatistics &rs2);
 
-		static bool sortByCount2(const bnumStatistics &bs1, const bnumStatistics &bs2);
+        static bool sortByPro2(const blueballStatistics &bs1, const blueballStatistics &bs2);
+
+        static bool sortByCount(const wuxingStatistics &ws1, const wuxingStatistics &ws2);
+
+        static bool sortByCount1(const rnumStatistics &rs1, const rnumStatistics &rs2);
+
+        static bool sortByCount2(const bnumStatistics &bs1, const bnumStatistics &bs2);
 
         void rearrangePredictResult(std::vector<resultStatistics> *resultSta, int top);
 
@@ -109,11 +109,15 @@ class Algorithm
 
         std::vector<BlueBall*> getBlueBallListFromDatabase(char *field, int rnum);
 
-		void printRedballPredictTable(BallType type, std::vector<rnumStatistics> rsList,
-				std::vector<wuxingStatistics> wsList, std::vector<redballStatistics> rbList);
+        void printRedballPredictTable(BallType type, std::vector<rnumStatistics> rsList,
+                                      std::vector<wuxingStatistics> wsList, std::vector<redballStatistics> rbList);
 
-		void printBlueballPredictTable(BallType type, std::vector<bnumStatistics> bsList,
-				std::vector<wuxingStatistics> wsList, std::vector<blueballStatistics> bbList);
+        void printBlueballPredictTable(BallType type, std::vector<bnumStatistics> bsList,
+                                       std::vector<wuxingStatistics> wsList, std::vector<blueballStatistics> bbList);
+
+        bool saveData2File(std::string dirname, std::string filename, char* data);
+
+        void writeActualLatestResult2LastPredictFile();
 
     private:
 

@@ -4,6 +4,8 @@
 #include <string.h>
 #include <algorithm>
 #include <iostream>
+//#include <direct.h>
+//#include <io.h>
 
 //#include "Property.h"
 #include "Algorithm.h"
@@ -37,6 +39,10 @@ bool Algorithm::updateDatabase()
 
     if(res == 0) {
         mLatestResult = getLatestResultFromDatabase();
+        writeActualLatestResult2LastPredictFile();
+        return true;
+    } else if(res == -2) {
+        printf("Database already updated to latest!\n");
         return true;
     } else {
         return false;
@@ -96,17 +102,17 @@ bool Algorithm::sortByPro2(const blueballStatistics &bs1, const blueballStatisti
 
 bool Algorithm::sortByCount(const wuxingStatistics &ws1, const wuxingStatistics &ws2)
 {
-	return ws1.count > ws2.count;
+    return ws1.count > ws2.count;
 }
 
 bool Algorithm::sortByCount1(const rnumStatistics &rs1, const rnumStatistics &rs2)
 {
-	return rs1.count > rs2.count;
+    return rs1.count > rs2.count;
 }
 
 bool Algorithm::sortByCount2(const bnumStatistics &bs1, const bnumStatistics &bs2)
 {
-	return bs1.count > bs2.count;
+    return bs1.count > bs2.count;
 }
 
 void Algorithm::rearrangePredictResult(std::vector<resultStatistics> *resultSta, int top)
@@ -257,8 +263,8 @@ std::vector<redballStatistics> Algorithm::calculateRedBallProbability(RedBall *r
         rBallList.push_back(rsta);
     }
 
-	std::sort(rBallList.begin(), rBallList.end(), sortByPro1);
-	printRedballPredictTable(rb->mBalltype, rnumList, wuxingList, rBallList);
+    std::sort(rBallList.begin(), rBallList.end(), sortByPro1);
+    printRedballPredictTable(rb->mBalltype, rnumList, wuxingList, rBallList);
     return rBallList;
 }
 
@@ -341,8 +347,8 @@ std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(BlueBall
         bBallList.push_back(bsta);
     }
 
-	std::sort(bBallList.begin(), bBallList.end(), sortByPro2);
-	printBlueballPredictTable(bb->mBalltype, bnumList, wuxingList, bBallList);
+    std::sort(bBallList.begin(), bBallList.end(), sortByPro2);
+    printBlueballPredictTable(bb->mBalltype, bnumList, wuxingList, bBallList);
     return bBallList;
 }
 
@@ -511,8 +517,8 @@ int Algorithm::calculateRedBallNumberAndWuxingProbability(RedBall *rb, int &tota
         }
     }
 
-	std::sort(staList->begin(), staList->end(), sortByCount1);
-	std::sort(wuxingList->begin(), wuxingList->end(), sortByCount);
+    std::sort(staList->begin(), staList->end(), sortByCount1);
+    std::sort(wuxingList->begin(), wuxingList->end(), sortByCount);
     //printRedballNumberProbability(staList, total_rnum, ballType);
     //printBallWuxingProbability(wuxingList, total_wuxing, ballType);
 }
@@ -583,8 +589,8 @@ int Algorithm::calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &to
         }
     }
 
-	std::sort(staList->begin(), staList->end(), sortByCount2);
-	std::sort(wuxingList->begin(), wuxingList->end(), sortByCount);
+    std::sort(staList->begin(), staList->end(), sortByCount2);
+    std::sort(wuxingList->begin(), wuxingList->end(), sortByCount);
     //printBlueballNumberProbability(staList, total_bnum, ballType);
     //printBallWuxingProbability(wuxingList, total_wuxing, ballType);
 }
@@ -753,69 +759,141 @@ std::vector<BlueBall*> Algorithm::getBlueBallListFromDatabase(char *field, int r
 }
 
 void Algorithm::printRedballPredictTable(BallType type, std::vector<rnumStatistics> rsList,
-	std::vector<wuxingStatistics> wsList, std::vector<redballStatistics> rbList)
+                                         std::vector<wuxingStatistics> wsList, std::vector<redballStatistics> rbList)
 {
-	int sort = 0;
+    int sort = 0;
+    std::string buf;
+    char temp[256];
+    memset(temp, 0, 256);
+    sprintf(temp, "%s| wuxing |", Balltype2FieldName(type));
+    buf += std::string(temp);
+    memset(temp, 0, 256);
 
-	printf("%s| wuxing |", Balltype2FieldName(type));
-	for (int i=0; i < (int)wsList.size(); i++)
-		printf(" %5s |", Elememts2String(wsList[i].wuxing).c_str());
-	printf("\n");
+    for(int i = 0; i < (int)wsList.size(); i++) {
+        sprintf(temp, " %5s |", Elememts2String(wsList[i].wuxing).c_str());
+        buf += std::string(temp);
+        memset(temp, 0, 256);
+    }
 
-	printf("num|  count |");
-	for (int j=0; j < (int)wsList.size(); j++)
-		printf("   %2d  |", wsList[j].count);
-	printf("\n");
+    buf += std::string("\n");
+    sprintf(temp, "%s", "num|  count |");
+    buf += std::string(temp);
+    memset(temp, 0, 256);
 
-	for (int k=0; k < (int)rsList.size(); k++) {
-		printf("%2d |   %2d   |", rsList[k].rn, rsList[k].count);
-		for (int m=0; m < (int)wsList.size(); m++) {
-			if(RedNumber2Elememt(rsList[k].rn) == wsList[m].wuxing) {
-				for (int n = 0; n < (int)rbList.size(); n++) {
-					if (rbList[n].redball->mNum == rsList[k].rn) {
-						printf(" %0.3f |", rbList[n].probability);
-						sort = n+1;
-					}
-				}
-			} else {
-				printf("	    |");
-			}
-		}
-		printf(" %2d |\n", sort);
-	}
+    for(int j = 0; j < (int)wsList.size(); j++) {
+        sprintf(temp, "   %2d  |", wsList[j].count);
+        buf += std::string(temp);
+        memset(temp, 0, 256);
+    }
+
+    buf += std::string("\n");
+
+    for(int k = 0; k < (int)rsList.size(); k++) {
+        memset(temp, 0, 256);
+        sprintf(temp, "%2d |   %2d   |", rsList[k].rn, rsList[k].count);
+        buf += std::string(temp);
+
+        for(int m = 0; m < (int)wsList.size(); m++) {
+            if(RedNumber2Elememt(rsList[k].rn) == wsList[m].wuxing) {
+                for(int n = 0; n < (int)rbList.size(); n++) {
+                    if(rbList[n].redball->mNum == rsList[k].rn) {
+                        memset(temp, 0, 256);
+                        sprintf(temp, " %0.3f |", rbList[n].probability);
+                        buf += std::string(temp);
+                        sort = n + 1;
+                    }
+                }
+            } else {
+                memset(temp, 0, 256);
+                sprintf(temp, "%s", "	    |");
+                buf += std::string(temp);
+            }
+        }
+
+        memset(temp, 0, 256);
+        sprintf(temp, " %2d |\n", sort);
+        buf += std::string(temp);
+    }
+
+    printf("%s", buf.c_str());
 }
 
 void Algorithm::printBlueballPredictTable(BallType type, std::vector<bnumStatistics> bsList,
-	std::vector<wuxingStatistics> wsList, std::vector<blueballStatistics> bbList)
+                                          std::vector<wuxingStatistics> wsList, std::vector<blueballStatistics> bbList)
 {
+    int sort = 0;
+    printf("%s | wuxing |", Balltype2FieldName(type));
 
-	int sort = 0;
+    for(int i = 0; i < (int)wsList.size(); i++)
+    { printf(" %5s |", Elememts2String(wsList[i].wuxing).c_str()); }
 
-	printf("%s | wuxing |", Balltype2FieldName(type));
-	for (int i=0; i < (int)wsList.size(); i++)
-		printf(" %5s |", Elememts2String(wsList[i].wuxing).c_str());
-	printf("\n");
+    printf("\n");
+    printf("num|  count |");
 
-	printf("num|  count |");
-	for (int j=0; j < (int)wsList.size(); j++)
-		printf("   %2d  |", wsList[j].count);
-	printf("\n");
+    for(int j = 0; j < (int)wsList.size(); j++)
+    { printf("   %2d  |", wsList[j].count); }
 
-	for (int k=0; k < (int)bsList.size(); k++) {
-		printf("%2d |   %2d   |", bsList[k].bn, bsList[k].count);
-		for (int m=0; m < (int)wsList.size(); m++) {
-			if(BlueNumber2Elememt(bsList[k].bn) == wsList[m].wuxing) {
-				for (int n = 0; n < (int)bbList.size(); n++) {
-					if (bbList[n].blueball->mNum == bsList[k].bn) {
-						printf(" %0.3f |", bbList[n].probability);
-						sort = n+1;
-					}
-				}
-			} else {
-				printf("	    |");
-			}
-		}
-		printf(" %2d |\n", sort);
-	}
+    printf("\n");
+
+    for(int k = 0; k < (int)bsList.size(); k++) {
+        printf("%2d |   %2d   |", bsList[k].bn, bsList[k].count);
+
+        for(int m = 0; m < (int)wsList.size(); m++) {
+            if(BlueNumber2Elememt(bsList[k].bn) == wsList[m].wuxing) {
+                for(int n = 0; n < (int)bbList.size(); n++) {
+                    if(bbList[n].blueball->mNum == bsList[k].bn) {
+                        printf(" %0.3f |", bbList[n].probability);
+                        sort = n + 1;
+                    }
+                }
+            } else {
+                printf("	    |");
+            }
+        }
+
+        printf(" %2d |\n", sort);
+    }
+}
+
+bool Algorithm::saveData2File(std::string dirname, std::string filename, char* data)
+{
+    // check if dir exist
+    /*
+    if (_access(dirname.c_str())) {
+        printf("dir %s not exist, try to create it\n", dirname.c_str());
+        if (_mkdir(dirname)) {
+            printf("create dir %s fail!\n", dirname.c_str());
+            return false;
+        }
+    }
+    */
+    // write data to file
+    FILE *fp;
+    char buf[2048];
+    memset(buf, 0, 2048);
+    fp = fopen((dirname + std::string("/") + filename).c_str(), "a+");
+
+    if(fp == NULL) {
+        printf("open file %s fail!\n", filename.c_str());
+        fclose(fp);
+        return false;
+    }
+
+    sprintf(buf, "\n%s", data);
+
+    if(fwrite(buf, sizeof(buf), 1, fp) < 1) {
+        printf("write file %s fail!\n", filename.c_str());
+        fclose(fp);
+        return false;
+    }
+
+    fclose(fp);
+    return true;
+}
+
+void Algorithm::writeActualLatestResult2LastPredictFile()
+{
+    int latestQid = mLatestResult->mQid;
+    std::string latestDate = mLatestResult->mDate;
 }
 

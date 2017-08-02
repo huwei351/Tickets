@@ -9,6 +9,7 @@
 
 int Callpy::runPythonFunction(std::string func_name, std::string func_args)
 {
+    long result;
     PyObject *pModule, *pFunc;
     PyObject *pArgs, *pRet;
     // init
@@ -50,7 +51,7 @@ int Callpy::runPythonFunction(std::string func_name, std::string func_args)
 
     // check if function call success
     if(pRet) {
-        long result = PyInt_AsLong(pRet);
+        result = PyInt_AsLong(pRet);
         //long result = PyLong_AsLong(pRet);
         printf("result: %d\n", result);
     } else {
@@ -59,7 +60,7 @@ int Callpy::runPythonFunction(std::string func_name, std::string func_args)
     }
 
     Py_Finalize();
-    return 0;
+    return result;
 }
 
 void Callpy::swicthPythonPath(std::string path)

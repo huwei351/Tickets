@@ -210,81 +210,91 @@ static char* Balltype2FieldName(BallType ballType)
 
 static Elememts RedNumber2Elememt(RedNumbers num)
 {
-	switch(num) {
-		case RED_NUM_NINE:
-		case RED_NUM_TEN:
-		case RED_NUM_TWENTY_ONE:
-		case RED_NUM_TWENTY_TWO:
-		case RED_NUM_THIRTY_THREE:
-			return METAL;
-		case RED_NUM_THREE:
-		case RED_NUM_FOUR:
-		case RED_NUM_FIFTEEN:
-		case RED_NUM_SIXTEEN:
-		case RED_NUM_TWENTY_SEVEN:
-		case RED_NUM_TWENTY_EIGHT:
-			return WOOD;
-		case RED_NUM_ONE:
-		case RED_NUM_TWELVE:
-		case RED_NUM_THIRTEEN:
-		case RED_NUM_TWENTY_FOUR:
-		case RED_NUM_TWENTY_FIVE:
-			return WATER;
-		case RED_NUM_SIX:
-		case RED_NUM_SEVEN:
-		case RED_NUM_EIGHTEEN:
-		case RED_NUM_NINTEEN:
-		case RED_NUM_THIRTY:
-		case RED_NUM_THIRTY_ONE:
-			return FIRE;
-		case RED_NUM_TWO:
-		case RED_NUM_FIVE:
-		case RED_NUM_EIGHT:
-		case RED_NUM_ELEVEN:
-		case RED_NUM_FOURTEEN:
-		case RED_NUM_SEVENTEEN:
-		case RED_NUM_TWENTY:
-		case RED_NUM_TWENTY_THREE:
-		case RED_NUM_TWENTY_SIX:
-		case RED_NUM_TWENTY_NINE:
-		case RED_NUM_THIRTY_TWO:
-			return EARTH;
-		default:
-			break;
-	}
+    switch(num) {
+        case RED_NUM_NINE:
+        case RED_NUM_TEN:
+        case RED_NUM_TWENTY_ONE:
+        case RED_NUM_TWENTY_TWO:
+        case RED_NUM_THIRTY_THREE:
+            return METAL;
 
-	return ELEMEMTS_UNKNOWN;
+        case RED_NUM_THREE:
+        case RED_NUM_FOUR:
+        case RED_NUM_FIFTEEN:
+        case RED_NUM_SIXTEEN:
+        case RED_NUM_TWENTY_SEVEN:
+        case RED_NUM_TWENTY_EIGHT:
+            return WOOD;
+
+        case RED_NUM_ONE:
+        case RED_NUM_TWELVE:
+        case RED_NUM_THIRTEEN:
+        case RED_NUM_TWENTY_FOUR:
+        case RED_NUM_TWENTY_FIVE:
+            return WATER;
+
+        case RED_NUM_SIX:
+        case RED_NUM_SEVEN:
+        case RED_NUM_EIGHTEEN:
+        case RED_NUM_NINTEEN:
+        case RED_NUM_THIRTY:
+        case RED_NUM_THIRTY_ONE:
+            return FIRE;
+
+        case RED_NUM_TWO:
+        case RED_NUM_FIVE:
+        case RED_NUM_EIGHT:
+        case RED_NUM_ELEVEN:
+        case RED_NUM_FOURTEEN:
+        case RED_NUM_SEVENTEEN:
+        case RED_NUM_TWENTY:
+        case RED_NUM_TWENTY_THREE:
+        case RED_NUM_TWENTY_SIX:
+        case RED_NUM_TWENTY_NINE:
+        case RED_NUM_THIRTY_TWO:
+            return EARTH;
+
+        default:
+            break;
+    }
+
+    return ELEMEMTS_UNKNOWN;
 }
 
 static Elememts BlueNumber2Elememt(BlueNumbers num)
 {
-	switch(num) {
-		case BLUE_NUM_NINE:
-		case BLUE_NUM_TEN:
-			return METAL;
-		case BLUE_NUM_THREE:
-		case BLUE_NUM_FOUR:
-		case BLUE_NUM_FIFTEEN:
-		case BLUE_NUM_SIXTEEN:
-			return WOOD;
-		case BLUE_NUM_ONE:
-		case BLUE_NUM_TWELVE:
-		case BLUE_NUM_THIRTEEN:
-			return WATER;
-		case BLUE_NUM_SIX:
-		case BLUE_NUM_SEVEN:
-			return FIRE;
-		case BLUE_NUM_TWO:
-		case BLUE_NUM_FIVE:
-		case BLUE_NUM_EIGHT:
-		case BLUE_NUM_ELEVEN:
-		case BLUE_NUM_FOURTEEN:
-			return EARTH;
-		default:
-			break;
-	}
+    switch(num) {
+        case BLUE_NUM_NINE:
+        case BLUE_NUM_TEN:
+            return METAL;
 
-	return ELEMEMTS_UNKNOWN;
+        case BLUE_NUM_THREE:
+        case BLUE_NUM_FOUR:
+        case BLUE_NUM_FIFTEEN:
+        case BLUE_NUM_SIXTEEN:
+            return WOOD;
+
+        case BLUE_NUM_ONE:
+        case BLUE_NUM_TWELVE:
+        case BLUE_NUM_THIRTEEN:
+            return WATER;
+
+        case BLUE_NUM_SIX:
+        case BLUE_NUM_SEVEN:
+            return FIRE;
+
+        case BLUE_NUM_TWO:
+        case BLUE_NUM_FIVE:
+        case BLUE_NUM_EIGHT:
+        case BLUE_NUM_ELEVEN:
+        case BLUE_NUM_FOURTEEN:
+            return EARTH;
+
+        default:
+            break;
+    }
+
+    return ELEMEMTS_UNKNOWN;
 }
 
 

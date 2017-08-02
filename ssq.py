@@ -18,6 +18,7 @@ cnx = mysql.connector.connect(user = MYSQL_USER,password= MYSQL_PASSWORD,host =M
 cur = cnx.cursor(buffered=True)
 
 def update_database(qid):
+    res = -2
     url='http://kaijiang.zhcw.com/zhcw/html/ssq/list_1.html'
     html = requests.get(url) 
     content=BeautifulSoup(html.text, 'lxml')
@@ -39,7 +40,8 @@ def update_database(qid):
             if (rid > bytes(qid)):
                 print("rid=" + rid + ", date=" + date + ", rb1=" + rb1 + ", rb2=" + rb2 + ", rb3=" + rb3 + ", rb4=" + rb4 + ", rb5=" + rb5 + ", rb6=" + rb6 + ", bb=" + bb)
                 save_result_into_database(dict)
-    return 0
+                res = 0
+    return res
 
 def save_result_into_database(dict):
     date = dict['date']
