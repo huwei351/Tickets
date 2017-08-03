@@ -76,13 +76,13 @@ class Algorithm
 
         void rearrangePredictResult(std::vector<resultStatistics> *resultSta, int top);
 
-        void printPredictResult(std::vector<resultStatistics> resultSta);
+        std::string printPredictResult(std::vector<resultStatistics> resultSta);
 
         std::vector<resultStatistics> getMaxProbabilityPredictResult(int top);
 
-        std::vector<redballStatistics> calculateRedBallProbability(RedBall *rb);
+        std::vector<redballStatistics> calculateRedBallProbability(RedBall *rb, std::string &content);
 
-        std::vector<blueballStatistics> calculateBlueBallProbability(BlueBall *bb);
+        std::vector<blueballStatistics> calculateBlueBallProbability(BlueBall *bb, std::string &content);
 
         void comparePredictResultWithActualResult();
 
@@ -109,15 +109,17 @@ class Algorithm
 
         std::vector<BlueBall*> getBlueBallListFromDatabase(char *field, int rnum);
 
-        void printRedballPredictTable(BallType type, std::vector<rnumStatistics> rsList,
-                                      std::vector<wuxingStatistics> wsList, std::vector<redballStatistics> rbList);
+        std::string printRedballPredictTable(BallType type, std::vector<rnumStatistics> rsList,
+                                             std::vector<wuxingStatistics> wsList, std::vector<redballStatistics> rbList);
 
-        void printBlueballPredictTable(BallType type, std::vector<bnumStatistics> bsList,
-                                       std::vector<wuxingStatistics> wsList, std::vector<blueballStatistics> bbList);
+        std::string printBlueballPredictTable(BallType type, std::vector<bnumStatistics> bsList,
+                                              std::vector<wuxingStatistics> wsList, std::vector<blueballStatistics> bbList);
 
-        bool saveData2File(std::string dirname, std::string filename, char* data);
+        bool saveData2File(std::string dirname, std::string filename, std::string data);
 
-        void writeActualLatestResult2LastPredictFile();
+        bool writeLatestPredictResult2File(std::string data);
+
+        bool writeActualLatestResult2LastPredictFile();
 
     private:
 

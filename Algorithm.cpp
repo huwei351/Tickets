@@ -4,8 +4,9 @@
 #include <string.h>
 #include <algorithm>
 #include <iostream>
-//#include <direct.h>
-//#include <io.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 //#include "Property.h"
 #include "Algorithm.h"
@@ -121,8 +122,12 @@ void Algorithm::rearrangePredictResult(std::vector<resultStatistics> *resultSta,
     resultSta->erase(resultSta->begin() + top, resultSta->end());
 }
 
-void Algorithm::printPredictResult(std::vector<resultStatistics> resultSta)
+std::string Algorithm::printPredictResult(std::vector<resultStatistics> resultSta)
 {
+    std::string content = "\n";
+    char temp[512];
+    memset(temp, 0, 512);
+
     for(int i = 0; i < (int)resultSta.size(); i++) {
         Result *result = resultSta[i].result;
         RedNumbers rnum1 = result->mR1->mNum;
@@ -132,20 +137,41 @@ void Algorithm::printPredictResult(std::vector<resultStatistics> resultSta)
         RedNumbers rnum5 = result->mR5->mNum;
         RedNumbers rnum6 = result->mR6->mNum;
         BlueNumbers bnum = result->mB0->mNum;
-        printf("PredictResult[%2d] %2d %2d %2d %2d %2d %2d + %2d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
+        sprintf(temp, "PredictResult[%2d] %2d %2d %2d %2d %2d %2d + %2d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
+        content += std::string(temp);
+        memset(temp, 0, 512);
     }
+
+    printf("%s", content.c_str());
+    return content;
 }
 
 std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
 {
     std::vector<resultStatistics> resultSta;
-    std::vector<redballStatistics> rsta1 = calculateRedBallProbability(mLatestResult->mR1);
-    std::vector<redballStatistics> rsta2 = calculateRedBallProbability(mLatestResult->mR2);
-    std::vector<redballStatistics> rsta3 = calculateRedBallProbability(mLatestResult->mR3);
-    std::vector<redballStatistics> rsta4 = calculateRedBallProbability(mLatestResult->mR4);
-    std::vector<redballStatistics> rsta5 = calculateRedBallProbability(mLatestResult->mR5);
-    std::vector<redballStatistics> rsta6 = calculateRedBallProbability(mLatestResult->mR6);
-    std::vector<blueballStatistics> bsta = calculateBlueBallProbability(mLatestResult->mB0);
+    std::string printContent = "";
+    std::string tempBuf = "";
+    std::vector<redballStatistics> rsta1 = calculateRedBallProbability(mLatestResult->mR1, tempBuf);
+    printContent += tempBuf;
+    tempBuf = "";
+    std::vector<redballStatistics> rsta2 = calculateRedBallProbability(mLatestResult->mR2, tempBuf);
+    printContent += tempBuf;
+    tempBuf = "";
+    std::vector<redballStatistics> rsta3 = calculateRedBallProbability(mLatestResult->mR3, tempBuf);
+    printContent += tempBuf;
+    tempBuf = "";
+    std::vector<redballStatistics> rsta4 = calculateRedBallProbability(mLatestResult->mR4, tempBuf);
+    printContent += tempBuf;
+    tempBuf = "";
+    std::vector<redballStatistics> rsta5 = calculateRedBallProbability(mLatestResult->mR5, tempBuf);
+    printContent += tempBuf;
+    tempBuf = "";
+    std::vector<redballStatistics> rsta6 = calculateRedBallProbability(mLatestResult->mR6, tempBuf);
+    printContent += tempBuf;
+    tempBuf = "";
+    std::vector<blueballStatistics> bsta = calculateBlueBallProbability(mLatestResult->mB0, tempBuf);
+    printContent += tempBuf;
+    tempBuf = "";
     printf("start create resultStatistics...\n");
 
     for(int i = 0; i < (int)rsta1.size(); i++) {
@@ -180,11 +206,13 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
     printf("create resultStatistics complete!\n");
     //printPredictResult(resultSta);// before reaffange
     rearrangePredictResult(&resultSta, top);
-    printPredictResult(resultSta);// after reaffange
+    tempBuf = printPredictResult(resultSta);// after reaffange
+    printContent += tempBuf;
+    writeLatestPredictResult2File(printContent);
     return resultSta;
 }
 
-std::vector<redballStatistics> Algorithm::calculateRedBallProbability(RedBall *rb)
+std::vector<redballStatistics> Algorithm::calculateRedBallProbability(RedBall *rb, std::string &content)
 {
     static float NUM_WEIGHT = 0.5;
     static float WUXING_WEIGHT = 0.5;
@@ -264,11 +292,11 @@ std::vector<redballStatistics> Algorithm::calculateRedBallProbability(RedBall *r
     }
 
     std::sort(rBallList.begin(), rBallList.end(), sortByPro1);
-    printRedballPredictTable(rb->mBalltype, rnumList, wuxingList, rBallList);
+    content = printRedballPredictTable(rb->mBalltype, rnumList, wuxingList, rBallList);
     return rBallList;
 }
 
-std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(BlueBall *bb)
+std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(BlueBall *bb, std::string &content)
 {
     static float NUM_WEIGHT = 0.5;
     static float WUXING_WEIGHT = 0.5;
@@ -348,7 +376,7 @@ std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(BlueBall
     }
 
     std::sort(bBallList.begin(), bBallList.end(), sortByPro2);
-    printBlueballPredictTable(bb->mBalltype, bnumList, wuxingList, bBallList);
+    content = printBlueballPredictTable(bb->mBalltype, bnumList, wuxingList, bBallList);
     return bBallList;
 }
 
@@ -758,8 +786,8 @@ std::vector<BlueBall*> Algorithm::getBlueBallListFromDatabase(char *field, int r
     return blueList;
 }
 
-void Algorithm::printRedballPredictTable(BallType type, std::vector<rnumStatistics> rsList,
-                                         std::vector<wuxingStatistics> wsList, std::vector<redballStatistics> rbList)
+std::string Algorithm::printRedballPredictTable(BallType type, std::vector<rnumStatistics> rsList,
+                                                std::vector<wuxingStatistics> wsList, std::vector<redballStatistics> rbList)
 {
     int sort = 0;
     std::string buf;
@@ -816,61 +844,77 @@ void Algorithm::printRedballPredictTable(BallType type, std::vector<rnumStatisti
     }
 
     printf("%s", buf.c_str());
+    return buf;
 }
 
-void Algorithm::printBlueballPredictTable(BallType type, std::vector<bnumStatistics> bsList,
-                                          std::vector<wuxingStatistics> wsList, std::vector<blueballStatistics> bbList)
+std::string Algorithm::printBlueballPredictTable(BallType type, std::vector<bnumStatistics> bsList,
+                                                 std::vector<wuxingStatistics> wsList, std::vector<blueballStatistics> bbList)
 {
     int sort = 0;
-    printf("%s | wuxing |", Balltype2FieldName(type));
+    std::string buf;
+    char temp[256];
+    memset(temp, 0, 256);
+    sprintf(temp, "%s | wuxing |", Balltype2FieldName(type));
+    buf += std::string(temp);
+    memset(temp, 0, 256);
 
-    for(int i = 0; i < (int)wsList.size(); i++)
-    { printf(" %5s |", Elememts2String(wsList[i].wuxing).c_str()); }
+    for(int i = 0; i < (int)wsList.size(); i++) {
+        sprintf(temp, " %5s |", Elememts2String(wsList[i].wuxing).c_str());
+        buf += std::string(temp);
+        memset(temp, 0, 256);
+    }
 
-    printf("\n");
-    printf("num|  count |");
+    buf += std::string("\n");
+    sprintf(temp, "%s", "num|  count |");
+    buf += std::string(temp);
+    memset(temp, 0, 256);
 
-    for(int j = 0; j < (int)wsList.size(); j++)
-    { printf("   %2d  |", wsList[j].count); }
+    for(int j = 0; j < (int)wsList.size(); j++) {
+        sprintf(temp, "   %2d  |", wsList[j].count);
+        buf += std::string(temp);
+        memset(temp, 0, 256);
+    }
 
-    printf("\n");
+    buf += std::string("\n");
 
     for(int k = 0; k < (int)bsList.size(); k++) {
-        printf("%2d |   %2d   |", bsList[k].bn, bsList[k].count);
+        memset(temp, 0, 256);
+        sprintf(temp, "%2d |   %2d   |", bsList[k].bn, bsList[k].count);
+        buf += std::string(temp);
 
         for(int m = 0; m < (int)wsList.size(); m++) {
             if(BlueNumber2Elememt(bsList[k].bn) == wsList[m].wuxing) {
                 for(int n = 0; n < (int)bbList.size(); n++) {
                     if(bbList[n].blueball->mNum == bsList[k].bn) {
-                        printf(" %0.3f |", bbList[n].probability);
+                        memset(temp, 0, 256);
+                        sprintf(temp, " %0.3f |", bbList[n].probability);
+                        buf += std::string(temp);
                         sort = n + 1;
                     }
                 }
             } else {
-                printf("	    |");
+                memset(temp, 0, 256);
+                sprintf(temp, "%s", "	    |");
+                buf += std::string(temp);
             }
         }
 
-        printf(" %2d |\n", sort);
+        memset(temp, 0, 256);
+        sprintf(temp, " %2d |\n", sort);
+        buf += std::string(temp);
     }
+
+    printf("%s", buf.c_str());
+    return buf;
 }
 
-bool Algorithm::saveData2File(std::string dirname, std::string filename, char* data)
+bool Algorithm::saveData2File(std::string dirname, std::string filename, std::string data)
 {
-    // check if dir exist
-    /*
-    if (_access(dirname.c_str())) {
-        printf("dir %s not exist, try to create it\n", dirname.c_str());
-        if (_mkdir(dirname)) {
-            printf("create dir %s fail!\n", dirname.c_str());
-            return false;
-        }
-    }
-    */
+    printf("saveData2File-->data len = %d\n", data.length());
     // write data to file
     FILE *fp;
-    char buf[2048];
-    memset(buf, 0, 2048);
+    char buf[1024];
+    memset(buf, 0, 1024);
     fp = fopen((dirname + std::string("/") + filename).c_str(), "a+");
 
     if(fp == NULL) {
@@ -879,9 +923,9 @@ bool Algorithm::saveData2File(std::string dirname, std::string filename, char* d
         return false;
     }
 
-    sprintf(buf, "\n%s", data);
+    //sprintf(buf, "\n%s", data.c_str());
 
-    if(fwrite(buf, sizeof(buf), 1, fp) < 1) {
+    if(fwrite(data.c_str(), sizeof(buf), data.size() / sizeof(buf) + 1, fp) < 1) {
         printf("write file %s fail!\n", filename.c_str());
         fclose(fp);
         return false;
@@ -891,9 +935,84 @@ bool Algorithm::saveData2File(std::string dirname, std::string filename, char* d
     return true;
 }
 
-void Algorithm::writeActualLatestResult2LastPredictFile()
+bool Algorithm::writeLatestPredictResult2File(std::string data)
 {
-    int latestQid = mLatestResult->mQid;
+    char qid[64];
+    memset(qid, 0, 64);
+    // qid 2017154->2018001???
+    sprintf(qid, "%d", mLatestResult->mQid + 1);
+    std::string latestQid = std::string(qid);
+    //std::string latestDate = mLatestResult->mDate;
+    std::string dirname = std::string("./results");
+    std::string filename = latestQid + std::string("-predict.txt");
+
+    // check if dir exist
+    if(access(dirname.c_str(), F_OK)) {
+        printf("dir %s not exist, try to create it\n", dirname.c_str());
+
+        if(mkdir(dirname.c_str(), 00755)) {
+            printf("create dir %s fail!\n", dirname.c_str());
+            return false;
+        }
+    }
+
+    // if file exist, do nothing; not exsist, create it
+    if(access((dirname + std::string("/") + filename).c_str(), F_OK)) {
+        return saveData2File(dirname, filename, data);
+    } else {
+        printf("file %s exist\n", filename.c_str());
+        return true;
+    }
+}
+
+bool Algorithm::writeActualLatestResult2LastPredictFile()
+{
+    char qid[64];
+    memset(qid, 0, 64);
+    sprintf(qid, "%d", mLatestResult->mQid);
+    std::string latestQid = std::string(qid);
     std::string latestDate = mLatestResult->mDate;
+    std::string dirname = std::string("./results");
+    std::string oldname = latestQid + std::string("-predict.txt");
+    std::string newname = latestQid + std::string("_") + latestDate + std::string(".txt");
+
+    // if file exist, do nothing; not exsist, create it
+    if(access((dirname + std::string("/") + oldname).c_str(), F_OK)) {//file not exist
+        printf("predict file %s not exist\n", oldname.c_str());
+        return false;
+    } else {//file exist
+        RedBall *rb1 = mLatestResult->mR1;
+        RedBall *rb2 = mLatestResult->mR2;
+        RedBall *rb3 = mLatestResult->mR3;
+        RedBall *rb4 = mLatestResult->mR4;
+        RedBall *rb5 = mLatestResult->mR5;
+        RedBall *rb6 = mLatestResult->mR6;
+        BlueBall *bb = mLatestResult->mB0;
+        std::string data = "";
+        char temp[512];
+        memset(temp, 0, 512);
+        sprintf(temp, "\nActual Result: %s %s %5d %5d %5d %5d %5d %5d + %5d\n", latestQid.c_str(), latestDate.c_str(),
+                rb1->mNum, rb2->mNum, rb3->mNum, rb4->mNum, rb5->mNum, rb6->mNum, bb->mNum);
+        data += std::string(temp);
+        memset(temp, 0, 512);
+        sprintf(temp, "\nActual Result: %s %s %5s %5s %5s %5s %5s %5s + %5s\n", latestQid.c_str(), latestDate.c_str(),
+                Elememts2String(rb1->mWuxing).c_str(), Elememts2String(rb2->mWuxing).c_str(), Elememts2String(rb3->mWuxing).c_str(),
+                Elememts2String(rb4->mWuxing).c_str(), Elememts2String(rb5->mWuxing).c_str(), Elememts2String(rb6->mWuxing).c_str(),
+                Elememts2String(bb->mWuxing).c_str());
+        data += std::string(temp);
+        printf("write data:%s\n", data.c_str());
+
+        if(saveData2File(dirname, oldname, data)) {
+            printf("write data sucess, rename file %s to %s\n", oldname.c_str(), newname.c_str());
+
+            if(rename(oldname.c_str(), newname.c_str()))
+            { printf("rename fail, please modify file name manually\n"); }
+
+            return true;
+        } else {
+            printf("predict file %s exsist, but write data fail\n", oldname.c_str());
+            return false;
+        }
+    }
 }
 
