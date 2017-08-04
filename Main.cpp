@@ -48,130 +48,107 @@ int app_get_choice(const char *querystring)
 
 int32_t main(int32_t argc, char *argv[])
 {
-    int choice;
-    int ssq_index;
-    int dlt_index;
+    int selection;
     float num_weight = 0.5;
     float wuxing_weight = 0.5;
     Algorithm *ai = new Algorithm();
     ai->getCurNumAndWuxingWeight(num_weight, wuxing_weight);
 
     do {
-        printf("\nResult Predict MsgID Menu:\n");
-        printf("    %d  => Enter SSQ Submenu\n", 1);
-        printf("    %d  => Enter DLT Submenu \n", 2);
-        printf("    %d  => Quit Program\n", 99);
-        choice = app_get_choice("Select action");
+#ifndef DLT
+        printf("\nSSQ Predict Submenu:\n");
+        printf("    %d  => Predict Latest SSQ Result\n", 1);
+        printf("    %d  => Compare Actual Result with Predict Result\n", 2);
+        printf("    %d  => Set Default num/wuxing Weight\n", 3);
+        printf("    %d  => Quit Program\n", PRE_QUIT);
+        selection = app_get_choice("Select Function");
 
-        switch(choice) {
-            case PRE_MSG_SSQ: {
-                    printf("\nSSQ Predict Submenu:\n");
-                    printf("    %d  => Predict Latest SSQ Result\n", 1);
-                    printf("    %d  => Compare Actual Result with Predict Result\n", 2);
-                    printf("    %d  => Set Default num/wuxing Weight\n", 3);
+        switch(selection) {
+            case 1: {
+                    printf("\nPleaes Slelect SSQ Predict Result Display Numbers:\n");
+                    printf("    %d  => 5 Results\n", 5);
+                    printf("    %d  => 10 Results\n", 10);
+                    printf("    %d  => 20 Results\n", 20);
+                    printf("    %d  => 50 Results\n", 50);
                     printf("    %d  => Quit Program\n", PRE_QUIT);
-                    ssq_index = app_get_choice("Select Function");
-
-                    switch(ssq_index) {
-                        case 1: {
-                                printf("\nPleaes Slelect SSQ Predict Result Display Numbers:\n");
-                                printf("    %d  => 5 Results\n", 5);
-                                printf("    %d  => 10 Results\n", 10);
-                                printf("    %d  => 20 Results\n", 20);
-                                printf("    %d  => 50 Results\n", 50);
-                                printf("    %d  => Quit Program\n", PRE_QUIT);
-                                int choice = app_get_choice("Select Numbers");
-                                ai->updateDatabase();
-                                ai->getMaxProbabilityPredictResult(choice);
-                            }
-                            break;
-
-                        case 2: {
-                            }
-                            break;
-
-                        case 3: {
-                                printf("\nSet Num/Wuxing Weight (default: 0.5-0.5)\n");
-                                printf("Current Weight Num-Wuxing: %0.3f-%0.3f, Please Select:\n", num_weight, wuxing_weight);
-                                printf("    %d  => Num-Wuxing: 0.4-0.6\n", 1);
-                                printf("    %d  => Num-Wuxing: 0.3-0.7\n", 2);
-                                printf("    %d  => Num-Wuxing: 0.2-0.8\n", 3);
-                                printf("    %d  => Num-Wuxing: 0.1-0.9\n", 4);
-                                printf("    %d  => Type Other Choices\n", 5);
-                                printf("    %d  => Reset To Default (0.5-0.5)\n", 6);
-                                printf("    %d  => Quit Program\n", PRE_QUIT);
-                                int choice = app_get_choice("Select Numbers");
-
-                                if(choice == 1) {
-                                    ai->setNumAndWuxingWeight(0.4, 0.6);
-                                } else if(choice == 2) {
-                                    ai->setNumAndWuxingWeight(0.3, 0.7);
-                                } else if(choice == 3) {
-                                    ai->setNumAndWuxingWeight(0.2, 0.8);
-                                } else if(choice == 4) {
-                                    ai->setNumAndWuxingWeight(0.1, 0.9);
-                                } else if(choice == 5) {
-                                    //TODO
-                                } else if(choice == 6) {
-                                    ai->setNumAndWuxingWeight(0.5, 0.5);
-                                } else if(choice == PRE_QUIT) {
-                                    break;
-                                } else {
-                                    printf("Unknown choice\n");
-                                }
-                            }
-                            break;
-
-                        case PRE_QUIT: {
-                                printf("Quit SSQ Submenu\n");
-                                break;
-                            }
-
-                        default:
-                            printf("Unknown choice:%d", ssq_index);
-                            break;
-                    }
-
-                    break;
-                }
-
-            case PRE_MSG_DLT: {
-                    printf("\nDLT Predict Submenu:\n");
-                    printf("	%d	=> Predict Latest DLT Result\n", 1);
-                    printf("	%d	=> Compare Actual Result with Predict Result\n", 2);
-                    printf("	%d	=> Quit Program\n", PRE_QUIT);
-                    dlt_index = app_get_choice("Select Function");
-
-                    switch(dlt_index) {
-                        case 1: {
-                            }
-
-                        case 2: {
-                            }
-
-                        case PRE_QUIT: {
-                                printf("Quit DLT Submenu\n");
-                                break;
-                            }
-
-                        default:
-                            printf("Unknown choice:%d", dlt_index);
-                            break;
-                    }
-
-                    break;
+                    int choice = app_get_choice("Select Numbers");
+                    ai->updateDatabase();
+                    ai->getMaxProbabilityPredictResult(choice);
                 }
                 break;
 
-            case PRE_QUIT:
-                printf("main: Bye Bye\n");
+            case 2: {
+                }
                 break;
+
+            case 3: {
+                    printf("\nSet Num/Wuxing Weight (default: 0.5-0.5)\n");
+                    printf("Current Weight Num-Wuxing: %0.3f-%0.3f, Please Select:\n", num_weight, wuxing_weight);
+                    printf("    %d  => Num-Wuxing: 0.4-0.6\n", 1);
+                    printf("    %d  => Num-Wuxing: 0.3-0.7\n", 2);
+                    printf("    %d  => Num-Wuxing: 0.2-0.8\n", 3);
+                    printf("    %d  => Num-Wuxing: 0.1-0.9\n", 4);
+                    printf("    %d  => Type Other Choices\n", 5);
+                    printf("    %d  => Reset To Default (0.5-0.5)\n", 6);
+                    printf("    %d  => Quit Program\n", PRE_QUIT);
+                    int choice = app_get_choice("Select Numbers");
+
+                    if(choice == 1) {
+                        ai->setNumAndWuxingWeight(0.4, 0.6);
+                    } else if(choice == 2) {
+                        ai->setNumAndWuxingWeight(0.3, 0.7);
+                    } else if(choice == 3) {
+                        ai->setNumAndWuxingWeight(0.2, 0.8);
+                    } else if(choice == 4) {
+                        ai->setNumAndWuxingWeight(0.1, 0.9);
+                    } else if(choice == 5) {
+                        //TODO
+                    } else if(choice == 6) {
+                        ai->setNumAndWuxingWeight(0.5, 0.5);
+                    } else if(choice == PRE_QUIT) {
+                        break;
+                    } else {
+                        printf("Unknown choice\n");
+                    }
+                }
+                break;
+
+            case PRE_QUIT: {
+                    printf("Quit SSQ Submenu\n");
+                    break;
+                }
 
             default:
-                printf("Unknown choice:%d", choice);
+                printf("Unknown choice:%d", selection);
                 break;
         }
-    } while(choice != PRE_QUIT);  /* While user don't exit application */
+
+#else
+        printf("\nDLT Predict Submenu:\n");
+        printf("	%d	=> Predict Latest DLT Result\n", 1);
+        printf("	%d	=> Compare Actual Result with Predict Result\n", 2);
+        printf("	%d	=> Quit Program\n", PRE_QUIT);
+        selection = app_get_choice("Select Function");
+
+        switch(selection) {
+            case 1: {
+                }
+
+            case 2: {
+                }
+
+            case PRE_QUIT: {
+                    printf("Quit DLT Submenu\n");
+                    break;
+                }
+
+            default:
+                printf("Unknown choice:%d", selection);
+                break;
+        }
+
+#endif
+    } while(selection != PRE_QUIT);  /* While user don't exit application */
 
     delete ai;
     printf(" Result Predict Program is quiting...\n");

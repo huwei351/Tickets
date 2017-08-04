@@ -3,9 +3,12 @@
 #include "Callpy.h"
 #include "StringUtil.h"
 
-#define SSQ_PY_PATH "./"
-//#define SSQ_PY_MODULE_NAME "ssq_spider"
-#define SSQ_PY_MODULE_NAME "ssq"
+#define PYTHON_PATH "./"
+#ifdef DLT
+#define PYTHON_MODULE_NAME "dlt"
+#else
+#define PYTHON_MODULE_NAME "ssq"
+#endif
 
 int Callpy::runPythonFunction(std::string func_name, std::string func_args)
 {
@@ -21,9 +24,9 @@ int Callpy::runPythonFunction(std::string func_name, std::string func_args)
     }
 
     // switch path
-    swicthPythonPath(SSQ_PY_PATH);
+    swicthPythonPath(PYTHON_PATH);
     // load module
-    pModule = loadPythonModule(SSQ_PY_MODULE_NAME);
+    pModule = loadPythonModule(PYTHON_MODULE_NAME);
 
     if(!pModule) { // load fail
         printf("[ERROR] Python get module failed.\n");

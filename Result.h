@@ -85,7 +85,7 @@ class Result
         int mUnitSum;
 
         /* the decade number, example: 12, unit is 1 */
-#ifdef SSQ
+#ifdef DLT
         int mRedSumAverage = mRedSum / 5;
 #else
         int mRedSumAverage = mRedSum / 6;

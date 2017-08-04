@@ -17,7 +17,11 @@
 #define PORT "3306"
 #define USER "root"
 #define PASSWORD  "huwei351"
+#ifdef DLT
+#define DATABASE "dlt"
+#else
 #define DATABASE "ssq"
+#endif
 #define CHARSET "utf8"
 
 #define TABLE_SSQ "ssq_result"
@@ -31,7 +35,12 @@
 #define FIELD_RB_FOURTH "rb4"
 #define FIELD_RB_FIFTH "rb5"
 #define FIELD_RB_SIXTH "rb6"
-#define FIELD_BB "bb"
+#ifdef DLT
+#define FIELD_BB1 "bb1"
+#else
+#define FIELD_BB1 "bb"
+#endif
+#define FIELD_BB2 "bb2"
 
 #define ROW_G "\n"
 #define COLUMN_G ","

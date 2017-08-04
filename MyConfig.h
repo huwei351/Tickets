@@ -13,7 +13,11 @@
 
 #define UNLOCK()  pthread_mutex_unlock(&mLock);
 
-const std::string strConfgFileName = "./myconfig.conf";
+#ifdef DLT
+const std::string strConfgFileName = "./configs/dltconfig.conf";
+#else
+const std::string strConfgFileName = "./configs/ssqconfig.conf";
+#endif
 const std::string strDefaultSection = "default";
 
 /* Global for all working (net) modes */

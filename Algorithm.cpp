@@ -76,7 +76,11 @@ Result* Algorithm::getLatestResultFromDatabase()
 
     if(mMySqlOperator != NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+#ifdef DLT
+            str = mMySqlOperator->SelectData(TABLE_DLT, NULL, 1);
+#else
             str = mMySqlOperator->SelectData(TABLE_SSQ, NULL, 1);
+#endif
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, COLUMN_G);
@@ -87,12 +91,22 @@ Result* Algorithm::getLatestResultFromDatabase()
                 RedNumbers r3 = (RedNumbers) atoi(lines[5].c_str());
                 RedNumbers r4 = (RedNumbers) atoi(lines[6].c_str());
                 RedNumbers r5 = (RedNumbers) atoi(lines[7].c_str());
+#ifdef DLT
+                BlueNumbers b1 = (BlueNumbers) atoi(lines[8].c_str());
+                BlueNumbers b2 = (BlueNumbers) atoi(lines[9].c_str());
+                printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, b1=%d, b2=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, b1, b2);
+#endif
                 RedNumbers r6 = (RedNumbers) atoi(lines[8].c_str());
                 BlueNumbers b0 = (BlueNumbers) atoi(lines[9].c_str());
                 printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, r6, b0);
+#endif
                 result = new Result(new RedBall(r1, REDBALL_FIRST), new RedBall(r2, REDBALL_SECOND), new RedBall(r3, REDBALL_THIRD),
-                                    new RedBall(r4, REDBALL_FOURTH), new RedBall(r5, REDBALL_FIFTH), new RedBall(r6, REDBALL_SIXTH),
-                                    new BlueBall(b0, BLUEBALL_FIRST));
+                                    new RedBall(r4, REDBALL_FOURTH), new RedBall(r5, REDBALL_FIFTH),
+#ifdef DLT
+                                    new BlueBall(b1, BLUEBALL_FIRST), new BlueBall(b2, BLUEBALL_SECOND));
+#else
+                                    new RedBall(r6, REDBALL_SIXTH), new BlueBall(b0, BLUEBALL_FIRST));
+#endif
                 result->setDate(date);
                 result->setQid(qid);
             }
@@ -153,9 +167,15 @@ std::string Algorithm::printPredictResult(std::vector<resultStatistics> resultSt
         RedNumbers rnum3 = result->mR3->mNum;
         RedNumbers rnum4 = result->mR4->mNum;
         RedNumbers rnum5 = result->mR5->mNum;
+#ifdef DLT
+        BlueNumbers bnum1 = result->mB1->mNum;
+        BlueNumbers bnum2 = result->mB2->mNum;
+        sprintf(temp, "PredictResult[%2d] %2d %2d %2d %2d %2d + %2d %2d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, bnum1, bnum2, resultSta[i].probability);
+#else
         RedNumbers rnum6 = result->mR6->mNum;
         BlueNumbers bnum = result->mB0->mNum;
         sprintf(temp, "PredictResult[%2d] %2d %2d %2d %2d %2d %2d + %2d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
+#endif
         content += std::string(temp);
         memset(temp, 0, 512);
     }
@@ -184,12 +204,21 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
     std::vector<redballStatistics> rsta5 = calculateRedBallProbability(mLatestResult->mR5, tempBuf);
     printContent += tempBuf;
     tempBuf = "";
+#ifdef DLT
+    std::vector<blueballStatistics> bsta1 = calculateBlueBallProbability(mLatestResult->mB1, tempBuf);
+    printContent += tempBuf;
+    tempBuf = "";
+    std::vector<blueballStatistics> bsta2 = calculateBlueBallProbability(mLatestResult->mB2, tempBuf);
+    printContent += tempBuf;
+    tempBuf = "";
+#else
     std::vector<redballStatistics> rsta6 = calculateRedBallProbability(mLatestResult->mR6, tempBuf);
     printContent += tempBuf;
     tempBuf = "";
     std::vector<blueballStatistics> bsta = calculateBlueBallProbability(mLatestResult->mB0, tempBuf);
     printContent += tempBuf;
     tempBuf = "";
+#endif
     printf("start create resultStatistics...\n");
 
     for(int i = 0; i < (int)rsta1.size(); i++) {
@@ -197,6 +226,29 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
             for(int k = 0; k < (int)rsta3.size(); k++) {
                 for(int m = 0; m < (int)rsta4.size(); m++) {
                     for(int n = 0; n < (int)rsta5.size(); n++) {
+#ifdef DLT
+
+                        for(int r = 0; r < (int)bsta1.size(); r++) {
+                            for(int s = 0; s < (int)bsta2.size(); s++) {
+                                if(rsta1[i].redball->mNum < rsta2[j].redball->mNum &&
+                                    rsta2[j].redball->mNum < rsta3[k].redball->mNum &&
+                                    rsta3[k].redball->mNum < rsta4[m].redball->mNum &&
+                                    rsta4[m].redball->mNum < rsta5[n].redball->mNum &&
+                                    bsta1[r].blueball->mNum < bsta2[s].blueball->mNum) {
+                                    Result *result = new Result(rsta1[i].redball, rsta2[j].redball, rsta3[k].redball,
+                                                                rsta4[m].redball, rsta5[n].redball, bsta1[r].blueball, bsta2[s].blueball);
+                                    float prob = rsta1[i].probability + rsta2[j].probability + rsta3[k].probability + rsta4[m].probability
+                                                 + rsta5[n].probability + bsta1[r].probability + bsta2[s].probability;
+                                    resultStatistics sta;
+                                    sta.result = result;
+                                    sta.probability = prob;
+                                    resultSta.push_back(sta);
+                                }
+                            }
+                        }
+
+#else
+
                         for(int r = 0; r < (int)rsta6.size(); r++) {
                             for(int s = 0; s < (int)bsta.size(); s++) {
                                 if(rsta1[i].redball->mNum < rsta2[j].redball->mNum &&
@@ -215,6 +267,8 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
                                 }
                             }
                         }
+
+#endif
                     }
                 }
             }
@@ -397,75 +451,7 @@ std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(BlueBall
 void Algorithm::comparePredictResultWithActualResult()
 {
 }
-/*
-std::string Algorithm::getLogTitleFromBalltype(int ballType)
-{
-    switch(ballType) {
-        case REDBALL_FIRST:
-            return "1st RedBall";
 
-        case REDBALL_SECOND:
-            return "2nd RedBall";
-
-        case REDBALL_THIRD:
-            return "3rd RedBall";
-
-        case REDBALL_FOURTH:
-            return "4th RedBall";
-
-        case REDBALL_FIFTH:
-            return "5th RedBall";
-
-        case REDBALL_SIXTH:
-            return "6th RedBall";
-
-        case BLUEBALL_FIRST:
-            return "BlueBall";
-
-        case BLUEBALL_SECOND:
-            return "2nd BlueBall";
-
-        default:
-            break;
-    }
-
-    return "";
-}
-
-char* Algorithm::Balltype2FieldName(int ballType)
-{
-    switch(ballType) {
-        case REDBALL_FIRST:
-            return FIELD_RB_FIRST;
-
-        case REDBALL_SECOND:
-            return FIELD_RB_SECOND;
-
-        case REDBALL_THIRD:
-            return FIELD_RB_THIRD;
-
-        case REDBALL_FOURTH:
-            return FIELD_RB_FOURTH;
-
-        case REDBALL_FIFTH:
-            return FIELD_RB_FIFTH;
-
-        case REDBALL_SIXTH:
-            return FIELD_RB_SIXTH;
-
-        case BLUEBALL_FIRST:
-            return FIELD_BB;
-
-        case BLUEBALL_SECOND:
-            return "2nd BlueBall";
-
-        default:
-            break;
-    }
-
-    return "";
-}
-*/
 void Algorithm::printRedballNumberProbability(std::vector<rnumStatistics> *sta, int total, BallType ballType)
 {
     std::string title = getLogTitleFromBalltype(ballType);
@@ -636,116 +622,7 @@ int Algorithm::calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &to
     //printBlueballNumberProbability(staList, total_bnum, ballType);
     //printBallWuxingProbability(wuxingList, total_wuxing, ballType);
 }
-/*
-int Algorithm::calculateRedBallNumberProbability(int ballType, std::vector<rnumStatistics> *staList)
-{
-    Result *result = getLatestResultFromDatabase();
-    RedBall *rb = result->mR1;
-    RedNumbers num = rb->mNum;
-    std::vector<RedBall*> mList = getRedBallListFromDatabase(Balltype2FieldName(ballType), 500);
-    int totalCount = 0;
 
-    for(int i = 0; i < (int)mList.size(); i++) {
-        if(num == mList[i]->mNum) {
-            for(int j = 0; j < (int) staList->size(); j++) {
-                if(mList[i + 1]->mNum == staList->at(j).rn) {
-                    staList->at(j).count ++;
-                } else {
-                    rnumStatistics sta;
-                    sta.rn = mList[i + 1]->mNum;
-                    sta.count = 0;
-                    staList->push_back(sta);
-                }
-            }
-
-            totalCount++;
-        }
-    }
-
-    printRedballNumberProbability(staList, totalCount, ballType);
-    return totalCount;
-}
-
-int Algorithm::calculateBlueBallNumberProbability(int ballType, std::vector<bnumStatistics> staList)
-{
-    Result *result = getLatestResultFromDatabase();
-    BlueBall *bb = result->mB0;
-    BlueNumbers num = bb->mNum;
-    std::vector<BlueBall*> mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), 500);
-    int totalCount = 0;
-
-    for(int i = 0; i < (int)mList.size(); i++) {
-        if(num == mList[i]->mNum) {
-            for(int j = 0; j < (int) staList.size(); j++) {
-                if(mList[i + 1]->mNum == staList[j].bn) {
-                    staList[j].count ++;
-                } else {
-                    bnumStatistics sta;
-                    sta.bn = mList[i + 1]->mNum;
-                    sta.count = 0;
-                    staList.push_back(sta);
-                }
-            }
-
-            totalCount++;
-        }
-    }
-
-    printBlueballNumberProbability(staList, totalCount, ballType);
-    return totalCount;
-}
-
-int Algorithm::calculateBallWuxingProbability(int ballType, std::vector<wuxingStatistics> wuxingList)
-{
-    int totalCount = 0;
-    Result *result = getLatestResultFromDatabase();
-    RedBall *rb = result->mR1;
-    Elememts wuxing = rb->mWuxing;
-
-    if(ballType > 0 && ballType < BLUEBALL_FIRST) {
-        std::vector<RedBall*> mList = getRedBallListFromDatabase(Balltype2FieldName(ballType), 500);
-
-        for(int i = 0; i < (int)mList.size(); i++) {
-            if(wuxing == mList[i]->mWuxing) {
-                for(int j = 0; j < (int) wuxingList.size(); j++) {
-                    if(mList[i + 1]->mWuxing == wuxingList[j].wuxing) {
-                        wuxingList[j].count ++;
-                    } else {
-                        wuxingStatistics sta;
-                        sta.wuxing = mList[i + 1]->mWuxing;
-                        sta.count = 0;
-                        wuxingList.push_back(sta);
-                    }
-                }
-
-                totalCount++;
-            }
-        }
-    } else {
-        std::vector<BlueBall*> mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), 500);
-
-        for(int i = 0; i < (int)mList.size(); i++) {
-            if(wuxing == mList[i]->mWuxing) {
-                for(int j = 0; j < (int) wuxingList.size(); j++) {
-                    if(mList[i + 1]->mWuxing == wuxingList[j].wuxing) {
-                        wuxingList[j].count ++;
-                    } else {
-                        wuxingStatistics sta;
-                        sta.wuxing = mList[i + 1]->mWuxing;
-                        sta.count = 0;
-                        wuxingList.push_back(sta);
-                    }
-                }
-
-                totalCount++;
-            }
-        }
-    }
-
-    printBallWuxingProbability(wuxingList, totalCount, ballType);
-    return totalCount;
-}
-*/
 std::vector<RedBall*> Algorithm::getRedBallListFromDatabase(char *field, int rnum)
 {
     std::vector<RedBall*> redList;
@@ -754,7 +631,11 @@ std::vector<RedBall*> Algorithm::getRedBallListFromDatabase(char *field, int rnu
 
     if(mMySqlOperator != NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+#ifdef DLT
+            str = mMySqlOperator->SelectData(TABLE_DLT, field, rnum);
+#else
             str = mMySqlOperator->SelectData(TABLE_SSQ, field, rnum);
+#endif
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, CR_G);
@@ -781,7 +662,11 @@ std::vector<BlueBall*> Algorithm::getBlueBallListFromDatabase(char *field, int r
 
     if(mMySqlOperator != NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+#ifdef DLT
+            str = mMySqlOperator->SelectData(TABLE_DLT, field, rnum);
+#else
             str = mMySqlOperator->SelectData(TABLE_SSQ, field, rnum);
+#endif
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, CR_G);
@@ -956,8 +841,11 @@ bool Algorithm::writeLatestPredictResult2File(std::string data)
     // qid 2017154->2018001???
     sprintf(qid, "%d", mLatestResult->mQid + 1);
     std::string latestQid = std::string(qid);
-    //std::string latestDate = mLatestResult->mDate;
-    std::string dirname = std::string("./results");
+#ifdef DLT
+    std::string dirname = std::string("./dlt_results");
+#else
+    std::string dirname = std::string("./ssq_results");
+#endif
     std::string filename = latestQid + std::string("-predict.txt");
 
     // check if dir exist
@@ -986,7 +874,11 @@ bool Algorithm::writeActualLatestResult2LastPredictFile()
     sprintf(qid, "%d", mLatestResult->mQid);
     std::string latestQid = std::string(qid);
     std::string latestDate = mLatestResult->mDate;
-    std::string dirname = std::string("./results");
+#ifdef DLT
+    std::string dirname = std::string("./dlt_results");
+#else
+    std::string dirname = std::string("./ssq_results");
+#endif
     std::string oldname = latestQid + std::string("-predict.txt");
     std::string newname = latestQid + std::string("_") + latestDate + std::string(".txt");
 
@@ -1000,19 +892,36 @@ bool Algorithm::writeActualLatestResult2LastPredictFile()
         RedBall *rb3 = mLatestResult->mR3;
         RedBall *rb4 = mLatestResult->mR4;
         RedBall *rb5 = mLatestResult->mR5;
+#ifdef DLT
+        BlueBall *bb1 = mLatestResult->mB1;
+        BlueBall *bb2 = mLatestResult->mB2;
+#else
         RedBall *rb6 = mLatestResult->mR6;
         BlueBall *bb = mLatestResult->mB0;
+#endif
         std::string data = "";
         char temp[512];
         memset(temp, 0, 512);
+#ifdef DLT
+        sprintf(temp, "\nActual Result: %s %s %5d %5d %5d %5d %5d + %5d %5d\n", latestQid.c_str(), latestDate.c_str(),
+                rb1->mNum, rb2->mNum, rb3->mNum, rb4->mNum, rb5->mNum, bb1->mNum, bb2->mNum);
+#else
         sprintf(temp, "\nActual Result: %s %s %5d %5d %5d %5d %5d %5d + %5d\n", latestQid.c_str(), latestDate.c_str(),
                 rb1->mNum, rb2->mNum, rb3->mNum, rb4->mNum, rb5->mNum, rb6->mNum, bb->mNum);
+#endif
         data += std::string(temp);
         memset(temp, 0, 512);
+#ifdef DLT
+        sprintf(temp, "Actual Result: %s %s %5s %5s %5s %5s %5s + %5s %5s\n", latestQid.c_str(), latestDate.c_str(),
+                Elememts2String(rb1->mWuxing).c_str(), Elememts2String(rb2->mWuxing).c_str(), Elememts2String(rb3->mWuxing).c_str(),
+                Elememts2String(rb4->mWuxing).c_str(), Elememts2String(rb5->mWuxing).c_str(), Elememts2String(bb1->mWuxing).c_str(),
+                Elememts2String(bb2->mWuxing).c_str());
+#else
         sprintf(temp, "Actual Result: %s %s %5s %5s %5s %5s %5s %5s + %5s\n", latestQid.c_str(), latestDate.c_str(),
                 Elememts2String(rb1->mWuxing).c_str(), Elememts2String(rb2->mWuxing).c_str(), Elememts2String(rb3->mWuxing).c_str(),
                 Elememts2String(rb4->mWuxing).c_str(), Elememts2String(rb5->mWuxing).c_str(), Elememts2String(rb6->mWuxing).c_str(),
                 Elememts2String(bb->mWuxing).c_str());
+#endif
         data += std::string(temp);
         printf("write data:%s\n", data.c_str());
 

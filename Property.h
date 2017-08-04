@@ -42,7 +42,13 @@ enum RedNumbers {
     RED_NUM_THIRTY,
     RED_NUM_THIRTY_ONE,
     RED_NUM_THIRTY_TWO,
+#ifdef DLT
+    RED_NUM_THIRTY_THREE,
+    RED_NUM_THIRTY_FOUR,
+    RED_NUM_THIRTY_FIVE = 35
+#else
     RED_NUM_THIRTY_THREE = 33
+#endif
 };
 
 /* BlueBall Numbers */
@@ -59,11 +65,15 @@ enum BlueNumbers {
     BLUE_NUM_NINE,
     BLUE_NUM_TEN,
     BLUE_NUM_ELEVEN,
+#ifdef DLT
+    BLUE_NUM_TWELVE = 12
+#else
     BLUE_NUM_TWELVE,
     BLUE_NUM_THIRTEEN,
     BLUE_NUM_FOURTEEN,
     BLUE_NUM_FIFTEEN,
     BLUE_NUM_SIXTEEN = 16
+#endif
 };
 
 /* parity */
@@ -162,7 +172,7 @@ static std::string getLogTitleFromBalltype(BallType ballType)
             return "6th RedBall";
 
         case BLUEBALL_FIRST:
-            return "ssq BlueBall";
+            return "1st BlueBall";
 
         case BLUEBALL_SECOND:
             return "2nd BlueBall";
@@ -196,10 +206,10 @@ static char* Balltype2FieldName(BallType ballType)
             return FIELD_RB_SIXTH;
 
         case BLUEBALL_FIRST:
-            return FIELD_BB;
+            return FIELD_BB1;
 
         case BLUEBALL_SECOND:
-            return "2nd BlueBall";
+            return FIELD_BB2;
 
         default:
             break;
@@ -216,6 +226,9 @@ static Elememts RedNumber2Elememt(RedNumbers num)
         case RED_NUM_TWENTY_ONE:
         case RED_NUM_TWENTY_TWO:
         case RED_NUM_THIRTY_THREE:
+#ifdef DLT
+        case RED_NUM_THIRTY_FOUR:
+#endif
             return METAL;
 
         case RED_NUM_THREE:
@@ -252,6 +265,9 @@ static Elememts RedNumber2Elememt(RedNumbers num)
         case RED_NUM_TWENTY_SIX:
         case RED_NUM_TWENTY_NINE:
         case RED_NUM_THIRTY_TWO:
+#ifdef DLT
+        case RED_NUM_THIRTY_FIVE:
+#endif
             return EARTH;
 
         default:
@@ -270,13 +286,17 @@ static Elememts BlueNumber2Elememt(BlueNumbers num)
 
         case BLUE_NUM_THREE:
         case BLUE_NUM_FOUR:
+#ifdef DLT
         case BLUE_NUM_FIFTEEN:
         case BLUE_NUM_SIXTEEN:
+#endif
             return WOOD;
 
         case BLUE_NUM_ONE:
         case BLUE_NUM_TWELVE:
+#ifdef DLT
         case BLUE_NUM_THIRTEEN:
+#endif
             return WATER;
 
         case BLUE_NUM_SIX:
@@ -287,7 +307,9 @@ static Elememts BlueNumber2Elememt(BlueNumbers num)
         case BLUE_NUM_FIVE:
         case BLUE_NUM_EIGHT:
         case BLUE_NUM_ELEVEN:
+#ifdef DLT
         case BLUE_NUM_FOURTEEN:
+#endif
             return EARTH;
 
         default:
