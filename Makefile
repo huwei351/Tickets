@@ -12,8 +12,9 @@ OFILES = Algorithm.o Main.o MySqlOperator.o StringUtil.o Callpy.o
 
 TARGET = tickets
 
-all:$(TARGET)
-$(TARGET) : ${OFILES}
+#all:$(TARGET)
+#$(TARGET) : ${OFILES}
+all:
 	g++ -g -c $(SRCFILES)
 	g++ -o $(TARGET) $(OFILES) $(CFLAGS)
 

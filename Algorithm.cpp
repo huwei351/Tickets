@@ -913,8 +913,8 @@ bool Algorithm::saveData2File(std::string dirname, std::string filename, std::st
     printf("saveData2File-->data len = %d\n", data.length());
     // write data to file
     FILE *fp;
-    char buf[1024];
-    memset(buf, 0, 1024);
+    char buf[10240];
+    memset(buf, 0, 10240);
     fp = fopen((dirname + std::string("/") + filename).c_str(), "a+");
 
     if(fp == NULL) {
@@ -923,9 +923,9 @@ bool Algorithm::saveData2File(std::string dirname, std::string filename, std::st
         return false;
     }
 
-    //sprintf(buf, "\n%s", data.c_str());
+    sprintf(buf, "\n%s", data.c_str());
 
-    if(fwrite(data.c_str(), sizeof(buf), data.size() / sizeof(buf) + 1, fp) < 1) {
+    if(fwrite(buf, strlen(buf), 1, fp) < 1) {
         printf("write file %s fail!\n", filename.c_str());
         fclose(fp);
         return false;
@@ -995,7 +995,7 @@ bool Algorithm::writeActualLatestResult2LastPredictFile()
                 rb1->mNum, rb2->mNum, rb3->mNum, rb4->mNum, rb5->mNum, rb6->mNum, bb->mNum);
         data += std::string(temp);
         memset(temp, 0, 512);
-        sprintf(temp, "\nActual Result: %s %s %5s %5s %5s %5s %5s %5s + %5s\n", latestQid.c_str(), latestDate.c_str(),
+        sprintf(temp, "Actual Result: %s %s %5s %5s %5s %5s %5s %5s + %5s\n", latestQid.c_str(), latestDate.c_str(),
                 Elememts2String(rb1->mWuxing).c_str(), Elememts2String(rb2->mWuxing).c_str(), Elememts2String(rb3->mWuxing).c_str(),
                 Elememts2String(rb4->mWuxing).c_str(), Elememts2String(rb5->mWuxing).c_str(), Elememts2String(rb6->mWuxing).c_str(),
                 Elememts2String(bb->mWuxing).c_str());
