@@ -7,6 +7,8 @@
 
 #include "MySqlOperator.h"
 #include "Result.h"
+#include "MyConfig.h"
+
 /*
 enum {
     REDBALL_FIRST = 1,
@@ -57,6 +59,10 @@ class Algorithm
         Algorithm();
 
         ~Algorithm();
+
+        void setNumAndWuxingWeight(float num, float wuxing);
+
+        void getCurNumAndWuxingWeight(float &num, float &wuxing);
 
         bool updateDatabase();
 
@@ -123,8 +129,11 @@ class Algorithm
 
     private:
 
+        MyConfig* mMyConfig;
         MySqlOperator* mMySqlOperator;
         Result *mLatestResult;
+        float NUM_WEIGHT;
+        float WUXING_WEIGHT;
 
 };
 

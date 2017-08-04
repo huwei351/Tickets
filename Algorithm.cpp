@@ -21,11 +21,29 @@
 Algorithm::Algorithm()
 {
     mMySqlOperator = new MySqlOperator();
+    mMyConfig = new MyConfig();
+    NUM_WEIGHT = mMyConfig->getNumWeight();
+    WUXING_WEIGHT = mMyConfig->getWuxingWeight();
 }
 
 Algorithm::~Algorithm()
 {
     delete mMySqlOperator;
+    delete mMyConfig;
+}
+
+void Algorithm::setNumAndWuxingWeight(float num, float wuxing)
+{
+    mMyConfig->setNumWeight(num);
+    mMyConfig->setWuxingWeight(wuxing);
+    printf("Set Weight: num_weight = %0.3f, wuxing_weight = %0.3f\n", num, wuxing);
+}
+
+void Algorithm::getCurNumAndWuxingWeight(float &num, float &wuxing)
+{
+    num = mMyConfig->getNumWeight();
+    wuxing = mMyConfig->getWuxingWeight();
+    printf("Get Current Weight: num_weight = %0.3f, wuxing_weight = %0.3f\n", num, wuxing);
 }
 
 bool Algorithm::updateDatabase()
@@ -214,8 +232,6 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
 
 std::vector<redballStatistics> Algorithm::calculateRedBallProbability(RedBall *rb, std::string &content)
 {
-    static float NUM_WEIGHT = 0.5;
-    static float WUXING_WEIGHT = 0.5;
     std::vector<rnumStatistics> rnumList;
     std::vector<wuxingStatistics> wuxingList;
     std::vector<redballStatistics> rBallList;
@@ -298,8 +314,6 @@ std::vector<redballStatistics> Algorithm::calculateRedBallProbability(RedBall *r
 
 std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(BlueBall *bb, std::string &content)
 {
-    static float NUM_WEIGHT = 0.5;
-    static float WUXING_WEIGHT = 0.5;
     std::vector<bnumStatistics> bnumList;
     std::vector<wuxingStatistics> wuxingList;
     std::vector<blueballStatistics> bBallList;
