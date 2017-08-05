@@ -95,7 +95,7 @@ Result* Algorithm::getLatestResultFromDatabase()
                 BlueNumbers b1 = (BlueNumbers) atoi(lines[8].c_str());
                 BlueNumbers b2 = (BlueNumbers) atoi(lines[9].c_str());
                 printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, b1=%d, b2=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, b1, b2);
-#endif
+#else
                 RedNumbers r6 = (RedNumbers) atoi(lines[8].c_str());
                 BlueNumbers b0 = (BlueNumbers) atoi(lines[9].c_str());
                 printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, r6, b0);
