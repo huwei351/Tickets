@@ -27,7 +27,7 @@ int MySqlOperator::ConnMySQL(char *host, char * port , char * Db, char * user, c
 }
 
 //Query data
-std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
+std::string MySqlOperator::SelectData(char * table, char * field, int rmax, char* order)
 {
     MYSQL_ROW m_row;
     MYSQL_RES *m_res;
@@ -37,9 +37,9 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
     char sql[2048];
 
     if(field == NULL)
-    { sprintf(sql, "select * from %s order by date DESC", table); }
+    { sprintf(sql, "select * from %s order by date %s", table, order); }
     else
-    { sprintf(sql, "select %s from %s order by date DESC", field, table); }
+    { sprintf(sql, "select %s from %s order by date %s", field, table, order); }
 
     int res = mysql_query(&mysql, sql);
     //printf("mysql_query: sql=\"%s\", res=%d\n", sql, res);
@@ -57,6 +57,7 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax)
 
         cnum = mysql_num_fields(m_res);
         rnum = mysql_num_rows(m_res) + 1;
+        mMyConfig->setDatabaseTableLength(table, rnum);
         //printf("column_num = %d, row_num = %d\n", cnum, rnum);
 
         for(int i = rnum - rmax; i < rnum; i++) {

@@ -1,0 +1,39 @@
+linux mysql command:
+
+mysql -uroot -p
+
+show databases;
+
+use ssq;
+
+show tables;
+
+CREATE TABLE IF NOT EXISTS `ssq_result`(
+   `id` INT UNSIGNED AUTO_INCREMENT,
+   `rid` INT,
+   `date` DATE,
+   `rb1` TINYINT,
+   `rb2` TINYINT,
+   `rb3` TINYINT,
+   `rb4` TINYINT,
+   `rb5` TINYINT,
+   `rb6` TINYINT,
+   `bb` TINYINT,
+   PRIMARY KEY ( `id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+describe ssq_result;
+
+select * from ssq_result;
+
+delete from ssq_result;
+
+drop table ssq_result;
+
+drop database ssq;
+
+//按日期升序排列
+SELECT * from ssq_result ORDER BY date ASC;
+
+//按日期降序排列
+SELECT * from ssq_result ORDER BY date DESC;

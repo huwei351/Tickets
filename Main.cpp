@@ -5,6 +5,7 @@
 #include <string>
 
 #include "Algorithm.h"
+#include "AccuracyTest.h"
 
 enum {
     PRE_MSG_SSQ = 1,
@@ -52,6 +53,7 @@ int32_t main(int32_t argc, char *argv[])
     float num_weight = 0.5;
     float wuxing_weight = 0.5;
     Algorithm *ai = new Algorithm();
+    AccuracyTest *at = new AccuracyTest();
     ai->getCurNumAndWuxingWeight(num_weight, wuxing_weight);
 
     do {
@@ -60,6 +62,7 @@ int32_t main(int32_t argc, char *argv[])
         printf("    %d  => Predict Latest SSQ Result\n", 1);
         printf("    %d  => Compare Actual Result with Predict Result\n", 2);
         printf("    %d  => Set Default num/wuxing Weight\n", 3);
+        printf("    %d  => Start SSQ Predict Accuracy Test\n", 4);
         printf("    %d  => Quit Program\n", PRE_QUIT);
         selection = app_get_choice("Select Function");
 
@@ -113,6 +116,12 @@ int32_t main(int32_t argc, char *argv[])
                 }
                 break;
 
+            case 4: {
+                    printf("Accuracy Test Started...\n");
+                    at->startAccuracyTest();
+                }
+                break;
+
             case PRE_QUIT: {
                     printf("Quit SSQ Submenu\n");
                     break;
@@ -127,6 +136,8 @@ int32_t main(int32_t argc, char *argv[])
         printf("\nDLT Predict Submenu:\n");
         printf("	%d	=> Predict Latest DLT Result\n", 1);
         printf("	%d	=> Compare Actual Result with Predict Result\n", 2);
+        printf("    %d  => Set Default num/wuxing Weight\n", 3);
+        printf("    %d  => Start SSQ Predict Accuracy Test\n", 4);
         printf("	%d	=> Quit Program\n", PRE_QUIT);
         selection = app_get_choice("Select Function");
 
@@ -135,6 +146,12 @@ int32_t main(int32_t argc, char *argv[])
                 }
 
             case 2: {
+                }
+
+            case 3: {
+                }
+
+            case 4: {
                 }
 
             case PRE_QUIT: {
@@ -151,6 +168,7 @@ int32_t main(int32_t argc, char *argv[])
     } while(selection != PRE_QUIT);  /* While user don't exit application */
 
     delete ai;
+    delete at;
     printf(" Result Predict Program is quiting...\n");
     return 0;
 }

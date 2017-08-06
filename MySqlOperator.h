@@ -12,6 +12,7 @@
 #include <mysql/mysql.h>
 #endif
 
+#include "MyConfig.h"
 
 #define HOST "localhost"
 #define PORT "3306"
@@ -53,16 +54,18 @@ class MySqlOperator
 
         MYSQL mysql;
 
-        MySqlOperator() {
+        MySqlOperator(MyConfig *myconfig) {
+            mMyConfig = myconfig;
         }
 
         ~MySqlOperator() {
+            delete mMyConfig;
         }
 
 
         int ConnMySQL(char *host, char * port, char * Db, char * user, char* passwd, char * charset);
 
-        std::string SelectData(char * table, char * field, int rmax);
+        std::string SelectData(char * table, char * field, int rmax, char *order = "DESC");
 
         int InsertData(char * table, char * v_rid, char * v_date, char * v_rb1, char * v_rb2, char * v_rb3, char * v_rb4, char * v_rb5, char * v_rb6, char * v_bb);
 
@@ -71,6 +74,10 @@ class MySqlOperator
         int DeleteData(char * table, char * field, char * value);
 
         void CloseMySQLConn();
+
+    private:
+
+        MyConfig *mMyConfig;
 
 };
 

@@ -39,6 +39,17 @@ void MyConfig::setWuxingWeight(float weight)
     Add(KeyWuxingWeight, (float)weight);
     UNLOCK();
 }
+void MyConfig::setDatabaseTableLength(char* table, int len)
+{
+    LOCK_AND_SWITH_TO_SECTION(strDefaultSection);
+
+    if(strcmp(table, "ssq_result") == 0)
+    { Add(KeySsqTableLength, (int)len); }
+    else if(strcmp(table, "dlt_result") == 0)
+    { Add(KeyDltTableLength, (int)len); }
+
+    UNLOCK();
+}
 void MyConfig::setStartupMode(int mode)
 {
     LOCK_AND_SWITH_TO_SECTION(strDefaultSection);
@@ -344,6 +355,22 @@ float MyConfig::getWuxingWeight()
 
     if(KeyExists(KeyWuxingWeight))
     { r = Read<float>(KeyWuxingWeight); }
+
+    UNLOCK();
+    return r;
+}
+int MyConfig::getDatabaseTableLength(char* table)
+{
+    LOCK_AND_SWITH_TO_SECTION(strDefaultSection);
+    int r = 0;
+
+    if(strcmp(table, "ssq_result") == 0) {
+        if(KeyExists(KeySsqTableLength))
+        { r = Read<int>(KeySsqTableLength); }
+    } else if(strcmp(table, "dlt_result") == 0) {
+        if(KeyExists(KeyDltTableLength))
+        { r = Read<int>(KeyDltTableLength); }
+    }
 
     UNLOCK();
     return r;

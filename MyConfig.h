@@ -23,6 +23,8 @@ const std::string strDefaultSection = "default";
 /* Global for all working (net) modes */
 const std::string KeyNumWeight = "num.weight";
 const std::string KeyWuxingWeight = "wuxing.weight";
+const std::string KeySsqTableLength = "ssq.table.rows";
+const std::string KeyDltTableLength = "dlt.table.rows";
 const std::string KeyStartupMode = "startup.mode";
 const std::string KeyIntialSteupMode = "initial.setup.mode";
 const std::string KeyCurMode = "current.mode";
@@ -104,6 +106,7 @@ class MyConfig : public Config
         ~MyConfig();
         void setNumWeight(float weight);
         void setWuxingWeight(float weight);
+        void setDatabaseTableLength(char* table, int len);
         void setStartupMode(int mode);
         void setCurMode(int mode);
         void setCountryCode(std::string code);
@@ -170,6 +173,7 @@ class MyConfig : public Config
 
         float getNumWeight();
         float getWuxingWeight();
+        int getDatabaseTableLength(char* table);
         int getStartupMode();
         int getCurMode();
         const std::string getCountryCode();

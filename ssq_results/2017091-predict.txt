@@ -107,13 +107,13 @@ num|  count |   31  |   22  |   19  |    8  |    5  |
 19 |    1   |	    |	    | 0.119 |	    |	    | 11 |
 bb | wuxing |  wood | water | earth | metal |  fire |
 num|  count |   17  |   15  |   14  |    8  |    5  |
-13 |    4   |	    | 0.199 |	    |	    |	    |  2 |
+13 |    4   |	    |	    |	    |	    |	    |  0 |
  4 |    4   | 0.215 |	    |	    |	    |	    |  1 |
  8 |    4   |	    |	    | 0.190 |	    |	    |  3 |
 10 |    3   |	    |	    |	    | 0.121 |	    |  9 |
 12 |    3   |	    | 0.181 |	    |	    |	    |  4 |
-16 |    2   | 0.180 |	    |	    |	    |	    |  5 |
-15 |    2   | 0.180 |	    |	    |	    |	    |  6 |
+16 |    2   |	    |	    |	    |	    |	    |  4 |
+15 |    2   |	    |	    |	    |	    |	    |  4 |
  7 |    2   |	    |	    |	    |	    | 0.078 | 11 |
  9 |    2   |	    |	    |	    | 0.104 |	    | 10 |
 11 |    1   |	    |	    | 0.137 |	    |	    |  8 |
@@ -124,48 +124,3 @@ PredictResult[ 2]  1  2 14 17 26 32 +  4  probability = 1.721
 PredictResult[ 3]  5  7 14 17 26 32 +  4  probability = 1.718
 PredictResult[ 4]  2  7 14 17 29 32 +  4  probability = 1.718
 PredictResult[ 5]  2  7 14 17 20 32 +  4  probability = 1.718
-PredictResult[ 6]  2  7 14 17 26 29 +  4  probability = 1.717
-PredictResult[ 7]  2  7 14 17 26 32 + 13  probability = 1.715
-PredictResult[ 8]  2  8 14 17 26 32 +  4  probability = 1.714
-PredictResult[ 9]  2  6 14 17 26 32 +  4  probability = 1.709
-PredictResult[10]  2  7 14 17 26 32 +  8  probability = 1.707
-PredictResult[11]  1  2 14 17 20 32 +  4  probability = 1.706
-PredictResult[12]  1  2 14 17 29 32 +  4  probability = 1.706
-PredictResult[13]  1  2 14 17 26 29 +  4  probability = 1.706
-PredictResult[14]  1  7 14 17 26 32 +  4  probability = 1.704
-PredictResult[15]  1  2 14 17 26 32 + 13  probability = 1.704
-PredictResult[16]  5  7 14 17 29 32 +  4  probability = 1.704
-PredictResult[17]  5  7 14 17 20 32 +  4  probability = 1.704
-PredictResult[18]  2  7 14 17 23 32 +  4  probability = 1.703
-PredictResult[19]  2 11 14 17 26 32 +  4  probability = 1.703
-PredictResult[20]  2  5 14 17 26 32 +  4  probability = 1.703
-PredictResult[21]  5  7 14 17 26 29 +  4  probability = 1.703
-PredictResult[22]  2  7 14 17 20 29 +  4  probability = 1.703
-PredictResult[23]  5  7 14 17 26 32 + 13  probability = 1.701
-PredictResult[24]  2  7 14 17 29 32 + 13  probability = 1.701
-PredictResult[25]  2  7 14 17 20 32 + 13  probability = 1.701
-PredictResult[26]  5  8 14 17 26 32 +  4  probability = 1.700
-PredictResult[27]  2  8 14 17 20 32 +  4  probability = 1.700
-PredictResult[28]  2  8 14 17 29 32 +  4  probability = 1.700
-PredictResult[29]  2  7 14 17 26 29 + 13  probability = 1.700
-PredictResult[30]  2  8 14 17 26 29 +  4  probability = 1.699
-PredictResult[31]  2  8 14 17 26 32 + 13  probability = 1.697
-PredictResult[32]  2  7 14 17 26 32 + 12  probability = 1.697
-PredictResult[33]  2  7 14 17 26 32 + 16  probability = 1.696
-PredictResult[34]  2  7 14 17 26 32 + 15  probability = 1.696
-PredictResult[35]  1  2 14 17 26 32 +  8  probability = 1.695
-PredictResult[36]  5  6 14 17 26 32 +  4  probability = 1.695
-PredictResult[37]  2  6 14 17 29 32 +  4  probability = 1.695
-PredictResult[38]  2  6 14 17 20 32 +  4  probability = 1.695
-PredictResult[39]  2  6 14 17 26 29 +  4  probability = 1.694
-PredictResult[40]  5  7 14 17 26 32 +  8  probability = 1.692
-PredictResult[41]  2  6 14 17 26 32 + 13  probability = 1.692
-PredictResult[42]  2  7 14 17 29 32 +  8  probability = 1.692
-PredictResult[43]  2  7 14 17 20 32 +  8  probability = 1.692
-PredictResult[44]  1  2 14 17 23 32 +  4  probability = 1.692
-PredictResult[45]  2  7 14 17 26 29 +  8  probability = 1.691
-PredictResult[46]  1  2 14 17 20 29 +  4  probability = 1.691
-PredictResult[47]  1  7 14 17 29 32 +  4  probability = 1.690
-PredictResult[48]  1  7 14 17 20 32 +  4  probability = 1.690
-PredictResult[49]  1  2 14 17 20 32 + 13  probability = 1.690
-PredictResult[50]  1  2 14 17 29 32 + 13  probability = 1.690

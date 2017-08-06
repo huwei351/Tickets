@@ -20,8 +20,8 @@
 
 Algorithm::Algorithm()
 {
-    mMySqlOperator = new MySqlOperator();
     mMyConfig = new MyConfig();
+    mMySqlOperator = new MySqlOperator(mMyConfig);
     NUM_WEIGHT = mMyConfig->getNumWeight();
     WUXING_WEIGHT = mMyConfig->getWuxingWeight();
 }
