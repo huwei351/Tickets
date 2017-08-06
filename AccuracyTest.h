@@ -53,14 +53,14 @@ class AccuracyTest
         std::vector<RedBall*> getRedBallListFromDatabase(char *field, int id);
 
         std::vector<BlueBall*> getBlueBallListFromDatabase(char *field, int id);
-		
-		bool is2ResultsEqual(Result *r1, Result *r2, int level);
+
+        bool is2ResultsEqual(Result *r1, Result *r2, int level);
 
         std::vector<float> getAccuracyForDifferentWeight(float num_wt, float wuxing_wt);
 
         void startAccuracyTest();
 
-        void writeAccuracyData2ExcelFile(std::vector<float> accuList);
+        bool writeAccuracyData2File(std::vector<float> accuList, int index);
 
     private:
 

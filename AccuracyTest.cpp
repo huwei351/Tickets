@@ -17,6 +17,8 @@
 #include "Callpy.h"
 #include "AccuracyTest.h"
 
+#define TEST_DIR "./accuracy_test"
+#define TEST_FILE_HEAD "Accuracy_Test_"
 
 AccuracyTest::AccuracyTest()
 {
@@ -596,7 +598,7 @@ bool AccuracyTest::is2ResultsEqual(Result *r1, Result *r2, int level)
 #else
         return same && r1->mB0->mNum == r2->mB0->mNum;
 #endif
-    } else if (level == 1) {
+    } else if(level == 1) {
         return same;
     } else {
         printf("Invalid level!\n");
@@ -635,10 +637,51 @@ void AccuracyTest::startAccuracyTest()
         float num = (float) i * 0.1;
         float wuxing = 1.0 - num;
         std::vector<float> aList = getAccuracyForDifferentWeight(num, wuxing);
-        writeAccuracyData2ExcelFile(aList);
+        writeAccuracyData2File(aList, i);
     }
 }
 
-void AccuracyTest::writeAccuracyData2ExcelFile(std::vector<float> accuList)
+bool AccuracyTest::writeAccuracyData2File(std::vector<float> accuList, int index)
 {
+    std::string data = "";
+    char buf[16];
+    sprintf(buf, "%d", index);
+    std::string filename = std::string(TEST_FILE_HEAD) + std::string(buf) + std::string(".txt");
+
+    for(int i = 0; i < (int)accuList.size(); i++) {
+        memset(buf, 0, 16);
+        sprintf(buf, "%0.3f\n", accuList[i]);
+        data += std::string(buf);
+    }
+
+    // check if dir exist
+    if(access(TEST_DIR, F_OK)) {
+        printf("dir %s not exist, try to create it\n", TEST_DIR);
+
+        if(mkdir(TEST_DIR, 00755)) {
+            printf("create dir %s fail!\n", TEST_DIR);
+            return false;
+        }
+    }
+
+    // write data to file
+    FILE *fp;
+    fp = fopen((std::string(TEST_DIR) + std::string("/") + filename).c_str(), "w+");
+
+    if(fp == NULL) {
+        printf("open file %s fail!\n", filename.c_str());
+        fclose(fp);
+        return false;
+    }
+
+    if(fwrite(data.c_str(), data.length(), 1, fp) < 1) {
+        printf("write file %s fail!\n", filename.c_str());
+        fclose(fp);
+        return false;
+    }
+
+    fclose(fp);
+    return true;
 }
+
+
