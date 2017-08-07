@@ -4,7 +4,13 @@ mysql -uroot -p
 
 show databases;
 
+create database ssq;
+
+create database dlt;
+
 use ssq;
+
+use dlt;
 
 show tables;
 
@@ -22,6 +28,20 @@ CREATE TABLE IF NOT EXISTS `ssq_result`(
    PRIMARY KEY ( `id` )
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `dlt_result`(
+   `id` INT UNSIGNED AUTO_INCREMENT,
+   `rid` INT,
+   `date` DATE,
+   `rb1` TINYINT,
+   `rb2` TINYINT,
+   `rb3` TINYINT,
+   `rb4` TINYINT,
+   `rb5` TINYINT,
+   `bb1` TINYINT,
+   `bb2` TINYINT,
+   PRIMARY KEY ( `id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 describe ssq_result;
 
 select * from ssq_result;
@@ -35,5 +55,9 @@ drop database ssq;
 //按日期升序排列
 SELECT * from ssq_result ORDER BY date ASC;
 
+SELECT * from dlt_result ORDER BY date ASC;
+
 //按日期降序排列
 SELECT * from ssq_result ORDER BY date DESC;
+
+SELECT * from dlt_result ORDER BY date DESC;

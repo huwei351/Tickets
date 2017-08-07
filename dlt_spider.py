@@ -67,7 +67,7 @@ def save_result_into_database(dict):
         print('starting save results')
 
 def insert_dlt_result(rid,date,rb1,rb2,rb3,rb4,rb5,bb1,bb2):
-    sql = 'INSERT INTO ssq_result (`rid`,`date`,`rb1`,`rb2`,`rb3`,`rb4`,`rb5`,`bb1`,`bb2`) VALUES (%(rid)s,%(date)s,%(rb1)s,%(rb2)s,%(rb3)s,%(rb4)s,%(rb5)s,%(bb1)s,%(bb2)s)'
+    sql = 'INSERT INTO dlt_result (`rid`,`date`,`rb1`,`rb2`,`rb3`,`rb4`,`rb5`,`bb1`,`bb2`) VALUES (%(rid)s,%(date)s,%(rb1)s,%(rb2)s,%(rb3)s,%(rb4)s,%(rb5)s,%(bb1)s,%(bb2)s)'
     value = {
         'rid':rid,
         'date':date,
