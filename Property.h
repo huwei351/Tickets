@@ -5,7 +5,10 @@
 #include <stdlib.h>
 #include <string>
 #include <vector>
+#include <memory>
 
+#define sptr(T) std::shared_ptr<T>
+#define make(T,...) std::make_shared<T>(__VA_ARGS__)
 
 /* RedBall Numbers */
 enum RedNumbers {

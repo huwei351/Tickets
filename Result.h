@@ -21,31 +21,31 @@ class Result
         std::string mDate;
 
         /* red ball 1 */
-        RedBall *mR1;
+        sptr(RedBall) mR1;
 
         /* red ball 2 */
-        RedBall *mR2;
+        sptr(RedBall) mR2;
 
         /* red ball 3 */
-        RedBall *mR3;
+        sptr(RedBall) mR3;
 
         /* red ball 4 */
-        RedBall *mR4;
+        sptr(RedBall) mR4;
 
         /* red ball 5 */
-        RedBall *mR5;
+        sptr(RedBall) mR5;
 #ifdef DLT
         /* blue ball 1 */
-        BlueBall *mB1;
+        sptr(BlueBall) mB1;
 
         /* blue ball 2 */
-        BlueBall *mB2;
+        sptr(BlueBall) mB2;
 #else
         /* red ball 6 */
-        RedBall *mR6;
+        sptr(RedBall) mR6;
 
         /* blue ball */
-        BlueBall *mB0;
+        sptr(BlueBall) mB0;
 #endif
 
 #ifdef DLT
@@ -101,17 +101,17 @@ class Result
         RedRatio mZhiheRatio;
 
         Result() {
-            mR1 = new RedBall();
-            mR2 = new RedBall();
-            mR3 = new RedBall();
-            mR4 = new RedBall();
-            mR5 = new RedBall();
+            mR1 = make(RedBall);
+            mR2 = make(RedBall);
+            mR3 = make(RedBall);
+            mR4 = make(RedBall);
+            mR5 = make(RedBall);
 #ifdef DLT
-            mB1 = new BlueBall();
-            mB2 = new BlueBall();
+            mB1 = make(BlueBall);
+            mB2 = make(BlueBall);
 #else
-            mR6 = new RedBall();
-            mB0 = new BlueBall();
+            mR6 = make(RedBall);
+            mB0 = make(BlueBall);
 #endif
             mRedSum = 0;
             mUnitSum = 0;
@@ -123,11 +123,11 @@ class Result
             mDate = "1997-01-01";
         }
 
-        Result(RedBall *r1, RedBall *r2, RedBall *r3, RedBall *r4, RedBall *r5,
+        Result(sptr(RedBall) r1, sptr(RedBall) r2, sptr(RedBall) r3, sptr(RedBall) r4, sptr(RedBall) r5,
 #ifdef DLT
-               BlueBall *b1, BlueBall *b2)
+               sptr(BlueBall) b1, sptr(BlueBall) b2)
 #else
-               RedBall *r6, BlueBall *b0)
+               sptr(RedBall) r6, sptr(BlueBall) b0)
 #endif
         {
             mR1 = r1;

@@ -37,17 +37,17 @@ struct wuxingStatistics {
 };
 
 struct redballStatistics {
-    RedBall *redball;
+    sptr(RedBall) redball;
     float probability;
 };
 
 struct blueballStatistics {
-    BlueBall *blueball;
+    sptr(BlueBall) blueball;
     float probability;
 };
 
 struct resultStatistics {
-    Result *result;
+    sptr(Result) result;
     float probability;
 };
 
@@ -56,7 +56,7 @@ class Algorithm
 
     public:
 
-        Algorithm(MySqlOperator *mysqloperator, MyConfig *myconfig);
+        Algorithm(sptr(MySqlOperator) mysqloperator, sptr(MyConfig) myconfig);
 
         ~Algorithm();
 
@@ -66,7 +66,7 @@ class Algorithm
 
         bool updateDatabase();
 
-        Result* getLatestResultFromDatabase();
+        sptr(Result) getLatestResultFromDatabase();
 
         static bool sortByPro(const resultStatistics &rs1, const resultStatistics &rs2);
 
@@ -86,9 +86,9 @@ class Algorithm
 
         std::vector<resultStatistics> getMaxProbabilityPredictResult(int top);
 
-        std::vector<redballStatistics> calculateRedBallProbability(RedBall *rb, std::string &content);
+        std::vector<redballStatistics> calculateRedBallProbability(sptr(RedBall) rb, std::string &content);
 
-        std::vector<blueballStatistics> calculateBlueBallProbability(BlueBall *bb, std::string &content);
+        std::vector<blueballStatistics> calculateBlueBallProbability(sptr(BlueBall) bb, std::string &content);
 
         void comparePredictResultWithActualResult();
 
@@ -100,9 +100,9 @@ class Algorithm
         void printBlueballNumberProbability(std::vector<bnumStatistics> *sta, int total, BallType ballType);
 
         void printBallWuxingProbability(std::vector<wuxingStatistics> *sta, int total, BallType ballType);
-        int calculateRedBallNumberAndWuxingProbability(RedBall *rb, int &total_rnum, int &total_wuxing,
+        int calculateRedBallNumberAndWuxingProbability(sptr(RedBall) rb, int &total_rnum, int &total_wuxing,
                                                        std::vector<rnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList);
-        int calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &total_bnum, int &total_wuxing,
+        int calculateBlueBallNumberAndWuxingProbability(sptr(BlueBall) bb, int &total_bnum, int &total_wuxing,
                                                         std::vector<bnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList);
 
         //int calculateRedBallNumberProbability(int ballType, std::vector<rnumStatistics> *staList);
@@ -111,9 +111,9 @@ class Algorithm
 
         //int calculateBallWuxingProbability(int ballType, std::vector<wuxingStatistics> wuxingList);
 
-        std::vector<RedBall*> getRedBallListFromDatabase(char *field, int rnum);
+        std::vector< sptr(RedBall) > getRedBallListFromDatabase(char *field, int rnum);
 
-        std::vector<BlueBall*> getBlueBallListFromDatabase(char *field, int rnum);
+        std::vector< sptr(BlueBall) > getBlueBallListFromDatabase(char *field, int rnum);
 
         std::string printRedballPredictTable(BallType type, std::vector<rnumStatistics> rsList,
                                              std::vector<wuxingStatistics> wsList, std::vector<redballStatistics> rbList);
@@ -129,9 +129,9 @@ class Algorithm
 
     private:
 
-        MyConfig* mMyConfig;
-        MySqlOperator* mMySqlOperator;
-        Result *mLatestResult;
+        sptr(MyConfig) mMyConfig;
+        sptr(MySqlOperator) mMySqlOperator;
+        sptr(Result) mLatestResult;
         float NUM_WEIGHT;
         float WUXING_WEIGHT;
 

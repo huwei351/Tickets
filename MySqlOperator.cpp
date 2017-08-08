@@ -124,10 +124,9 @@ int MySqlOperator::getDatabaseTableLength(char * table)
     MYSQL_RES *m_res;
     int rnum , cnum;
     char sql[2048];
-
     sprintf(sql, "select * from %s", table);
     int res = mysql_query(&mysql, sql);
-	printf("sql=%s, res=%d\n", sql, res);
+    printf("sql=%s, res=%d\n", sql, res);
 
     if(res) {
         mysql_error(&mysql);
@@ -142,7 +141,6 @@ int MySqlOperator::getDatabaseTableLength(char * table)
 
         cnum = mysql_num_fields(m_res);
         rnum = mysql_num_rows(m_res) + 1;
-
         mysql_free_result(m_res);
     }
 

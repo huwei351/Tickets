@@ -15,13 +15,13 @@ class AccuracyTest
 
     public:
 
-        AccuracyTest(MySqlOperator *mysqloperator);
+        AccuracyTest(sptr(MySqlOperator) mysqloperator);
 
         ~AccuracyTest();
 
-		int getDatabaseTableLength(char *table);
+        int getDatabaseTableLength(char *table);
 
-        Result* getResultFromDatabase(int id);
+        sptr(Result) getResultFromDatabase(int id);
 
         static bool sortByPro(const resultStatistics &rs1, const resultStatistics &rs2);
 
@@ -39,20 +39,20 @@ class AccuracyTest
 
         std::vector<resultStatistics> getMaxProbabilityPredictResult(int id);
 
-        std::vector<redballStatistics> calculateRedBallProbability(RedBall *rb, int id);
+        std::vector<redballStatistics> calculateRedBallProbability(sptr(RedBall) rb, int id);
 
-        std::vector<blueballStatistics> calculateBlueBallProbability(BlueBall *bb, int id);
+        std::vector<blueballStatistics> calculateBlueBallProbability(sptr(BlueBall) bb, int id);
 
-        int calculateRedBallNumberAndWuxingProbability(int id, RedBall *rb, int &total_rnum, int &total_wuxing,
+        int calculateRedBallNumberAndWuxingProbability(int id, sptr(RedBall) rb, int &total_rnum, int &total_wuxing,
                                                        std::vector<rnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList);
-        int calculateBlueBallNumberAndWuxingProbability(int id, BlueBall *bb, int &total_bnum, int &total_wuxing,
+        int calculateBlueBallNumberAndWuxingProbability(int id, sptr(BlueBall) bb, int &total_bnum, int &total_wuxing,
                                                         std::vector<bnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList);
 
-        std::vector<RedBall*> getRedBallListFromDatabase(char *field, int id);
+        std::vector< sptr(RedBall) > getRedBallListFromDatabase(char *field, int id);
 
-        std::vector<BlueBall*> getBlueBallListFromDatabase(char *field, int id);
+        std::vector< sptr(BlueBall) > getBlueBallListFromDatabase(char *field, int id);
 
-        bool is2ResultsEqual(Result *r1, Result *r2, int level);
+        bool is2ResultsEqual(sptr(Result) r1, sptr(Result) r2, int level);
 
         std::vector<float> getAccuracyForDifferentWeight(float num_wt, float wuxing_wt);
 
@@ -62,7 +62,7 @@ class AccuracyTest
 
     private:
 
-        MySqlOperator* mMySqlOperator;
+        sptr(MySqlOperator) mMySqlOperator;
         float NUM_WEIGHT = 0.5;
         float WUXING_WEIGHT = 0.5;
         int TABALE_LENGTH;

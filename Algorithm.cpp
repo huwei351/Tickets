@@ -18,7 +18,7 @@
 #include "Callpy.h"
 
 
-Algorithm::Algorithm(MySqlOperator *mysqloperator, MyConfig *myconfig)
+Algorithm::Algorithm(sptr(MySqlOperator) mysqloperator, sptr(MyConfig) myconfig)
 {
     mMyConfig = myconfig;
     mMySqlOperator = mysqloperator;
@@ -28,8 +28,6 @@ Algorithm::Algorithm(MySqlOperator *mysqloperator, MyConfig *myconfig)
 
 Algorithm::~Algorithm()
 {
-    delete mMySqlOperator;
-    delete mMyConfig;
 }
 
 void Algorithm::setNumAndWuxingWeight(float num, float wuxing)
@@ -52,9 +50,8 @@ bool Algorithm::updateDatabase()
     int qid = mLatestResult->getQid();
     char cqid[128];
     sprintf(cqid, "%d", qid);
-    Callpy *py = new Callpy();
+    sptr(Callpy) py = make(Callpy);
     int res = py->runPythonFunction(std::string("update_database"), std::string("1") + std::string("\n") + std::string(cqid) + std::string("\n"));
-    delete py;
 
     if(res == 0) {
         mLatestResult = getLatestResultFromDatabase();
@@ -68,11 +65,11 @@ bool Algorithm::updateDatabase()
     }
 }
 
-Result* Algorithm::getLatestResultFromDatabase()
+sptr(Result) Algorithm::getLatestResultFromDatabase()
 {
     std::string str;
     std::vector<std::string> lines;
-    Result *result;
+    sptr(Result) result;
 
     if(mMySqlOperator != NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
@@ -100,12 +97,12 @@ Result* Algorithm::getLatestResultFromDatabase()
                 BlueNumbers b0 = (BlueNumbers) atoi(lines[9].c_str());
                 printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, r6, b0);
 #endif
-                result = new Result(new RedBall(r1, REDBALL_FIRST), new RedBall(r2, REDBALL_SECOND), new RedBall(r3, REDBALL_THIRD),
-                                    new RedBall(r4, REDBALL_FOURTH), new RedBall(r5, REDBALL_FIFTH),
+                result = make(Result, make(RedBall, r1, REDBALL_FIRST), make(RedBall, r2, REDBALL_SECOND), make(RedBall, r3, REDBALL_THIRD),
+                              make(RedBall, r4, REDBALL_FOURTH), make(RedBall, r5, REDBALL_FIFTH),
 #ifdef DLT
-                                    new BlueBall(b1, BLUEBALL_FIRST), new BlueBall(b2, BLUEBALL_SECOND));
+                              make(BlueBall, b1, BLUEBALL_FIRST), make(BlueBall, b2, BLUEBALL_SECOND));
 #else
-                                    new RedBall(r6, REDBALL_SIXTH), new BlueBall(b0, BLUEBALL_FIRST));
+                              make(RedBall, r6, REDBALL_SIXTH), make(BlueBall, b0, BLUEBALL_FIRST));
 #endif
                 result->setDate(date);
                 result->setQid(qid);
@@ -161,7 +158,7 @@ std::string Algorithm::printPredictResult(std::vector<resultStatistics> resultSt
     memset(temp, 0, 512);
 
     for(int i = 0; i < (int)resultSta.size(); i++) {
-        Result *result = resultSta[i].result;
+        sptr(Result) result = resultSta[i].result;
         RedNumbers rnum1 = result->mR1->mNum;
         RedNumbers rnum2 = result->mR2->mNum;
         RedNumbers rnum3 = result->mR3->mNum;
@@ -235,8 +232,8 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
                                     rsta3[k].redball->mNum < rsta4[m].redball->mNum &&
                                     rsta4[m].redball->mNum < rsta5[n].redball->mNum &&
                                     bsta1[r].blueball->mNum < bsta2[s].blueball->mNum) {
-                                    Result *result = new Result(rsta1[i].redball, rsta2[j].redball, rsta3[k].redball,
-                                                                rsta4[m].redball, rsta5[n].redball, bsta1[r].blueball, bsta2[s].blueball);
+                                    sptr(Result) result = make(Result, rsta1[i].redball, rsta2[j].redball, rsta3[k].redball,
+                                                               rsta4[m].redball, rsta5[n].redball, bsta1[r].blueball, bsta2[s].blueball);
                                     float prob = rsta1[i].probability + rsta2[j].probability + rsta3[k].probability + rsta4[m].probability
                                                  + rsta5[n].probability + bsta1[r].probability + bsta2[s].probability;
                                     resultStatistics sta;
@@ -256,8 +253,8 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
                                     rsta3[k].redball->mNum < rsta4[m].redball->mNum &&
                                     rsta4[m].redball->mNum < rsta5[n].redball->mNum &&
                                     rsta5[n].redball->mNum < rsta6[r].redball->mNum) {
-                                    Result *result = new Result(rsta1[i].redball, rsta2[j].redball, rsta3[k].redball,
-                                                                rsta4[m].redball, rsta5[n].redball, rsta6[r].redball, bsta[s].blueball);
+                                    sptr(Result) result = make(Result, rsta1[i].redball, rsta2[j].redball, rsta3[k].redball,
+                                                               rsta4[m].redball, rsta5[n].redball, rsta6[r].redball, bsta[s].blueball);
                                     float prob = rsta1[i].probability + rsta2[j].probability + rsta3[k].probability + rsta4[m].probability
                                                  + rsta5[n].probability + rsta6[r].probability + bsta[s].probability;
                                     resultStatistics sta;
@@ -284,7 +281,7 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
     return resultSta;
 }
 
-std::vector<redballStatistics> Algorithm::calculateRedBallProbability(RedBall *rb, std::string &content)
+std::vector<redballStatistics> Algorithm::calculateRedBallProbability(sptr(RedBall) rb, std::string &content)
 {
     std::vector<rnumStatistics> rnumList;
     std::vector<wuxingStatistics> wuxingList;
@@ -328,7 +325,7 @@ std::vector<redballStatistics> Algorithm::calculateRedBallProbability(RedBall *r
     }
 
     for(int j = 0; j < (int)rnumList.size(); j++) {
-        RedBall *redball = new RedBall(rnumList[j].rn);
+        sptr(RedBall) redball = make(RedBall, rnumList[j].rn);
 
         switch(redball->mWuxing) {
             case METAL:
@@ -366,7 +363,7 @@ std::vector<redballStatistics> Algorithm::calculateRedBallProbability(RedBall *r
     return rBallList;
 }
 
-std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(BlueBall *bb, std::string &content)
+std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(sptr(BlueBall) bb, std::string &content)
 {
     std::vector<bnumStatistics> bnumList;
     std::vector<wuxingStatistics> wuxingList;
@@ -410,7 +407,7 @@ std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(BlueBall
     }
 
     for(int j = 0; j < (int)bnumList.size(); j++) {
-        BlueBall *blueball = new BlueBall(bnumList[j].bn);
+        sptr(BlueBall) blueball = make(BlueBall, bnumList[j].bn);
 
         switch(blueball->mWuxing) {
             case METAL:
@@ -479,13 +476,13 @@ void Algorithm::printBallWuxingProbability(std::vector<wuxingStatistics> *sta, i
     }
 }
 
-int Algorithm::calculateRedBallNumberAndWuxingProbability(RedBall *rb, int &total_rnum, int &total_wuxing,
+int Algorithm::calculateRedBallNumberAndWuxingProbability(sptr(RedBall) rb, int &total_rnum, int &total_wuxing,
                                                           std::vector<rnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList)
 {
     RedNumbers num = rb->mNum;
     Elememts wuxing = rb->mWuxing;
     BallType ballType = rb->mBalltype;
-    std::vector<RedBall*> mList = getRedBallListFromDatabase(Balltype2FieldName(ballType), 500);
+    std::vector< sptr(RedBall) > mList = getRedBallListFromDatabase(Balltype2FieldName(ballType), 500);
 
     for(int i = (int)mList.size() - 1; i > 0; i--) {
         if(num == mList[i]->mNum) {
@@ -551,13 +548,13 @@ int Algorithm::calculateRedBallNumberAndWuxingProbability(RedBall *rb, int &tota
     //printBallWuxingProbability(wuxingList, total_wuxing, ballType);
 }
 
-int Algorithm::calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &total_bnum, int &total_wuxing,
+int Algorithm::calculateBlueBallNumberAndWuxingProbability(sptr(BlueBall) bb, int &total_bnum, int &total_wuxing,
                                                            std::vector<bnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList)
 {
     BlueNumbers num = bb->mNum;
     Elememts wuxing = bb->mWuxing;
     BallType ballType = bb->mBalltype;
-    std::vector<BlueBall*> mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), 500);
+    std::vector< sptr(BlueBall) > mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), 500);
 
     for(int i = (int)mList.size() - 1; i > 0; i--) {
         if(num == mList[i]->mNum) {
@@ -623,9 +620,9 @@ int Algorithm::calculateBlueBallNumberAndWuxingProbability(BlueBall *bb, int &to
     //printBallWuxingProbability(wuxingList, total_wuxing, ballType);
 }
 
-std::vector<RedBall*> Algorithm::getRedBallListFromDatabase(char *field, int rnum)
+std::vector< sptr(RedBall) > Algorithm::getRedBallListFromDatabase(char *field, int rnum)
 {
-    std::vector<RedBall*> redList;
+    std::vector< sptr(RedBall) > redList;
     std::vector<std::string> lines;
     std::string str;
 
@@ -642,7 +639,7 @@ std::vector<RedBall*> Algorithm::getRedBallListFromDatabase(char *field, int rnu
 
                 for(int i = 0; i < (int)lines.size(); i++) {
                     RedNumbers rn = (RedNumbers) atoi(lines[i].c_str());
-                    RedBall *rb = new RedBall(rn);
+                    sptr(RedBall) rb = make(RedBall, rn);
                     redList.push_back(rb);
                 }
             }
@@ -654,9 +651,9 @@ std::vector<RedBall*> Algorithm::getRedBallListFromDatabase(char *field, int rnu
     return redList;
 }
 
-std::vector<BlueBall*> Algorithm::getBlueBallListFromDatabase(char *field, int rnum)
+std::vector< sptr(BlueBall) > Algorithm::getBlueBallListFromDatabase(char *field, int rnum)
 {
-    std::vector<BlueBall*> blueList;
+    std::vector< sptr(BlueBall) > blueList;
     std::vector<std::string> lines;
     std::string str;
 
@@ -673,7 +670,7 @@ std::vector<BlueBall*> Algorithm::getBlueBallListFromDatabase(char *field, int r
 
                 for(int i = 0; i < (int)lines.size(); i++) {
                     BlueNumbers bn = (BlueNumbers) atoi(lines[i].c_str());
-                    BlueBall *bb = new BlueBall(bn);
+                    sptr(BlueBall) bb = make(BlueBall, bn);
                     blueList.push_back(bb);
                 }
             }
@@ -887,17 +884,17 @@ bool Algorithm::writeActualLatestResult2LastPredictFile()
         printf("predict file %s not exist\n", oldname.c_str());
         return false;
     } else {//file exist
-        RedBall *rb1 = mLatestResult->mR1;
-        RedBall *rb2 = mLatestResult->mR2;
-        RedBall *rb3 = mLatestResult->mR3;
-        RedBall *rb4 = mLatestResult->mR4;
-        RedBall *rb5 = mLatestResult->mR5;
+        sptr(RedBall) rb1 = mLatestResult->mR1;
+        sptr(RedBall) rb2 = mLatestResult->mR2;
+        sptr(RedBall) rb3 = mLatestResult->mR3;
+        sptr(RedBall) rb4 = mLatestResult->mR4;
+        sptr(RedBall) rb5 = mLatestResult->mR5;
 #ifdef DLT
-        BlueBall *bb1 = mLatestResult->mB1;
-        BlueBall *bb2 = mLatestResult->mB2;
+        sptr(BlueBall) bb1 = mLatestResult->mB1;
+        sptr(BlueBall) bb2 = mLatestResult->mB2;
 #else
-        RedBall *rb6 = mLatestResult->mR6;
-        BlueBall *bb = mLatestResult->mB0;
+        sptr(RedBall) rb6 = mLatestResult->mR6;
+        sptr(BlueBall) bb = mLatestResult->mB0;
 #endif
         std::string data = "";
         char temp[512];

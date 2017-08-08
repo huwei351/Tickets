@@ -1,5 +1,5 @@
 
-CFLAGS = -std=c++11 -Wall -Wstrict-prototypes -Dlinux -lpthread   \
+CFLAGS = -Wall -Wstrict-prototypes -Dlinux -lpthread   \
 	-I/usr/include/mysql/    \
 	-L/usr/lib/x86_64-linux-gnu -lmysqlclient -lpthread -lm -lrt -ldl    \
 	-I/usr/include/python2.7 -I/usr/include/x86_64-linux-gnu/python2.7     \
@@ -13,7 +13,7 @@ OFILES = Algorithm.o Main.o MySqlOperator.o StringUtil.o Callpy.o Config.o MyCon
 TARGET = tickets
 
 all:
-	g++ -g -c $(SRCFILES)
+	g++ -g -c -std=c++0x $(SRCFILES)
 	g++ -o $(TARGET) $(OFILES) $(CFLAGS)
 
 

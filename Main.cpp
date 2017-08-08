@@ -52,10 +52,10 @@ int32_t main(int32_t argc, char *argv[])
     int selection;
     float num_weight = 0.5;
     float wuxing_weight = 0.5;
-	MyConfig *mc = new MyConfig();
-	MySqlOperator *mo = new MySqlOperator();
-    Algorithm *ai = new Algorithm(mo, mc);
-    AccuracyTest *at = new AccuracyTest(mo);
+    sptr(MyConfig) mc = make(MyConfig);
+    sptr(MySqlOperator) mo = make(MySqlOperator);
+    sptr(Algorithm) ai = make(Algorithm, mo, mc);
+    sptr(AccuracyTest) at = make(AccuracyTest, mo);
     ai->getCurNumAndWuxingWeight(num_weight, wuxing_weight);
 
     do {
@@ -169,10 +169,6 @@ int32_t main(int32_t argc, char *argv[])
 #endif
     } while(selection != PRE_QUIT);  /* While user don't exit application */
 
-	//delete mc;
-	//delete mo;
-    //delete ai;
-    //delete at;
     printf(" Result Predict Program is quiting...\n");
     return 0;
 }

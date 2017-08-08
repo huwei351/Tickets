@@ -20,7 +20,9 @@
 #define TEST_DIR "./accuracy_test"
 #define TEST_FILE_HEAD "Accuracy_Test_"
 
-AccuracyTest::AccuracyTest(MySqlOperator *mysqloperator)
+using namespace std;
+
+AccuracyTest::AccuracyTest(sptr(MySqlOperator) mysqloperator)
 {
     mMySqlOperator = mysqloperator;
 #ifdef DLT
@@ -32,7 +34,6 @@ AccuracyTest::AccuracyTest(MySqlOperator *mysqloperator)
 
 AccuracyTest::~AccuracyTest()
 {
-    delete mMySqlOperator;
 }
 
 int AccuracyTest::getDatabaseTableLength(char *table)
@@ -54,12 +55,12 @@ int AccuracyTest::getDatabaseTableLength(char *table)
     return len;
 }
 
-Result* AccuracyTest::getResultFromDatabase(int id)
+sptr(Result) AccuracyTest::getResultFromDatabase(int id)
 {
-    std::string str;
-    std::vector<std::string> rlines;
-    std::vector<std::string> clines;
-    Result *result;
+    string str;
+    vector<string> rlines;
+    vector<string> clines;
+    sptr(Result) result;
 
     if(mMySqlOperator != NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
@@ -73,7 +74,7 @@ Result* AccuracyTest::getResultFromDatabase(int id)
                 StringUtil::StringSplit(rlines, str, ROW_G);
                 StringUtil::StringSplit(clines, rlines[id - 1], COLUMN_G);
                 int qid = atoi(clines[1].c_str());
-                std::string date = clines[2];
+                string date = clines[2];
                 RedNumbers r1 = (RedNumbers) atoi(clines[3].c_str());
                 RedNumbers r2 = (RedNumbers) atoi(clines[4].c_str());
                 RedNumbers r3 = (RedNumbers) atoi(clines[5].c_str());
@@ -88,12 +89,12 @@ Result* AccuracyTest::getResultFromDatabase(int id)
                 BlueNumbers b0 = (BlueNumbers) atoi(clines[9].c_str());
                 printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, r6, b0);
 #endif
-                result = new Result(new RedBall(r1, REDBALL_FIRST), new RedBall(r2, REDBALL_SECOND), new RedBall(r3, REDBALL_THIRD),
-                                    new RedBall(r4, REDBALL_FOURTH), new RedBall(r5, REDBALL_FIFTH),
+                result = make(Result, make(RedBall, r1, REDBALL_FIRST), make(RedBall, r2, REDBALL_SECOND), make(RedBall, r3, REDBALL_THIRD),
+                              make(RedBall, r4, REDBALL_FOURTH), make(RedBall, r5, REDBALL_FIFTH),
 #ifdef DLT
-                                    new BlueBall(b1, BLUEBALL_FIRST), new BlueBall(b2, BLUEBALL_SECOND));
+                              make(BlueBall, b1, BLUEBALL_FIRST), make(BlueBall, b2, BLUEBALL_SECOND));
 #else
-                                    new RedBall(r6, REDBALL_SIXTH), new BlueBall(b0, BLUEBALL_FIRST));
+                              make(RedBall, r6, REDBALL_SIXTH), make(BlueBall, b0, BLUEBALL_FIRST));
 #endif
                 result->setDate(date);
                 result->setQid(qid);
@@ -136,7 +137,7 @@ bool AccuracyTest::sortByCount2(const bnumStatistics &bs1, const bnumStatistics 
     return bs1.count > bs2.count;
 }
 
-void AccuracyTest::rearrangePredictResult(std::vector<resultStatistics> *resultSta, int top)
+void AccuracyTest::rearrangePredictResult(vector<resultStatistics> *resultSta, int top)
 {
     std::sort(resultSta->begin(), resultSta->end(), sortByPro);
 
@@ -144,21 +145,21 @@ void AccuracyTest::rearrangePredictResult(std::vector<resultStatistics> *resultS
     { resultSta->erase(resultSta->begin() + top, resultSta->end()); }
 }
 
-std::vector<resultStatistics> AccuracyTest::getMaxProbabilityPredictResult(int id)
+vector<resultStatistics> AccuracyTest::getMaxProbabilityPredictResult(int id)
 {
-    Result* mResult = getResultFromDatabase(id);
-    std::vector<resultStatistics> resultSta;
-    std::vector<redballStatistics> rsta1 = calculateRedBallProbability(mResult->mR1, id);
-    std::vector<redballStatistics> rsta2 = calculateRedBallProbability(mResult->mR2, id);
-    std::vector<redballStatistics> rsta3 = calculateRedBallProbability(mResult->mR3, id);
-    std::vector<redballStatistics> rsta4 = calculateRedBallProbability(mResult->mR4, id);
-    std::vector<redballStatistics> rsta5 = calculateRedBallProbability(mResult->mR5, id);
+    sptr(Result) mResult = getResultFromDatabase(id);
+    vector<resultStatistics> resultSta;
+    vector<redballStatistics> rsta1 = calculateRedBallProbability(mResult->mR1, id);
+    vector<redballStatistics> rsta2 = calculateRedBallProbability(mResult->mR2, id);
+    vector<redballStatistics> rsta3 = calculateRedBallProbability(mResult->mR3, id);
+    vector<redballStatistics> rsta4 = calculateRedBallProbability(mResult->mR4, id);
+    vector<redballStatistics> rsta5 = calculateRedBallProbability(mResult->mR5, id);
 #ifdef DLT
-    std::vector<blueballStatistics> bsta1 = calculateBlueBallProbability(mResult->mB1, id);
-    std::vector<blueballStatistics> bsta2 = calculateBlueBallProbability(mResult->mB2, id);
+    vector<blueballStatistics> bsta1 = calculateBlueBallProbability(mResult->mB1, id);
+    vector<blueballStatistics> bsta2 = calculateBlueBallProbability(mResult->mB2, id);
 #else
-    std::vector<redballStatistics> rsta6 = calculateRedBallProbability(mResult->mR6, id);
-    std::vector<blueballStatistics> bsta = calculateBlueBallProbability(mResult->mB0, id);
+    vector<redballStatistics> rsta6 = calculateRedBallProbability(mResult->mR6, id);
+    vector<blueballStatistics> bsta = calculateBlueBallProbability(mResult->mB0, id);
 #endif
     printf("start create resultStatistics...\n");
 
@@ -176,8 +177,8 @@ std::vector<resultStatistics> AccuracyTest::getMaxProbabilityPredictResult(int i
                                     rsta3[k].redball->mNum < rsta4[m].redball->mNum &&
                                     rsta4[m].redball->mNum < rsta5[n].redball->mNum &&
                                     bsta1[r].blueball->mNum < bsta2[s].blueball->mNum) {
-                                    Result *result = new Result(rsta1[i].redball, rsta2[j].redball, rsta3[k].redball,
-                                                                rsta4[m].redball, rsta5[n].redball, bsta1[r].blueball, bsta2[s].blueball);
+                                    sptr(Result) result = make(Result, rsta1[i].redball, rsta2[j].redball, rsta3[k].redball,
+                                                               rsta4[m].redball, rsta5[n].redball, bsta1[r].blueball, bsta2[s].blueball);
                                     float prob = rsta1[i].probability + rsta2[j].probability + rsta3[k].probability + rsta4[m].probability
                                                  + rsta5[n].probability + bsta1[r].probability + bsta2[s].probability;
                                     resultStatistics sta;
@@ -197,8 +198,8 @@ std::vector<resultStatistics> AccuracyTest::getMaxProbabilityPredictResult(int i
                                     rsta3[k].redball->mNum < rsta4[m].redball->mNum &&
                                     rsta4[m].redball->mNum < rsta5[n].redball->mNum &&
                                     rsta5[n].redball->mNum < rsta6[r].redball->mNum) {
-                                    Result *result = new Result(rsta1[i].redball, rsta2[j].redball, rsta3[k].redball,
-                                                                rsta4[m].redball, rsta5[n].redball, rsta6[r].redball, bsta[s].blueball);
+                                    sptr(Result) result = make(Result, rsta1[i].redball, rsta2[j].redball, rsta3[k].redball,
+                                                               rsta4[m].redball, rsta5[n].redball, rsta6[r].redball, bsta[s].blueball);
                                     float prob = rsta1[i].probability + rsta2[j].probability + rsta3[k].probability + rsta4[m].probability
                                                  + rsta5[n].probability + rsta6[r].probability + bsta[s].probability;
                                     resultStatistics sta;
@@ -218,15 +219,14 @@ std::vector<resultStatistics> AccuracyTest::getMaxProbabilityPredictResult(int i
 
     printf("create resultStatistics complete!\n");
     rearrangePredictResult(&resultSta, 0);
-	delete mResult;
     return resultSta;
 }
 
-std::vector<redballStatistics> AccuracyTest::calculateRedBallProbability(RedBall *rb, int id)
+vector<redballStatistics> AccuracyTest::calculateRedBallProbability(sptr(RedBall) rb, int id)
 {
-    std::vector<rnumStatistics> rnumList;
-    std::vector<wuxingStatistics> wuxingList;
-    std::vector<redballStatistics> rBallList;
+    vector<rnumStatistics> rnumList;
+    vector<wuxingStatistics> wuxingList;
+    vector<redballStatistics> rBallList;
     float PROBABILITY_METAL = 0;
     float PROBABILITY_WOOD = 0;
     float PROBABILITY_WATER = 0;
@@ -264,7 +264,7 @@ std::vector<redballStatistics> AccuracyTest::calculateRedBallProbability(RedBall
     }
 
     for(int j = 0; j < (int)rnumList.size(); j++) {
-        RedBall *redball = new RedBall(rnumList[j].rn);
+        sptr(RedBall) redball = make(RedBall, rnumList[j].rn);
 
         switch(redball->mWuxing) {
             case METAL:
@@ -301,11 +301,11 @@ std::vector<redballStatistics> AccuracyTest::calculateRedBallProbability(RedBall
     return rBallList;
 }
 
-std::vector<blueballStatistics> AccuracyTest::calculateBlueBallProbability(BlueBall *bb, int id)
+vector<blueballStatistics> AccuracyTest::calculateBlueBallProbability(sptr(BlueBall) bb, int id)
 {
-    std::vector<bnumStatistics> bnumList;
-    std::vector<wuxingStatistics> wuxingList;
-    std::vector<blueballStatistics> bBallList;
+    vector<bnumStatistics> bnumList;
+    vector<wuxingStatistics> wuxingList;
+    vector<blueballStatistics> bBallList;
     float PROBABILITY_METAL = 0;
     float PROBABILITY_WOOD = 0;
     float PROBABILITY_WATER = 0;
@@ -343,7 +343,7 @@ std::vector<blueballStatistics> AccuracyTest::calculateBlueBallProbability(BlueB
     }
 
     for(int j = 0; j < (int)bnumList.size(); j++) {
-        BlueBall *blueball = new BlueBall(bnumList[j].bn);
+        sptr(BlueBall) blueball = make(BlueBall, bnumList[j].bn);
 
         switch(blueball->mWuxing) {
             case METAL:
@@ -380,13 +380,13 @@ std::vector<blueballStatistics> AccuracyTest::calculateBlueBallProbability(BlueB
     return bBallList;
 }
 
-int AccuracyTest::calculateRedBallNumberAndWuxingProbability(int id, RedBall *rb, int &total_rnum, int &total_wuxing,
+int AccuracyTest::calculateRedBallNumberAndWuxingProbability(int id, sptr(RedBall) rb, int &total_rnum, int &total_wuxing,
                                                              std::vector<rnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList)
 {
     RedNumbers num = rb->mNum;
     Elememts wuxing = rb->mWuxing;
     BallType ballType = rb->mBalltype;
-    std::vector<RedBall*> mList = getRedBallListFromDatabase(Balltype2FieldName(ballType), id);
+    vector< sptr(RedBall) > mList = getRedBallListFromDatabase(Balltype2FieldName(ballType), id);
 
     for(int i = 0; i < (int)mList.size() - 1; i++) {
         if(num == mList[i]->mNum) {
@@ -450,13 +450,13 @@ int AccuracyTest::calculateRedBallNumberAndWuxingProbability(int id, RedBall *rb
     std::sort(wuxingList->begin(), wuxingList->end(), sortByCount);
 }
 
-int AccuracyTest::calculateBlueBallNumberAndWuxingProbability(int id, BlueBall *bb, int &total_bnum, int &total_wuxing,
+int AccuracyTest::calculateBlueBallNumberAndWuxingProbability(int id, sptr(BlueBall) bb, int &total_bnum, int &total_wuxing,
                                                               std::vector<bnumStatistics> *staList, std::vector<wuxingStatistics> *wuxingList)
 {
     BlueNumbers num = bb->mNum;
     Elememts wuxing = bb->mWuxing;
     BallType ballType = bb->mBalltype;
-    std::vector<BlueBall*> mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), id);
+    std::vector< sptr(BlueBall) > mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), id);
 
     for(int i = 0; i < (int)mList.size() - 1; i++) {
         if(num == mList[i]->mNum) {
@@ -520,11 +520,11 @@ int AccuracyTest::calculateBlueBallNumberAndWuxingProbability(int id, BlueBall *
     std::sort(wuxingList->begin(), wuxingList->end(), sortByCount);
 }
 
-std::vector<RedBall*> AccuracyTest::getRedBallListFromDatabase(char *field, int id)
+vector< sptr(RedBall) > AccuracyTest::getRedBallListFromDatabase(char *field, int id)
 {
-    std::vector<RedBall*> redList;
-    std::vector<std::string> lines;
-    std::string str;
+    vector< sptr(RedBall) > redList;
+    vector<string> lines;
+    string str;
 
     if(mMySqlOperator != NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
@@ -539,7 +539,7 @@ std::vector<RedBall*> AccuracyTest::getRedBallListFromDatabase(char *field, int 
 
                 for(int i = id - 500; i < (int)lines.size(); i++) {
                     RedNumbers rn = (RedNumbers) atoi(lines[i].c_str());
-                    RedBall *rb = new RedBall(rn);
+                    sptr(RedBall) rb = make(RedBall, rn);
                     redList.push_back(rb);
                 }
             }
@@ -551,11 +551,11 @@ std::vector<RedBall*> AccuracyTest::getRedBallListFromDatabase(char *field, int 
     return redList;
 }
 
-std::vector<BlueBall*> AccuracyTest::getBlueBallListFromDatabase(char *field, int id)
+vector< sptr(BlueBall) > AccuracyTest::getBlueBallListFromDatabase(char *field, int id)
 {
-    std::vector<BlueBall*> blueList;
-    std::vector<std::string> lines;
-    std::string str;
+    vector< sptr(BlueBall) > blueList;
+    vector<string> lines;
+    string str;
 
     if(mMySqlOperator != NULL) {
         if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
@@ -570,7 +570,7 @@ std::vector<BlueBall*> AccuracyTest::getBlueBallListFromDatabase(char *field, in
 
                 for(int i = id - 500; i < (int)lines.size(); i++) {
                     BlueNumbers bn = (BlueNumbers) atoi(lines[i].c_str());
-                    BlueBall *bb = new BlueBall(bn);
+                    sptr(BlueBall) bb = make(BlueBall, bn);
                     blueList.push_back(bb);
                 }
             }
@@ -585,7 +585,7 @@ std::vector<BlueBall*> AccuracyTest::getBlueBallListFromDatabase(char *field, in
 /* level 0: all the balls same
  * level 1: only the red balls same
  */
-bool AccuracyTest::is2ResultsEqual(Result *r1, Result *r2, int level)
+bool AccuracyTest::is2ResultsEqual(sptr(Result) r1, sptr(Result) r2, int level)
 {
     bool same = (r1->mR1->mNum == r2->mR1->mNum && r1->mR2->mNum == r2->mR2->mNum &&
                  r1->mR3->mNum == r2->mR3->mNum && r1->mR4->mNum == r2->mR4->mNum && r1->mR5->mNum == r2->mR5->mNum
@@ -609,15 +609,16 @@ bool AccuracyTest::is2ResultsEqual(Result *r1, Result *r2, int level)
 }
 
 
-std::vector<float> AccuracyTest::getAccuracyForDifferentWeight(float num_wt, float wuxing_wt)
+vector<float> AccuracyTest::getAccuracyForDifferentWeight(float num_wt, float wuxing_wt)
 {
     NUM_WEIGHT = num_wt;
     WUXING_WEIGHT = wuxing_wt;
-    std::vector<float> mList;
-	printf("getAccuracyForDifferentWeight-->TABALE_LENGTH=%d\n", TABALE_LENGTH);
+    vector<float> mList;
+    printf("getAccuracyForDifferentWeight-->TABALE_LENGTH=%d\n", TABALE_LENGTH);
+
     for(int i = 500; i < TABALE_LENGTH; i++) {
-        std::vector<resultStatistics> rsta = getMaxProbabilityPredictResult(i);
-        Result* actualResult = getResultFromDatabase(i + 1);
+        vector<resultStatistics> rsta = getMaxProbabilityPredictResult(i);
+        sptr(Result) actualResult = getResultFromDatabase(i + 1);
         float accuracy = 1.0;
 
         for(int j = 0; j < (int)rsta.size(); j++) {
@@ -628,7 +629,6 @@ std::vector<float> AccuracyTest::getAccuracyForDifferentWeight(float num_wt, flo
         }
 
         mList.push_back(accuracy);
-		delete actualResult;
     }
 
     return mList;
@@ -639,17 +639,17 @@ void AccuracyTest::startAccuracyTest()
     for(int i = 1; i < 10; i++) {
         float num = (float) i * 0.1;
         float wuxing = 1.0 - num;
-        std::vector<float> aList = getAccuracyForDifferentWeight(num, wuxing);
+        vector<float> aList = getAccuracyForDifferentWeight(num, wuxing);
         writeAccuracyData2File(aList, i);
     }
 }
 
-bool AccuracyTest::writeAccuracyData2File(std::vector<float> accuList, int index)
+bool AccuracyTest::writeAccuracyData2File(vector<float> accuList, int index)
 {
-    std::string data = "";
+    string data = "";
     char buf[16];
     sprintf(buf, "%d", index);
-    std::string filename = std::string(TEST_FILE_HEAD) + std::string(buf) + std::string(".txt");
+    string filename = string(TEST_FILE_HEAD) + string(buf) + string(".txt");
 
     for(int i = 0; i < (int)accuList.size(); i++) {
         memset(buf, 0, 16);
@@ -669,7 +669,7 @@ bool AccuracyTest::writeAccuracyData2File(std::vector<float> accuList, int index
 
     // write data to file
     FILE *fp;
-    fp = fopen((std::string(TEST_DIR) + std::string("/") + filename).c_str(), "w+");
+    fp = fopen((string(TEST_DIR) + string("/") + filename).c_str(), "w+");
 
     if(fp == NULL) {
         printf("open file %s fail!\n", filename.c_str());

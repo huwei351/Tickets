@@ -71,7 +71,7 @@ class MySqlOperator
 
         int DeleteData(char * table, char * field, char * value);
 
-		int getDatabaseTableLength(char * table);
+        int getDatabaseTableLength(char * table);
 
         void CloseMySQLConn();
 
