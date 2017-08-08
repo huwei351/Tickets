@@ -58,6 +58,8 @@ class AccuracyTest
 
         void startAccuracyTest();
 
+		void startAccuracyTest2();
+
         bool writeAccuracyData2File(std::vector<float> accuList, int index);
 
     private:
