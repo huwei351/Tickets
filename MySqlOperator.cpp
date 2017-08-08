@@ -57,7 +57,6 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax, char
 
         cnum = mysql_num_fields(m_res);
         rnum = mysql_num_rows(m_res) + 1;
-        mMyConfig->setDatabaseTableLength(table, rnum);
         //printf("column_num = %d, row_num = %d\n", cnum, rnum);
 
         for(int i = rnum - rmax; i < rnum; i++) {
@@ -118,6 +117,38 @@ int MySqlOperator::DeleteData(char * table, char * field, char * value)
 
     return res;
 }
+
+//Get table length
+int MySqlOperator::getDatabaseTableLength(char * table)
+{
+    MYSQL_RES *m_res;
+    int rnum , cnum;
+    char sql[2048];
+
+    sprintf(sql, "select * from %s", table);
+    int res = mysql_query(&mysql, sql);
+	printf("sql=%s, res=%d\n", sql, res);
+
+    if(res) {
+        mysql_error(&mysql);
+        return 0;
+    } else {
+        m_res = mysql_store_result(&mysql);
+
+        if(m_res == NULL) {
+            mysql_error(&mysql);
+            return 0;
+        }
+
+        cnum = mysql_num_fields(m_res);
+        rnum = mysql_num_rows(m_res) + 1;
+
+        mysql_free_result(m_res);
+    }
+
+    return rnum;
+}
+
 
 //Close MySQL connection
 void MySqlOperator::CloseMySQLConn()

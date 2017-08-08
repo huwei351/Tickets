@@ -15,13 +15,11 @@ class AccuracyTest
 
     public:
 
-        AccuracyTest();
+        AccuracyTest(MySqlOperator *mysqloperator);
 
         ~AccuracyTest();
 
-        void setNumAndWuxingWeight(float num, float wuxing);
-
-        void getCurNumAndWuxingWeight(float &num, float &wuxing);
+		int getDatabaseTableLength(char *table);
 
         Result* getResultFromDatabase(int id);
 
@@ -64,10 +62,9 @@ class AccuracyTest
 
     private:
 
-        MyConfig* mMyConfig;
         MySqlOperator* mMySqlOperator;
-        float NUM_WEIGHT;
-        float WUXING_WEIGHT;
+        float NUM_WEIGHT = 0.5;
+        float WUXING_WEIGHT = 0.5;
         int TABALE_LENGTH;
 
 };

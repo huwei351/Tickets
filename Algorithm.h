@@ -56,7 +56,7 @@ class Algorithm
 
     public:
 
-        Algorithm();
+        Algorithm(MySqlOperator *mysqloperator, MyConfig *myconfig);
 
         ~Algorithm();
 

@@ -1,5 +1,5 @@
 
-CFLAGS = -Wall -Wstrict-prototypes -Dlinux -lpthread   \
+CFLAGS = -std=c++11 -Wall -Wstrict-prototypes -Dlinux -lpthread   \
 	-I/usr/include/mysql/    \
 	-L/usr/lib/x86_64-linux-gnu -lmysqlclient -lpthread -lm -lrt -ldl    \
 	-I/usr/include/python2.7 -I/usr/include/x86_64-linux-gnu/python2.7     \

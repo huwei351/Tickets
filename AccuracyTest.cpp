@@ -20,37 +20,38 @@
 #define TEST_DIR "./accuracy_test"
 #define TEST_FILE_HEAD "Accuracy_Test_"
 
-AccuracyTest::AccuracyTest()
+AccuracyTest::AccuracyTest(MySqlOperator *mysqloperator)
 {
-    mMyConfig = new MyConfig();
-    mMySqlOperator = new MySqlOperator(mMyConfig);
-    NUM_WEIGHT = mMyConfig->getNumWeight();
-    WUXING_WEIGHT = mMyConfig->getWuxingWeight();
+    mMySqlOperator = mysqloperator;
 #ifdef DLT
-    TABALE_LENGTH = mMyConfig->getDatabaseTableLength(TABLE_DLT);
+    TABALE_LENGTH = getDatabaseTableLength(TABLE_DLT);
 #else
-    TABALE_LENGTH = mMyConfig->getDatabaseTableLength(TABLE_SSQ);
+    TABALE_LENGTH = getDatabaseTableLength(TABLE_SSQ);
 #endif
 }
 
 AccuracyTest::~AccuracyTest()
 {
     delete mMySqlOperator;
-    delete mMyConfig;
 }
 
-void AccuracyTest::setNumAndWuxingWeight(float num, float wuxing)
+int AccuracyTest::getDatabaseTableLength(char *table)
 {
-    mMyConfig->setNumWeight(num);
-    mMyConfig->setWuxingWeight(wuxing);
-    printf("Set Weight: num_weight = %0.3f, wuxing_weight = %0.3f\n", num, wuxing);
-}
+    int len;
 
-void AccuracyTest::getCurNumAndWuxingWeight(float &num, float &wuxing)
-{
-    num = mMyConfig->getNumWeight();
-    wuxing = mMyConfig->getWuxingWeight();
-    printf("Get Current Weight: num_weight = %0.3f, wuxing_weight = %0.3f\n", num, wuxing);
+    if(mMySqlOperator != NULL) {
+        if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+#ifdef DLT
+            len = mMySqlOperator->getDatabaseTableLength(TABLE_DLT);
+#else
+            len = mMySqlOperator->getDatabaseTableLength(TABLE_SSQ);
+#endif
+        }
+
+        mMySqlOperator->CloseMySQLConn();
+    }
+
+    return len;
 }
 
 Result* AccuracyTest::getResultFromDatabase(int id)
@@ -69,7 +70,7 @@ Result* AccuracyTest::getResultFromDatabase(int id)
 #endif
 
             if(!StringUtil::StringIsEmpty(str)) {
-                StringUtil::StringSplit(rlines, str, COLUMN_G);
+                StringUtil::StringSplit(rlines, str, ROW_G);
                 StringUtil::StringSplit(clines, rlines[id - 1], COLUMN_G);
                 int qid = atoi(clines[1].c_str());
                 std::string date = clines[2];
@@ -217,6 +218,7 @@ std::vector<resultStatistics> AccuracyTest::getMaxProbabilityPredictResult(int i
 
     printf("create resultStatistics complete!\n");
     rearrangePredictResult(&resultSta, 0);
+	delete mResult;
     return resultSta;
 }
 
@@ -612,7 +614,7 @@ std::vector<float> AccuracyTest::getAccuracyForDifferentWeight(float num_wt, flo
     NUM_WEIGHT = num_wt;
     WUXING_WEIGHT = wuxing_wt;
     std::vector<float> mList;
-
+	printf("getAccuracyForDifferentWeight-->TABALE_LENGTH=%d\n", TABALE_LENGTH);
     for(int i = 500; i < TABALE_LENGTH; i++) {
         std::vector<resultStatistics> rsta = getMaxProbabilityPredictResult(i);
         Result* actualResult = getResultFromDatabase(i + 1);
@@ -626,6 +628,7 @@ std::vector<float> AccuracyTest::getAccuracyForDifferentWeight(float num_wt, flo
         }
 
         mList.push_back(accuracy);
+		delete actualResult;
     }
 
     return mList;

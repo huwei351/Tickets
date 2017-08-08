@@ -54,12 +54,10 @@ class MySqlOperator
 
         MYSQL mysql;
 
-        MySqlOperator(MyConfig *myconfig) {
-            mMyConfig = myconfig;
+        MySqlOperator() {
         }
 
         ~MySqlOperator() {
-            delete mMyConfig;
         }
 
 
@@ -73,11 +71,10 @@ class MySqlOperator
 
         int DeleteData(char * table, char * field, char * value);
 
+		int getDatabaseTableLength(char * table);
+
         void CloseMySQLConn();
 
-    private:
-
-        MyConfig *mMyConfig;
 
 };
 

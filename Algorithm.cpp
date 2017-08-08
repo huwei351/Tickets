@@ -18,10 +18,10 @@
 #include "Callpy.h"
 
 
-Algorithm::Algorithm()
+Algorithm::Algorithm(MySqlOperator *mysqloperator, MyConfig *myconfig)
 {
-    mMyConfig = new MyConfig();
-    mMySqlOperator = new MySqlOperator(mMyConfig);
+    mMyConfig = myconfig;
+    mMySqlOperator = mysqloperator;
     NUM_WEIGHT = mMyConfig->getNumWeight();
     WUXING_WEIGHT = mMyConfig->getWuxingWeight();
 }
