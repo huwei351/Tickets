@@ -1,0 +1,138 @@
+
+rb1| wuxing | earth | water | metal |  fire |  wood |
+num|  count |   19  |    8  |    5  |    4  |    4  |
+ 2 |    4   | 0.404 |	    |	    |	    |	    |  1 |
+ 3 |    2   |	    |	    |	    |	    | 0.133 |  5 |
+ 6 |    1   |	    |	    |	    | 0.092 |	    |  7 |
+ 1 |    1   |	    | 0.142 |	    |	    |	    |  4 |
+ 5 |    1   | 0.279 |	    |	    |	    |	    |  2 |
+ 7 |    1   |	    |	    |	    | 0.092 |	    |  8 |
+10 |    1   |	    |	    | 0.104 |	    |	    |  6 |
+ 8 |    1   | 0.279 |	    |	    |	    |	    |  3 |
+rb2| wuxing | earth |  fire |  wood | water | metal |
+num|  count |   34  |   28  |   19  |   12  |   11  |
+ 8 |    2   | 0.263 |	    |	    |	    |	    |  1 |
+10 |    2   |	    |	    |	    |	    | 0.153 |  5 |
+ 6 |    1   |	    | 0.185 |	    |	    |	    |  4 |
+16 |    1   |	    |	    | 0.141 |	    |	    |  6 |
+ 9 |    1   |	    |	    |	    |	    | 0.103 |  8 |
+14 |    1   | 0.213 |	    |	    |	    |	    |  2 |
+ 3 |    1   |	    |	    | 0.141 |	    |	    |  7 |
+11 |    1   | 0.213 |	    |	    |	    |	    |  3 |
+rb3| wuxing | earth | metal | water |  fire |  wood |
+num|  count |   20  |   14  |   13  |   12  |   11  |
+ 9 |    3   |	    | 0.162 |	    |	    |	    |  5 |
+10 |    3   |	    | 0.162 |	    |	    |	    |  6 |
+ 5 |    2   | 0.185 |	    |	    |	    |	    |  1 |
+15 |    2   |	    |	    |	    |	    | 0.120 | 12 |
+13 |    2   |	    |	    | 0.135 |	    |	    |  7 |
+19 |    2   |	    |	    |	    | 0.127 |	    |  9 |
+ 7 |    2   |	    |	    |	    | 0.127 |	    | 10 |
+18 |    2   |	    |	    |	    | 0.127 |	    | 11 |
+12 |    2   |	    |	    | 0.135 |	    |	    |  8 |
+14 |    1   | 0.164 |	    |	    |	    |	    |  2 |
+ 8 |    1   | 0.164 |	    |	    |	    |	    |  3 |
+11 |    1   | 0.164 |	    |	    |	    |	    |  4 |
+16 |    1   |	    |	    |	    |	    | 0.099 | 13 |
+rb4| wuxing | earth | metal | water |  wood |  fire |
+num|  count |   71  |   32  |   31  |   28  |   27  |
+20 |    2   | 0.331 |	    |	    |	    |	    |  1 |
+25 |    2   |	    |	    | 0.225 |	    |	    |  4 |
+17 |    1   | 0.259 |	    |	    |	    |	    |  2 |
+18 |    1   |	    |	    |	    |	    | 0.143 |  5 |
+23 |    1   | 0.259 |	    |	    |	    |	    |  3 |
+rb5| wuxing | earth |  wood | water |  fire | metal |
+num|  count |   53  |   37  |   26  |   25  |   21  |
+13 |    2   |	    |	    | 0.147 |	    |	    |  7 |
+22 |    2   |	    |	    |	    |	    | 0.131 |  8 |
+28 |    2   |	    | 0.181 |	    |	    |	    |  3 |
+15 |    2   |	    | 0.181 |	    |	    |	    |  4 |
+16 |    1   |	    | 0.148 |	    |	    |	    |  5 |
+32 |    1   | 0.197 |	    |	    |	    |	    |  1 |
+21 |    1   |	    |	    |	    |	    | 0.098 | 11 |
+27 |    1   |	    | 0.148 |	    |	    |	    |  6 |
+17 |    1   | 0.197 |	    |	    |	    |	    |  2 |
+19 |    1   |	    |	    |	    | 0.110 |	    |  9 |
+18 |    1   |	    |	    |	    | 0.110 |	    | 10 |
+rb6| wuxing | earth | metal |  fire |  wood | water |
+num|  count |   32  |   22  |   19  |    8  |    5  |
+31 |   12   |	    |	    | 0.200 |	    |	    |  5 |
+33 |   12   |	    | 0.217 |	    |	    |	    |  3 |
+32 |   11   | 0.268 |	    |	    |	    |	    |  1 |
+29 |   10   | 0.261 |	    |	    |	    |	    |  2 |
+22 |    4   |	    | 0.158 |	    |	    |	    |  8 |
+28 |    4   |	    |	    |	    | 0.076 |	    | 12 |
+30 |    3   |	    |	    | 0.133 |	    |	    | 10 |
+24 |    2   |	    |	    |	    |	    | 0.044 | 14 |
+26 |    2   | 0.201 |	    |	    |	    |	    |  4 |
+27 |    2   |	    |	    |	    | 0.061 |	    | 13 |
+25 |    1   |	    |	    |	    |	    | 0.037 | 15 |
+23 |    1   | 0.194 |	    |	    |	    |	    |  6 |
+20 |    1   | 0.194 |	    |	    |	    |	    |  7 |
+21 |    1   |	    | 0.135 |	    |	    |	    |  9 |
+19 |    1   |	    |	    | 0.118 |	    |	    | 11 |
+bb | wuxing |  wood | water | earth | metal |  fire |
+num|  count |   18  |   15  |   14  |    8  |    5  |
+13 |    4   |	    |	    |	    |	    |	    |  0 |
+ 4 |    4   | 0.219 |	    |	    |	    |	    |  1 |
+ 8 |    4   |	    |	    | 0.186 |	    |	    |  3 |
+10 |    3   |	    |	    |	    | 0.118 |	    | 10 |
+12 |    3   |	    | 0.177 |	    |	    |	    |  6 |
+16 |    2   |	    |	    |	    |	    |	    |  6 |
+15 |    2   |	    |	    |	    |	    |	    |  6 |
+ 7 |    2   |	    |	    |	    |	    | 0.076 | 12 |
+ 9 |    2   |	    |	    |	    | 0.101 |	    | 11 |
+11 |    1   |	    |	    | 0.134 |	    |	    |  9 |
+ 1 |    1   |	    | 0.142 |	    |	    |	    |  8 |
+ 3 |    1   | 0.167 |	    |	    |	    |	    |  7 |
+
+PredictResult[ 1]  2  8 11 20 28 32 +  4  probability = 1.830
+PredictResult[ 2]  2  8 14 20 28 32 +  4  probability = 1.830
+PredictResult[ 3]  2  8  9 20 28 32 +  4  probability = 1.829
+PredictResult[ 4]  2  8 10 20 28 32 +  4  probability = 1.829
+PredictResult[ 5]  2  8 14 20 28 29 +  4  probability = 1.823
+PredictResult[ 6]  2  8 11 20 28 29 +  4  probability = 1.823
+PredictResult[ 7]  2  8 10 20 28 29 +  4  probability = 1.821
+PredictResult[ 8]  2  8  9 20 28 29 +  4  probability = 1.821
+PredictResult[ 9]  2  8 11 20 28 32 + 13  probability = 1.805
+PredictResult[10]  2  8 14 20 28 32 + 13  probability = 1.805
+PredictResult[11]  2  8 10 20 28 32 + 13  probability = 1.804
+PredictResult[12]  2  8  9 20 28 32 + 13  probability = 1.804
+PredictResult[13]  2  8 13 20 28 32 +  4  probability = 1.801
+PredictResult[14]  2  8 12 20 28 32 +  4  probability = 1.801
+PredictResult[15]  2  8 11 20 28 29 + 13  probability = 1.798
+PredictResult[16]  2  8 14 20 28 29 + 13  probability = 1.798
+PredictResult[17]  2  8 11 20 27 32 +  4  probability = 1.797
+PredictResult[18]  2  8 14 20 28 32 +  8  probability = 1.797
+PredictResult[19]  2  8 14 20 27 32 +  4  probability = 1.797
+PredictResult[20]  2  8 11 20 28 32 +  8  probability = 1.797
+PredictResult[21]  2  8  9 20 28 29 + 13  probability = 1.796
+PredictResult[22]  2  8 10 20 28 29 + 13  probability = 1.796
+PredictResult[23]  2  8 14 20 28 32 + 15  probability = 1.795
+PredictResult[24]  2  8 14 20 28 32 + 16  probability = 1.795
+PredictResult[25]  2  8 11 20 28 32 + 15  probability = 1.795
+PredictResult[26]  2  8 11 20 28 32 + 16  probability = 1.795
+PredictResult[27]  2  8 10 20 28 32 +  8  probability = 1.795
+PredictResult[28]  2  8 10 20 27 32 +  4  probability = 1.795
+PredictResult[29]  2  8  9 20 27 32 +  4  probability = 1.795
+PredictResult[30]  2  8  9 20 28 32 +  8  probability = 1.795
+PredictResult[31]  2  8 11 20 32 33 +  4  probability = 1.795
+PredictResult[32]  2  8 14 20 32 33 +  4  probability = 1.795
+PredictResult[33]  2  8  9 20 28 32 + 16  probability = 1.794
+PredictResult[34]  2  8 10 20 28 32 + 16  probability = 1.794
+PredictResult[35]  2  8 10 20 28 32 + 15  probability = 1.794
+PredictResult[36]  2  8  9 20 28 32 + 15  probability = 1.794
+PredictResult[37]  2  8  9 20 32 33 +  4  probability = 1.794
+PredictResult[38]  2  8 10 20 32 33 +  4  probability = 1.794
+PredictResult[39]  2  8 19 20 28 32 +  4  probability = 1.794
+PredictResult[40]  2  8 18 20 28 32 +  4  probability = 1.794
+PredictResult[41]  2  8 12 20 28 29 +  4  probability = 1.793
+PredictResult[42]  2  8 13 20 28 29 +  4  probability = 1.793
+PredictResult[43]  2  8 11 20 28 29 +  8  probability = 1.789
+PredictResult[44]  2  8 11 20 27 29 +  4  probability = 1.789
+PredictResult[45]  2  8 14 20 28 29 +  8  probability = 1.789
+PredictResult[46]  2  8 14 20 27 29 +  4  probability = 1.789
+PredictResult[47]  2  8 14 20 28 29 + 16  probability = 1.788
+PredictResult[48]  2  8 11 20 28 29 + 16  probability = 1.788
+PredictResult[49]  2  8 14 20 28 29 + 15  probability = 1.788
+PredictResult[50]  2  8 11 20 28 29 + 15  probability = 1.788

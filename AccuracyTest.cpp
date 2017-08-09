@@ -83,11 +83,11 @@ sptr(Result) AccuracyTest::getResultFromDatabase(int id)
 #ifdef DLT
                 BlueNumbers b1 = (BlueNumbers) atoi(clines[8].c_str());
                 BlueNumbers b2 = (BlueNumbers) atoi(clines[9].c_str());
-                printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, b1=%d, b2=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, b1, b2);
+                //printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, b1=%d, b2=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, b1, b2);
 #else
                 RedNumbers r6 = (RedNumbers) atoi(clines[8].c_str());
                 BlueNumbers b0 = (BlueNumbers) atoi(clines[9].c_str());
-                printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, r6, b0);
+                //printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, r6, b0);
 #endif
                 result = make(Result, make(RedBall, r1, REDBALL_FIRST), make(RedBall, r2, REDBALL_SECOND), make(RedBall, r3, REDBALL_THIRD),
                               make(RedBall, r4, REDBALL_FOURTH), make(RedBall, r5, REDBALL_FIFTH),
@@ -663,8 +663,8 @@ void AccuracyTest::startAccuracyTest2()
     for(int k = 1; k < 10; k++) {
         NUM_WEIGHT = (float) k * 0.1;
         WUXING_WEIGHT = 1.0 - NUM_WEIGHT;
-
-        for(int i = 500; i < TABALE_LENGTH; i++) {
+        printf("k=%d\n",k);
+        for(int i = 500; i < TABALE_LENGTH - 1; i++) {
             sptr(Result) mResult = getResultFromDatabase(i);
             vector<resultStatistics> resultSta;
             rsta1 = calculateRedBallProbability(mResult->mR1, i);

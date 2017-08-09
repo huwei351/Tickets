@@ -123,3 +123,7 @@ PredictResult[ 2]  1  7 14 20 26 29 + 14  probability = 1.675
 PredictResult[ 3]  1  2 14 20 26 32 + 14  probability = 1.660
 PredictResult[ 4]  1  7 14 20 26 32 + 14  probability = 1.659
 PredictResult[ 5]  5  7 14 20 26 29 + 14  probability = 1.657
+
+
+Actual Result: 2017092 2017-08-08    10    18    19    29    32    33 +     9
+Actual Result: 2017092 2017-08-08 metal  fire  fire earth earth metal + metal
