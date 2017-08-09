@@ -646,53 +646,54 @@ void AccuracyTest::startAccuracyTest()
 
 void AccuracyTest::startAccuracyTest2()
 {
-	vector<redballStatistics> rsta1;
-	//vector<redballStatistics> rsta2;
-	//vector<redballStatistics> rsta3;
-	//vector<redballStatistics> rsta4;
-	//vector<redballStatistics> rsta5;
+    vector<redballStatistics> rsta1;
+    //vector<redballStatistics> rsta2;
+    //vector<redballStatistics> rsta3;
+    //vector<redballStatistics> rsta4;
+    //vector<redballStatistics> rsta5;
 #ifdef DLT
-	//vector<blueballStatistics> bsta1;
-	//vector<blueballStatistics> bsta2;
+    //vector<blueballStatistics> bsta1;
+    //vector<blueballStatistics> bsta2;
 #else
-	//vector<redballStatistics> rsta6;
-	//vector<blueballStatistics> bsta;
+    //vector<redballStatistics> rsta6;
+    //vector<blueballStatistics> bsta;
 #endif
-	vector<float> mList;
+    vector<float> mList;
 
     for(int k = 1; k < 10; k++) {
         NUM_WEIGHT = (float) k * 0.1;
         WUXING_WEIGHT = 1.0 - NUM_WEIGHT;
 
-		for(int i = 500; i < TABALE_LENGTH; i++) {
-			sptr(Result) mResult = getResultFromDatabase(i);
-			vector<resultStatistics> resultSta;
-			rsta1 = calculateRedBallProbability(mResult->mR1, i);
-			//rsta2 = calculateRedBallProbability(mResult->mR2, i);
-			//rsta3 = calculateRedBallProbability(mResult->mR3, i);
-			//rsta4 = calculateRedBallProbability(mResult->mR4, i);
-			//rsta5 = calculateRedBallProbability(mResult->mR5, i);
+        for(int i = 500; i < TABALE_LENGTH; i++) {
+            sptr(Result) mResult = getResultFromDatabase(i);
+            vector<resultStatistics> resultSta;
+            rsta1 = calculateRedBallProbability(mResult->mR1, i);
+            //rsta2 = calculateRedBallProbability(mResult->mR2, i);
+            //rsta3 = calculateRedBallProbability(mResult->mR3, i);
+            //rsta4 = calculateRedBallProbability(mResult->mR4, i);
+            //rsta5 = calculateRedBallProbability(mResult->mR5, i);
 #ifdef DLT
-			//bsta1 = calculateBlueBallProbability(mResult->mB1, i);
-			//bsta2 = calculateBlueBallProbability(mResult->mB2, i);
+            //bsta1 = calculateBlueBallProbability(mResult->mB1, i);
+            //bsta2 = calculateBlueBallProbability(mResult->mB2, i);
 #else
-			//rsta6 = calculateRedBallProbability(mResult->mR6, i);
-			//bsta = calculateBlueBallProbability(mResult->mB0, i);
+            //rsta6 = calculateRedBallProbability(mResult->mR6, i);
+            //bsta = calculateBlueBallProbability(mResult->mB0, i);
 #endif
-			sptr(Result) actualResult = getResultFromDatabase(i + 1);
-			float accuracy = 1.0;
-	        for(int j = 0; j < (int)rsta1.size(); j++) {
-	            if(rsta1[j].redball->mNum == actualResult->mR1->mNum) {
-	                accuracy = (float)j / (int)rsta1.size();
-	                break;
-	            }
-	        }
-	        mList.push_back(accuracy);
-		}
+            sptr(Result) actualResult = getResultFromDatabase(i + 1);
+            float accuracy = 1.0;
 
-        writeAccuracyData2File(mList, i);
+            for(int j = 0; j < (int)rsta1.size(); j++) {
+                if(rsta1[j].redball->mNum == actualResult->mR1->mNum) {
+                    accuracy = (float)j / (int)rsta1.size();
+                    break;
+                }
+            }
+
+            mList.push_back(accuracy);
+        }
+
+        writeAccuracyData2File(mList, k);
     }
-
 }
 
 bool AccuracyTest::writeAccuracyData2File(vector<float> accuList, int index)
