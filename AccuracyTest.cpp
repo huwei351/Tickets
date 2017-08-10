@@ -537,7 +537,7 @@ vector< sptr(RedBall) > AccuracyTest::getRedBallListFromDatabase(char *field, in
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, CR_G);
 
-                for(int i = id - 500; i < (int)lines.size(); i++) {
+                for(int i = id - PREDICT_BASE; i < (int)lines.size(); i++) {
                     RedNumbers rn = (RedNumbers) atoi(lines[i].c_str());
                     sptr(RedBall) rb = make(RedBall, rn);
                     redList.push_back(rb);
@@ -568,7 +568,7 @@ vector< sptr(BlueBall) > AccuracyTest::getBlueBallListFromDatabase(char *field, 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, CR_G);
 
-                for(int i = id - 500; i < (int)lines.size(); i++) {
+                for(int i = id - PREDICT_BASE; i < (int)lines.size(); i++) {
                     BlueNumbers bn = (BlueNumbers) atoi(lines[i].c_str());
                     sptr(BlueBall) bb = make(BlueBall, bn);
                     blueList.push_back(bb);
@@ -616,7 +616,7 @@ vector<float> AccuracyTest::getAccuracyForDifferentWeight(float num_wt, float wu
     vector<float> mList;
     printf("getAccuracyForDifferentWeight-->TABALE_LENGTH=%d\n", TABALE_LENGTH);
 
-    for(int i = 500; i < TABALE_LENGTH; i++) {
+    for(int i = PREDICT_BASE; i < TABALE_LENGTH; i++) {
         vector<resultStatistics> rsta = getMaxProbabilityPredictResult(i);
         sptr(Result) actualResult = getResultFromDatabase(i + 1);
         float accuracy = 1.0;
@@ -646,40 +646,15 @@ void AccuracyTest::startAccuracyTest()
 */
 void AccuracyTest::startAccuracyTest2()
 {
-    //vector<redballStatistics> rsta1;
-    //vector<redballStatistics> rsta2;
-    //vector<redballStatistics> rsta3;
-    //vector<redballStatistics> rsta4;
-    //vector<redballStatistics> rsta5;
-#ifdef DLT
-    //vector<blueballStatistics> bsta1;
-    //vector<blueballStatistics> bsta2;
-#else
-    //vector<redballStatistics> rsta6;
-    //vector<blueballStatistics> bsta;
-#endif
-    //vector<float> mList;
     for(int k = 0; k < 11; k++) {
         string data = "";
         NUM_WEIGHT = (float) k * 0.1;
         WUXING_WEIGHT = 1.0 - NUM_WEIGHT;
         printf("k=%d\n", k);
 
-        for(int i = 500; i < TABALE_LENGTH - 1; i++) {
+        for(int i = PREDICT_BASE; i < TABALE_LENGTH - 1; i++) {
             sptr(Result) mResult = getResultFromDatabase(i);
-            //vector<resultStatistics> resultSta;
             vector<redballStatistics> rsta1 = calculateRedBallProbability(mResult->mR1, i);
-            //rsta2 = calculateRedBallProbability(mResult->mR2, i);
-            //rsta3 = calculateRedBallProbability(mResult->mR3, i);
-            //rsta4 = calculateRedBallProbability(mResult->mR4, i);
-            //rsta5 = calculateRedBallProbability(mResult->mR5, i);
-#ifdef DLT
-            //bsta1 = calculateBlueBallProbability(mResult->mB1, i);
-            //bsta2 = calculateBlueBallProbability(mResult->mB2, i);
-#else
-            //rsta6 = calculateRedBallProbability(mResult->mR6, i);
-            //bsta = calculateBlueBallProbability(mResult->mB0, i);
-#endif
             sptr(Result) actualResult = getResultFromDatabase(i + 1);
             int location = 0;
 
