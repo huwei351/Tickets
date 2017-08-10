@@ -167,11 +167,11 @@ std::string Algorithm::printPredictResult(std::vector<resultStatistics> resultSt
 #ifdef DLT
         BlueNumbers bnum1 = result->mB1->mNum;
         BlueNumbers bnum2 = result->mB2->mNum;
-        sprintf(temp, "PredictResult[%2d] %2d %2d %2d %2d %2d + %2d %2d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, bnum1, bnum2, resultSta[i].probability);
+        sprintf(temp, "PredictResult[%02d] %02d %02d %02d %02d %02d + %02d %02d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, bnum1, bnum2, resultSta[i].probability);
 #else
         RedNumbers rnum6 = result->mR6->mNum;
         BlueNumbers bnum = result->mB0->mNum;
-        sprintf(temp, "PredictResult[%2d] %2d %2d %2d %2d %2d %2d + %2d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
+        sprintf(temp, "PredictResult[%02d] %02d %02d %02d %02d %02d %02d + %02d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
 #endif
         content += std::string(temp);
         memset(temp, 0, 512);
@@ -454,7 +454,7 @@ void Algorithm::printRedballNumberProbability(std::vector<rnumStatistics> *sta, 
     std::string title = getLogTitleFromBalltype(ballType);
 
     for(int i = 0; i < (int)sta->size(); i++) {
-        printf("%s [%2d] : num = %d, count = %d, probability = %0.3f\n", title.c_str(), i + 1, sta->at(i).rn, sta->at(i).count, (float)sta->at(i).count / total);
+        printf("%s [%02d] : num = %d, count = %d, probability = %0.3f\n", title.c_str(), i + 1, sta->at(i).rn, sta->at(i).count, (float)sta->at(i).count / total);
     }
 }
 
@@ -463,7 +463,7 @@ void Algorithm::printBlueballNumberProbability(std::vector<bnumStatistics> *sta,
     std::string title = getLogTitleFromBalltype(ballType);
 
     for(int i = 0; i < (int)sta->size(); i++) {
-        printf("%s [%2d] : num = %d, count = %d, probability = %0.3f\n", title.c_str(), i + 1, sta->at(i).bn, sta->at(i).count, (float)sta->at(i).count / total);
+        printf("%s [%02d] : num = %d, count = %d, probability = %0.3f\n", title.c_str(), i + 1, sta->at(i).bn, sta->at(i).count, (float)sta->at(i).count / total);
     }
 }
 
@@ -472,7 +472,7 @@ void Algorithm::printBallWuxingProbability(std::vector<wuxingStatistics> *sta, i
     std::string title = getLogTitleFromBalltype(ballType);
 
     for(int i = 0; i < (int)sta->size(); i++) {
-        printf("%s [%2d] : wuxing = %s, count = %d, probability = %0.3f\n", title.c_str(), i + 1, Elememts2String(sta->at(i).wuxing).c_str(), sta->at(i).count, (float)sta->at(i).count / total);
+        printf("%s [%02d] : wuxing = %s, count = %d, probability = %0.3f\n", title.c_str(), i + 1, Elememts2String(sta->at(i).wuxing).c_str(), sta->at(i).count, (float)sta->at(i).count / total);
     }
 }
 
@@ -705,7 +705,7 @@ std::string Algorithm::printRedballPredictTable(BallType type, std::vector<rnumS
     memset(temp, 0, 256);
 
     for(int j = 0; j < (int)wsList.size(); j++) {
-        sprintf(temp, "   %2d  |", wsList[j].count);
+        sprintf(temp, "   %02d  |", wsList[j].count);
         buf += std::string(temp);
         memset(temp, 0, 256);
     }
@@ -714,7 +714,7 @@ std::string Algorithm::printRedballPredictTable(BallType type, std::vector<rnumS
 
     for(int k = 0; k < (int)rsList.size(); k++) {
         memset(temp, 0, 256);
-        sprintf(temp, "%2d |   %2d   |", rsList[k].rn, rsList[k].count);
+        sprintf(temp, "%02d |   %02d   |", rsList[k].rn, rsList[k].count);
         buf += std::string(temp);
 
         for(int m = 0; m < (int)wsList.size(); m++) {
@@ -735,7 +735,7 @@ std::string Algorithm::printRedballPredictTable(BallType type, std::vector<rnumS
         }
 
         memset(temp, 0, 256);
-        sprintf(temp, " %2d |\n", sort);
+        sprintf(temp, " %02d |\n", sort);
         buf += std::string(temp);
     }
 
@@ -766,7 +766,7 @@ std::string Algorithm::printBlueballPredictTable(BallType type, std::vector<bnum
     memset(temp, 0, 256);
 
     for(int j = 0; j < (int)wsList.size(); j++) {
-        sprintf(temp, "   %2d  |", wsList[j].count);
+        sprintf(temp, "   %02d  |", wsList[j].count);
         buf += std::string(temp);
         memset(temp, 0, 256);
     }
@@ -775,7 +775,7 @@ std::string Algorithm::printBlueballPredictTable(BallType type, std::vector<bnum
 
     for(int k = 0; k < (int)bsList.size(); k++) {
         memset(temp, 0, 256);
-        sprintf(temp, "%2d |   %2d   |", bsList[k].bn, bsList[k].count);
+        sprintf(temp, "%02d |   %02d   |", bsList[k].bn, bsList[k].count);
         buf += std::string(temp);
 
         for(int m = 0; m < (int)wsList.size(); m++) {
@@ -796,7 +796,7 @@ std::string Algorithm::printBlueballPredictTable(BallType type, std::vector<bnum
         }
 
         memset(temp, 0, 256);
-        sprintf(temp, " %2d |\n", sort);
+        sprintf(temp, " %02d |\n", sort);
         buf += std::string(temp);
     }
 
