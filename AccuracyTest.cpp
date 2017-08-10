@@ -633,7 +633,7 @@ vector<float> AccuracyTest::getAccuracyForDifferentWeight(float num_wt, float wu
 
     return mList;
 }
-
+/*
 void AccuracyTest::startAccuracyTest()
 {
     for(int i = 1; i < 10; i++) {
@@ -643,10 +643,10 @@ void AccuracyTest::startAccuracyTest()
         writeAccuracyData2File(aList, i);
     }
 }
-
+*/
 void AccuracyTest::startAccuracyTest2()
 {
-    vector<redballStatistics> rsta1;
+    //vector<redballStatistics> rsta1;
     //vector<redballStatistics> rsta2;
     //vector<redballStatistics> rsta3;
     //vector<redballStatistics> rsta4;
@@ -658,16 +658,17 @@ void AccuracyTest::startAccuracyTest2()
     //vector<redballStatistics> rsta6;
     //vector<blueballStatistics> bsta;
 #endif
-    vector<float> mList;
-
-    for(int k = 1; k < 10; k++) {
+    //vector<float> mList;
+    for(int k = 0; k < 11; k++) {
+        string data = "";
         NUM_WEIGHT = (float) k * 0.1;
         WUXING_WEIGHT = 1.0 - NUM_WEIGHT;
-        printf("k=%d\n",k);
+        printf("k=%d\n", k);
+
         for(int i = 500; i < TABALE_LENGTH - 1; i++) {
             sptr(Result) mResult = getResultFromDatabase(i);
-            vector<resultStatistics> resultSta;
-            rsta1 = calculateRedBallProbability(mResult->mR1, i);
+            //vector<resultStatistics> resultSta;
+            vector<redballStatistics> rsta1 = calculateRedBallProbability(mResult->mR1, i);
             //rsta2 = calculateRedBallProbability(mResult->mR2, i);
             //rsta3 = calculateRedBallProbability(mResult->mR3, i);
             //rsta4 = calculateRedBallProbability(mResult->mR4, i);
@@ -680,34 +681,35 @@ void AccuracyTest::startAccuracyTest2()
             //bsta = calculateBlueBallProbability(mResult->mB0, i);
 #endif
             sptr(Result) actualResult = getResultFromDatabase(i + 1);
-            float accuracy = 1.0;
+            int location = 0;
 
             for(int j = 0; j < (int)rsta1.size(); j++) {
                 if(rsta1[j].redball->mNum == actualResult->mR1->mNum) {
-                    accuracy = (float)j / (int)rsta1.size();
+                    location = j + 1;
                     break;
                 }
             }
 
-            mList.push_back(accuracy);
+            char buf[64];
+            memset(buf, 0, 64);
+            sprintf(buf, "%d/%d/%0.3f\n", location, (int)rsta1.size(), (float)location / (int)rsta1.size());
+            data += string(buf);
+            rsta1.clear();
         }
 
-        writeAccuracyData2File(mList, k);
+        writeAccuracyData2File(data, k);
     }
 }
 
-bool AccuracyTest::writeAccuracyData2File(vector<float> accuList, int index)
+void AccuracyTest::startAccuracyTest3()
 {
-    string data = "";
+}
+
+bool AccuracyTest::writeAccuracyData2File(string data, int index)
+{
     char buf[16];
     sprintf(buf, "%d", index);
     string filename = string(TEST_FILE_HEAD) + string(buf) + string(".txt");
-
-    for(int i = 0; i < (int)accuList.size(); i++) {
-        memset(buf, 0, 16);
-        sprintf(buf, "%0.3f\n", accuList[i]);
-        data += std::string(buf);
-    }
 
     // check if dir exist
     if(access(TEST_DIR, F_OK)) {

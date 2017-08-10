@@ -60,7 +60,9 @@ class AccuracyTest
 
         void startAccuracyTest2();
 
-        bool writeAccuracyData2File(std::vector<float> accuList, int index);
+        void startAccuracyTest3();
+
+        bool writeAccuracyData2File(std::string data, int index);
 
     private:
 
