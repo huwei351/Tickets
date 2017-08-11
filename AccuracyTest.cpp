@@ -678,6 +678,34 @@ void AccuracyTest::startAccuracyTest2()
 
 void AccuracyTest::startAccuracyTest3()
 {
+    for(int k = 0; k < 11; k++) {
+        string data = "";
+        NUM_WEIGHT = (float) k * 0.1;
+        WUXING_WEIGHT = 1.0 - NUM_WEIGHT;
+        printf("k=%d\n", k);
+
+        for(int i = PREDICT_BASE; i < TABALE_LENGTH - 1; i++) {
+            sptr(Result) mResult = getResultFromDatabase(i);
+            vector<blueballStatistics> bsta = calculateBlueBallProbability(mResult->mB0, i);
+            sptr(Result) actualResult = getResultFromDatabase(i + 1);
+            int location = 0;
+
+            for(int j = 0; j < (int)bsta.size(); j++) {
+                if(bsta[j].blueball->mNum == actualResult->mB0->mNum) {
+                    location = j + 1;
+                    break;
+                }
+            }
+
+            char buf[64];
+            memset(buf, 0, 64);
+            sprintf(buf, "%d/%d/%0.3f\n", location, (int)bsta.size(), (float)location / (int)bsta.size());
+            data += string(buf);
+            bsta.clear();
+        }
+
+        writeAccuracyData2File(data, k);
+    }
 }
 
 bool AccuracyTest::writeAccuracyData2File(string data, int index)

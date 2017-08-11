@@ -121,7 +121,8 @@ int32_t main(int32_t argc, char *argv[])
             case 4: {
                     printf("Accuracy Test Started...\n");
                     //at->startAccuracyTest();
-                    at->startAccuracyTest2();
+                    //at->startAccuracyTest2();
+                    at->startAccuracyTest3();
                 }
                 break;
 
