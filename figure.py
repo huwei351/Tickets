@@ -5,6 +5,7 @@ import random
 import string
 import numpy as np  
 import matplotlib.pyplot as plt  
+from matplotlib.ticker import MultipleLocator, FormatStrFormatter 
 import os
 
 TEST_DIR = "./accuracy_test"
@@ -114,6 +115,45 @@ def analyseFile(index):
 	plt.legend()
 	plt.show() 
 
+def barFiles():
+	pathDir =  os.listdir(TEST_DIR)
+	for allDir in pathDir:
+		pro = []
+		filename = os.path.join('%s/%s' % (TEST_DIR, allDir))
+		fileindex = string.atoi((filename.strip().split(TEST_FILE_HEAD)[1]).strip().split(".")[0])
+		print("filename = " + filename + ", fileindex = " + bytes(fileindex))
+		file = open(filename, 'r')
+		linesList = file.readlines()
+		linesList = [line.strip().split('/') for line in linesList]
+		file.close()    
+		arr0 = [string.atoi(x[0]) for x in linesList]
+		arr1 = [string.atoi(x[1]) for x in linesList]
+		for i in range(max(arr1)):
+			pro += [arr0.count(i)]
+			print ("pro : " + bytes(i) + ", count = " + bytes(arr0.count(i)) + "/" + bytes(len(arr0)) + "(" + bytes(float(arr0.count(i))/len(arr0)) + ")")
+		plt.bar(range(max(arr1)), pro)
+		plt.xticks(np.arange(len(pro))+0.5, range(max(arr1)))
+		plt.savefig("barfig_" + bytes(fileindex) + ".jpg")
+
+def barFile(index):
+	pro = []
+	filename = TEST_DIR + "/" + TEST_FILE_HEAD + bytes(index) + ".txt"
+	#labelname = filename.strip().split(TEST_FILE_HEAD)[1]
+	print("barFile : filename = " + filename)
+	file = open(filename, 'r')
+	linesList = file.readlines()
+	linesList = [line.strip().split('/') for line in linesList]
+	file.close()    
+	arr0 = [string.atoi(x[0]) for x in linesList]
+	arr1 = [string.atoi(x[1]) for x in linesList]
+	for i in range(max(arr1)):
+		pro += [arr0.count(i)]
+		print ("pro : " + bytes(i) + ", count = " + bytes(arr0.count(i)) + "/" + bytes(len(arr0)) + "(" + bytes(float(arr0.count(i))/len(arr0)) + ")")
+	plt.bar(range(max(arr1)), pro)
+	plt.xticks(np.arange(len(pro))+0.5, range(max(arr1)))
+	plt.savefig("barfig_" + bytes(index) + ".jpg")
+	plt.show() 
+
 class Math:  
 	#求极差  
 	@staticmethod  
@@ -189,5 +229,7 @@ def test():
 #figureFiles()
 #figureFile(3)
 #analyseFile(1)
-analyseFiles()
+#analyseFiles()
 #test()
+#barFile(0)
+barFiles()
