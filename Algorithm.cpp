@@ -178,7 +178,7 @@ std::string Algorithm::printPredictResult(std::vector<resultStatistics> resultSt
         memset(temp, 0, 512);
     }
 
-    printf("%s", content.c_str());
+    //printf("%s", content.c_str());
     return content;
 }
 
