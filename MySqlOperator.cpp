@@ -59,7 +59,9 @@ std::string MySqlOperator::SelectData(char * table, char * field, int rmax, char
         rnum = mysql_num_rows(m_res) + 1;
         //printf("column_num = %d, row_num = %d\n", cnum, rnum);
 
-        for(int i = rnum - rmax; i < rnum; i++) {
+		int i = 0;
+		if (rmax > 0) i = rnum - rmax;
+        for(i; i < rnum; i++) {
             m_row = mysql_fetch_row(m_res);
 
             for(int j = 0; j < cnum; j++) {

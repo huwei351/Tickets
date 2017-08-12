@@ -148,7 +148,8 @@ bool Algorithm::sortByCount2(const bnumStatistics &bs1, const bnumStatistics &bs
 void Algorithm::rearrangePredictResult(std::vector<resultStatistics> *resultSta, int top)
 {
     std::sort(resultSta->begin(), resultSta->end(), sortByPro);
-    resultSta->erase(resultSta->begin() + top, resultSta->end());
+	if (top != 0)
+    	resultSta->erase(resultSta->begin() + top, resultSta->end());
 }
 
 std::string Algorithm::printPredictResult(std::vector<resultStatistics> resultSta)
@@ -218,15 +219,28 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
 #endif
     printf("start create resultStatistics...\n");
 
-    for(int i = 0; i < (int)rsta1.size(); i++) {
-        for(int j = 0; j < (int)rsta2.size(); j++) {
-            for(int k = 0; k < (int)rsta3.size(); k++) {
-                for(int m = 0; m < (int)rsta4.size(); m++) {
-                    for(int n = 0; n < (int)rsta5.size(); n++) {
+	int rsta1_size = (int)rsta1.size() > 5 ? 5 : (int)rsta1.size();
+	int rsta2_size = (int)rsta2.size() > 13 ? 13 : (int)rsta2.size();
+	int rsta3_size = (int)rsta3.size() > 10 ? 10 : (int)rsta3.size();
+	int rsta4_size = (int)rsta4.size() > 11 ? 11 : (int)rsta4.size();
+	int rsta5_size = (int)rsta5.size() > 13 ? 13 : (int)rsta5.size();
+#ifdef DLT
+	int bsta1_size = (int)bsta1.size();
+	int bsta2_size = (int)bsta2.size();
+#else
+	int rsta6_size = (int)rsta6.size() > 8 ? 8 : (int)rsta6.size();
+	int bsta_size = (int)bsta.size();
+#endif
+
+    for(int i = 0; i < rsta1_size; i++) {
+        for(int j = 0; j < rsta2_size; j++) {
+            for(int k = 0; k < rsta3_size; k++) {
+                for(int m = 0; m < rsta4_size; m++) {
+                    for(int n = 0; n < rsta5_size; n++) {
 #ifdef DLT
 
-                        for(int r = 0; r < (int)bsta1.size(); r++) {
-                            for(int s = 0; s < (int)bsta2.size(); s++) {
+                        for(int r = 0; r < bsta1_size; r++) {
+                            for(int s = 0; s < bsta2_size; s++) {
                                 if(rsta1[i].redball->mNum < rsta2[j].redball->mNum &&
                                     rsta2[j].redball->mNum < rsta3[k].redball->mNum &&
                                     rsta3[k].redball->mNum < rsta4[m].redball->mNum &&
@@ -246,8 +260,8 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
 
 #else
 
-                        for(int r = 0; r < (int)rsta6.size(); r++) {
-                            for(int s = 0; s < (int)bsta.size(); s++) {
+                        for(int r = 0; r < rsta6_size; r++) {
+                            for(int s = 0; s < bsta_size; s++) {
                                 if(rsta1[i].redball->mNum < rsta2[j].redball->mNum &&
                                     rsta2[j].redball->mNum < rsta3[k].redball->mNum &&
                                     rsta3[k].redball->mNum < rsta4[m].redball->mNum &&
@@ -482,7 +496,7 @@ int Algorithm::calculateRedBallNumberAndWuxingProbability(sptr(RedBall) rb, int 
     RedNumbers num = rb->mNum;
     Elememts wuxing = rb->mWuxing;
     BallType ballType = rb->mBalltype;
-    std::vector< sptr(RedBall) > mList = getRedBallListFromDatabase(Balltype2FieldName(ballType), 500);
+    std::vector< sptr(RedBall) > mList = getRedBallListFromDatabase(Balltype2FieldName(ballType), 0);
 
     for(int i = (int)mList.size() - 1; i > 0; i--) {
         if(num == mList[i]->mNum) {
@@ -554,7 +568,7 @@ int Algorithm::calculateBlueBallNumberAndWuxingProbability(sptr(BlueBall) bb, in
     BlueNumbers num = bb->mNum;
     Elememts wuxing = bb->mWuxing;
     BallType ballType = bb->mBalltype;
-    std::vector< sptr(BlueBall) > mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), 500);
+    std::vector< sptr(BlueBall) > mList = getBlueBallListFromDatabase(Balltype2FieldName(ballType), 0);
 
     for(int i = (int)mList.size() - 1; i > 0; i--) {
         if(num == mList[i]->mNum) {

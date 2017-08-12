@@ -340,7 +340,7 @@ void MyConfig::setWebPortalPassword(const std::string ssid, const std::string bs
 float MyConfig::getNumWeight()
 {
     LOCK_AND_SWITH_TO_SECTION(strDefaultSection);
-    float r = 0.5;
+    float r = 0.9;
 
     if(KeyExists(KeyNumWeight))
     { r = Read<float>(KeyNumWeight); }
@@ -351,7 +351,7 @@ float MyConfig::getNumWeight()
 float MyConfig::getWuxingWeight()
 {
     LOCK_AND_SWITH_TO_SECTION(strDefaultSection);
-    float r = 0.5;
+    float r = 0.1;
 
     if(KeyExists(KeyWuxingWeight))
     { r = Read<float>(KeyWuxingWeight); }

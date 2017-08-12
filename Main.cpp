@@ -71,7 +71,7 @@ int32_t main(int32_t argc, char *argv[])
         switch(selection) {
             case 1: {
                     printf("\nPleaes Slelect SSQ Predict Result Display Numbers:\n");
-                    printf("    %d  => 5 Results\n", 5);
+                    printf("    %d  => All Results\n", 0);
                     printf("    %d  => 10 Results\n", 10);
                     printf("    %d  => 20 Results\n", 20);
                     printf("    %d  => 50 Results\n", 50);
