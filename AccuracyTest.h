@@ -70,7 +70,7 @@ class AccuracyTest
         float NUM_WEIGHT = 0.5;
         float WUXING_WEIGHT = 0.5;
         int TABALE_LENGTH;
-        int PREDICT_BASE = 500;
+        int PREDICT_BASE = 1500;
 
 };
 
