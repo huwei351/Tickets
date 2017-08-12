@@ -633,17 +633,31 @@ vector<float> AccuracyTest::getAccuracyForDifferentWeight(float num_wt, float wu
 
     return mList;
 }
-/*
+
 void AccuracyTest::startAccuracyTest()
 {
-    for(int i = 1; i < 10; i++) {
-        float num = (float) i * 0.1;
-        float wuxing = 1.0 - num;
-        vector<float> aList = getAccuracyForDifferentWeight(num, wuxing);
-        writeAccuracyData2File(aList, i);
+    string data = "";
+
+    for(int i = PREDICT_BASE; i < TABALE_LENGTH; i++) {
+        vector<resultStatistics> rsta = getMaxProbabilityPredictResult(i);
+        sptr(Result) actualResult = getResultFromDatabase(i + 1);
+		int location = 0;
+        for(int j = 0; j < (int)rsta.size(); j++) {
+            if(is2ResultsEqual(actualResult, rsta[j].result, 0)) {
+                location = j + 1;
+                break;
+            }
+        }
+
+		char buf[64];
+		memset(buf, 0, 64);
+		sprintf(buf, "%d/%d/%0.4f\n", location, (int)rsta.size(), (float)location / (int)rsta.size());
+		data += string(buf);
     }
+
+    writeAccuracyData2File(data, 11);
 }
-*/
+
 void AccuracyTest::startAccuracyTest2()
 {
     for(int k = 0; k < 11; k++) {
