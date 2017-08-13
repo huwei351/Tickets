@@ -8,3 +8,4 @@ else
 	cp ./makefile.ssq ./Makefile
 	make clean
 	make all
+fi

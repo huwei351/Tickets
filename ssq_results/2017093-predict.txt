@@ -136,3 +136,7 @@ PredictResult[47]  2  8 14 20 28 29 + 16  probability = 1.788
 PredictResult[48]  2  8 11 20 28 29 + 16  probability = 1.788
 PredictResult[49]  2  8 14 20 28 29 + 15  probability = 1.788
 PredictResult[50]  2  8 11 20 28 29 + 15  probability = 1.788
+
+
+Actual Result: 2017093 2017-08-10     7     8     9    15    22    27 +    12
+Actual Result: 2017093 2017-08-10  fire earth metal  wood metal  wood + water

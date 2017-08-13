@@ -10,7 +10,7 @@ SRCFILES = Algorithm.cpp Main.cpp MySqlOperator.cpp StringUtil.cpp Callpy.cpp Co
 
 OFILES = Algorithm.o Main.o MySqlOperator.o StringUtil.o Callpy.o Config.o MyConfig.o AccuracyTest.o
 
-TARGET = tickets
+TARGET = tickets_ssq
 
 all:
 	g++ -g -c -std=c++0x $(SRCFILES)

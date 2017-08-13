@@ -229,7 +229,7 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
 	int bsta2_size = (int)bsta2.size();
 #else
 	int rsta6_size = (int)rsta6.size() > 8 ? 8 : (int)rsta6.size();
-	int bsta_size = (int)bsta.size();
+	int bsta_size = (int)bsta.size() > 1 ? 1 : (int)bsta.size();
 #endif
 
     for(int i = 0; i < rsta1_size; i++) {
@@ -823,8 +823,8 @@ bool Algorithm::saveData2File(std::string dirname, std::string filename, std::st
     printf("saveData2File-->data len = %d\n", data.length());
     // write data to file
     FILE *fp;
-    char buf[10240];
-    memset(buf, 0, 10240);
+    //char buf[10240];
+    //memset(buf, 0, 10240);
     fp = fopen((dirname + std::string("/") + filename).c_str(), "a+");
 
     if(fp == NULL) {
@@ -833,9 +833,9 @@ bool Algorithm::saveData2File(std::string dirname, std::string filename, std::st
         return false;
     }
 
-    sprintf(buf, "\n%s", data.c_str());
+    //sprintf(buf, "\n%s", data.c_str());
 
-    if(fwrite(buf, strlen(buf), 1, fp) < 1) {
+    if(fwrite(data.c_str(), data.length(), 1, fp) < 1) {
         printf("write file %s fail!\n", filename.c_str());
         fclose(fp);
         return false;

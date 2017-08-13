@@ -142,7 +142,7 @@ int MySqlOperator::getDatabaseTableLength(char * table)
         }
 
         cnum = mysql_num_fields(m_res);
-        rnum = mysql_num_rows(m_res) + 1;
+        rnum = mysql_num_rows(m_res);
         mysql_free_result(m_res);
     }
 

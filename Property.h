@@ -68,14 +68,14 @@ enum BlueNumbers {
     BLUE_NUM_NINE,
     BLUE_NUM_TEN,
     BLUE_NUM_ELEVEN,
-#ifdef DLT
-    BLUE_NUM_TWELVE = 12
-#else
-    BLUE_NUM_TWELVE,
+#ifndef DLT
+    BLUE_NUM_TWELVE = 12,
     BLUE_NUM_THIRTEEN,
     BLUE_NUM_FOURTEEN,
     BLUE_NUM_FIFTEEN,
     BLUE_NUM_SIXTEEN = 16
+#else
+    BLUE_NUM_TWELVE = 12
 #endif
 };
 
@@ -289,7 +289,7 @@ static Elememts BlueNumber2Elememt(BlueNumbers num)
 
         case BLUE_NUM_THREE:
         case BLUE_NUM_FOUR:
-#ifdef DLT
+#ifndef DLT
         case BLUE_NUM_FIFTEEN:
         case BLUE_NUM_SIXTEEN:
 #endif
@@ -297,7 +297,7 @@ static Elememts BlueNumber2Elememt(BlueNumbers num)
 
         case BLUE_NUM_ONE:
         case BLUE_NUM_TWELVE:
-#ifdef DLT
+#ifndef DLT
         case BLUE_NUM_THIRTEEN:
 #endif
             return WATER;
@@ -310,7 +310,7 @@ static Elememts BlueNumber2Elememt(BlueNumbers num)
         case BLUE_NUM_FIVE:
         case BLUE_NUM_EIGHT:
         case BLUE_NUM_ELEVEN:
-#ifdef DLT
+#ifndef DLT
         case BLUE_NUM_FOURTEEN:
 #endif
             return EARTH;

@@ -62,6 +62,8 @@ class AccuracyTest
 
         void startAccuracyTest3();
 
+		void startAccuracyTest4();
+
         bool writeAccuracyData2File(std::string data, int index);
 
     private:
