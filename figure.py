@@ -128,12 +128,12 @@ def barFiles():
 		file.close()    
 		arr0 = [string.atoi(x[0]) for x in linesList]
 		arr1 = [string.atoi(x[1]) for x in linesList]
-		for i in range(max(arr1)):
+		for i in range(max(arr1)+1):
 			pro += [arr0.count(i)]
 			print ("pro : " + bytes(i) + ", count = " + bytes(arr0.count(i)) + "/" + bytes(len(arr0)) + "(" + bytes(float(arr0.count(i))/len(arr0)) + ")")
 		plt.figure()
-		plt.bar(range(max(arr1)), pro)
-		plt.xticks(np.arange(len(pro))+0.5, range(max(arr1)))
+		plt.bar(range(max(arr1)+1), pro)
+		plt.xticks(np.arange(len(pro))+0.5, range(max(arr1)+1))
 		plt.savefig("barfig_" + bytes(fileindex) + ".jpg")
 
 def barFile(index):
@@ -147,11 +147,11 @@ def barFile(index):
 	file.close()    
 	arr0 = [string.atoi(x[0]) for x in linesList]
 	arr1 = [string.atoi(x[1]) for x in linesList]
-	for i in range(max(arr1)):
+	for i in range(max(arr1)+1):
 		pro += [arr0.count(i)]
 		print ("pro : " + bytes(i) + ", count = " + bytes(arr0.count(i)) + "/" + bytes(len(arr0)) + "(" + bytes(float(arr0.count(i))/len(arr0)) + ")")
-	plt.bar(range(max(arr1)), pro)
-	plt.xticks(np.arange(len(pro))+0.5, range(max(arr1)))
+	plt.bar(range(max(arr1)+1), pro)
+	plt.xticks(np.arange(len(pro))+0.5, range(max(arr1)+1))
 	plt.savefig("barfig_" + bytes(index) + ".jpg")
 	plt.show() 
 
@@ -178,7 +178,7 @@ def analyseResultFile(index):
 		if arr != 0:
 			arr2_n += [arr]
 	arr0_c = [i/5000 for i in arr0_n]
-	for r in range(max(arr0_c)):
+	for r in range(max(arr0_c)+1):
 		pro_0 += [arr0_c.count(r)]
 	for r2 in arr2_n:
 		if r2 <= 0.2:
@@ -212,8 +212,8 @@ def analyseResultFile(index):
 	plt.savefig("scatterfig_" + bytes(index) + ".jpg")
 	plt.figure(2)
 	plt.subplot(121)
-	plt.bar(range(max(arr0_c)), pro_0)
-	plt.xticks(np.arange(len(pro_0))+0.5, range(max(arr0_c)))
+	plt.bar(range(max(arr0_c)+1), pro_0)
+	plt.xticks(np.arange(len(pro_0))+0.5, range(max(arr0_c)+1))
 	plt.subplot(122)
 	plt.bar(range(5), pro_2)
 	plt.xticks(np.arange(len(pro_2))+0.5, range(5))
@@ -245,13 +245,13 @@ def globalAnalyseFiles():
 			arr4 = [string.atoi(x[4]) for x in linesList]
 			arr5 = [string.atoi(x[5]) for x in linesList]
 			arr6 = [string.atoi(x[6]) for x in linesList]
-			for i in range(1, max(arr0)):
+			for i in range(1, max(arr0)+1):
 				pro_0 += [arr0.count(i)]
 				print ("pro_0 : " + bytes(i) + ", count = " + bytes(arr0.count(i)) + "/" + bytes(len(arr0)) + "(" + bytes(float(arr0.count(i))/len(arr0)) + ")")
-			for i in range(max(arr1)):
+			for i in range(max(arr1)+1):
 				pro_1 += [arr1.count(i)]
 				print ("pro_1 : " + bytes(i) + ", count = " + bytes(arr1.count(i)) + "/" + bytes(len(arr1)) + "(" + bytes(float(arr1.count(i))/len(arr1)) + ")")
-			for i in range(max(arr2)):
+			for i in range(max(arr2)+1):
 				pro_2 += [arr2.count(i)]
 				print ("pro_2 : " + bytes(i) + ", count = " + bytes(arr2.count(i)) + "/" + bytes(len(arr2)) + "(" + bytes(float(arr2.count(i))/len(arr2)) + ")")
 			pro_3[0] = arr3.count(0)
@@ -266,18 +266,18 @@ def globalAnalyseFiles():
 			print ("pro_4 :  (SMALL) one_count = " + bytes(arr4.count(1)) + "/" + bytes(len(arr4)) + "(" + bytes(float(arr4.count(1))/len(arr4)) + ")")
 			print ("pro_5 :  (PRIME) zero_count = " + bytes(arr5.count(0)) + "/" + bytes(len(arr5)) + "(" + bytes(float(arr5.count(0))/len(arr5)) + ")")
 			print ("pro_5 :  (COMPOSITE) one_count = " + bytes(arr5.count(1)) + "/" + bytes(len(arr5)) + "(" + bytes(float(arr5.count(1))/len(arr5)) + ")")
-			for i in range(max(arr6)):
+			for i in range(5):
 				pro_6 += [arr6.count(i)]
 				print ("pro_6 : " + bytes(i) + ", count = " + bytes(arr6.count(i)) + "/" + bytes(len(arr6)) + "(" + bytes(float(arr6.count(i))/len(arr6)) + ")")
 			plt.figure()
 			plt.subplot(421)
-			plt.bar(range(1, max(arr0)), pro_0)
+			plt.bar(range(1, max(arr0)+1), pro_0)
 			plt.xticks(np.arange(len(pro_0))+0.5, range(1, max(arr0)))
 			plt.subplot(422)
-			plt.bar(range(max(arr1)), pro_1)
+			plt.bar(range(max(arr1)+1), pro_1)
 			plt.xticks(np.arange(len(pro_1))+0.5, range(max(arr1)))
 			plt.subplot(423)
-			plt.bar(range(max(arr2)), pro_2)
+			plt.bar(range(max(arr2)+1), pro_2)
 			plt.xticks(np.arange(len(pro_2))+0.5, range(max(arr2)))
 			plt.subplot(424)
 			plt.bar(range(2), pro_3)
@@ -289,8 +289,8 @@ def globalAnalyseFiles():
 			plt.bar(range(2), pro_5)
 			plt.xticks(np.arange(2)+0.5, range(2))
 			plt.subplot(427)
-			plt.bar(range(max(arr6)), pro_6)
-			plt.xticks(np.arange(len(pro_6))+0.5, range(max(arr6)))
+			plt.bar(range(5), pro_6)
+			plt.xticks(np.arange(len(pro_6))+0.5, range(5))
 			plt.savefig("barfig_" + bytes(fileindex) + ".jpg")
 			plt.show()
 
