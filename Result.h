@@ -123,6 +123,35 @@ class Result
             mDate = "1997-01-01";
         }
 
+		Result(RedNumbers rn1, RedNumbers rn2, RedNumbers rn3, RedNumbers rn4, RedNumbers rn5,
+#ifdef DLT
+			   BlueNumbers bn1, BlueNumbers bn2)
+#else
+			   RedNumbers rn6, BlueNumbers bn0)
+#endif
+		{
+			mR1 = make(RedBall, rn1);
+			mR2 = make(RedBall, rn2);
+			mR3 = make(RedBall, rn3);
+			mR4 = make(RedBall, rn4);
+			mR5 = make(RedBall, rn5);
+#ifdef DLT
+			mB1 = make(BlueBall, bn1);
+			mB2 = make(BlueBall, bn2);
+#else
+			mR6 = make(RedBall, rn6);
+			mB0 = make(BlueBall, bn0);
+#endif
+			mRedSum = 0;
+			mUnitSum = 0;
+			mRedSumAverage = 0;
+			mJiouRatio = RED_RATIO_UNKNOWN;
+			mDaxiaoRatio = RED_RATIO_UNKNOWN;
+			mZhiheRatio = RED_RATIO_UNKNOWN;
+			mQid = 0;
+			mDate = "1997-01-01";
+		}
+
         Result(sptr(RedBall) r1, sptr(RedBall) r2, sptr(RedBall) r3, sptr(RedBall) r4, sptr(RedBall) r5,
 #ifdef DLT
                sptr(BlueBall) b1, sptr(BlueBall) b2)

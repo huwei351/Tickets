@@ -163,16 +163,16 @@ vector<resultStatistics> AccuracyTest::getMaxProbabilityPredictResult(int id)
 #endif
     //printf("start create resultStatistics...\n");
 
-	int rsta1_size = (int)rsta1.size() > 5 ? 5 : (int)rsta1.size();
-	int rsta2_size = (int)rsta2.size() > 13 ? 13 : (int)rsta2.size();
-	int rsta3_size = (int)rsta3.size() > 10 ? 10 : (int)rsta3.size();
-	int rsta4_size = (int)rsta4.size() > 11 ? 11 : (int)rsta4.size();
-	int rsta5_size = (int)rsta5.size() > 13 ? 13 : (int)rsta5.size();
+	int rsta1_size = (int)rsta1.size() > 11 ? 11 : (int)rsta1.size();
+	int rsta2_size = (int)rsta2.size() > 19 ? 19 : (int)rsta2.size();
+	int rsta3_size = (int)rsta3.size() > 21 ? 21 : (int)rsta3.size();
+	int rsta4_size = (int)rsta4.size() > 20 ? 20 : (int)rsta4.size();
+	int rsta5_size = (int)rsta5.size() > 18 ? 18 : (int)rsta5.size();
 #ifdef DLT
 	int bsta1_size = (int)bsta1.size();
 	int bsta2_size = (int)bsta2.size();
 #else
-	int rsta6_size = (int)rsta6.size() > 8 ? 8 : (int)rsta6.size();
+	int rsta6_size = (int)rsta6.size() > 13 ? 13 : (int)rsta6.size();
 	int bsta_size = (int)bsta.size() > 1 ? 1 : (int)bsta.size();
 #endif
 
@@ -652,7 +652,7 @@ vector<float> AccuracyTest::getAccuracyForDifferentWeight(float num_wt, float wu
 void AccuracyTest::startAccuracyTest()
 {
     string data = "";
-
+#if 1
     for(int i = PREDICT_BASE; i < TABALE_LENGTH - 1; i++) {
 		printf("\r===>>[ %d/%d ]", i, TABALE_LENGTH);
         vector<resultStatistics> rsta = getMaxProbabilityPredictResult(i);
@@ -672,6 +672,49 @@ void AccuracyTest::startAccuracyTest()
     }
 
     writeAccuracyData2File(data, 11);
+#else
+	vector<resultStatistics> rsta;
+	for(int i = 1; i < 12; i++) {
+		for(int j = 2; j < 21; j++) {
+			for(int k = 4; k < 25; k++) {
+				for(int m = 10; m < 30; m++) {
+					for(int n = 15; n < 33; n++) {	
+						for(int r = 21; r < 34; r++) {
+							if(i < j && j < k && k < m && m < n && n < r) {
+								sptr(Result) result = make(Result, (RedNumbers)i, (RedNumbers)j, (RedNumbers)k,
+														   (RedNumbers)m, (RedNumbers)n, (RedNumbers)r, (BlueNumbers)1);
+								float prob = 0.1;
+								resultStatistics sta;
+								sta.result = result;
+								sta.probability = prob;
+								rsta.push_back(sta);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+    for(int i = PREDICT_BASE; i < TABALE_LENGTH - 1; i++) {
+		printf("\r===>>[ %d/%d ]", i, TABALE_LENGTH);
+        sptr(Result) actualResult = getResultFromDatabase(i + 1);
+		int location = 0;
+        for(int j = 0; j < (int)rsta.size(); j++) {
+            if(is2ResultsEqual(actualResult, rsta[j].result, 1)) {
+                location = j + 1;
+                break;
+            }
+        }
+
+		char buf[64];
+		memset(buf, 0, 64);
+		sprintf(buf, "%d/%d/%0.4f\n", location, (int)rsta.size(), (float)location / (int)rsta.size());
+		data += string(buf);
+    }
+
+	writeAccuracyData2File(data, 12);
+#endif
 }
 
 void AccuracyTest::startAccuracyTest2()
