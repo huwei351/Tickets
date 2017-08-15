@@ -37,6 +37,8 @@ class AccuracyTest
 
         void rearrangePredictResult(std::vector<resultStatistics> *resultSta, int top);
 
+		std::string printPredictResult(std::vector<resultStatistics> resultSta);
+
         std::vector<resultStatistics> getMaxProbabilityPredictResult(int id);
 
         std::vector<redballStatistics> calculateRedBallProbability(sptr(RedBall) rb, int id);

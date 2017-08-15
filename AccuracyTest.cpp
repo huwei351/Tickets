@@ -145,6 +145,36 @@ void AccuracyTest::rearrangePredictResult(vector<resultStatistics> *resultSta, i
     { resultSta->erase(resultSta->begin() + top, resultSta->end()); }
 }
 
+string AccuracyTest::printPredictResult(vector<resultStatistics> resultSta)
+{
+    string content = "";
+    char temp[512];
+    memset(temp, 0, 512);
+
+    for(int i = 0; i < (int)resultSta.size(); i++) {
+        sptr(Result) result = resultSta[i].result;
+        RedNumbers rnum1 = result->mR1->mNum;
+        RedNumbers rnum2 = result->mR2->mNum;
+        RedNumbers rnum3 = result->mR3->mNum;
+        RedNumbers rnum4 = result->mR4->mNum;
+        RedNumbers rnum5 = result->mR5->mNum;
+#ifdef DLT
+        BlueNumbers bnum1 = result->mB1->mNum;
+        BlueNumbers bnum2 = result->mB2->mNum;
+        sprintf(temp, "PredictResult[%02d] %02d %02d %02d %02d %02d + %02d %02d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, bnum1, bnum2, resultSta[i].probability);
+#else
+        RedNumbers rnum6 = result->mR6->mNum;
+        BlueNumbers bnum = result->mB0->mNum;
+        sprintf(temp, "PredictResult[%02d] %02d %02d %02d %02d %02d %02d + %02d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
+#endif
+        content += std::string(temp);
+        memset(temp, 0, 512);
+    }
+
+    //printf("%s", content.c_str());
+    return content;
+}
+
 vector<resultStatistics> AccuracyTest::getMaxProbabilityPredictResult(int id)
 {
     sptr(Result) mResult = getResultFromDatabase(id);
@@ -696,6 +726,8 @@ void AccuracyTest::startAccuracyTest()
 		}
 	}
 
+	string content = printPredictResult(rsta);
+	
     for(int i = PREDICT_BASE; i < TABALE_LENGTH - 1; i++) {
 		printf("\r===>>[ %d/%d ]", i, TABALE_LENGTH);
         sptr(Result) actualResult = getResultFromDatabase(i + 1);
@@ -714,6 +746,23 @@ void AccuracyTest::startAccuracyTest()
     }
 
 	writeAccuracyData2File(data, 12);
+
+    // write data to file
+    FILE *fp;
+    fp = fopen("./ssq_results/predict_results_all.txt", "w+");
+
+    if(fp == NULL) {
+        printf("open file predict_results_all.txt fail!\n");
+        fclose(fp);
+    }
+
+    if(fwrite(content.c_str(), content.length(), 1, fp) < 1) {
+        printf("write file predict_results_all.txt fail!\n");
+        fclose(fp);
+    }
+
+    fclose(fp);
+
 #endif
 }
 
