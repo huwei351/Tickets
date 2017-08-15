@@ -219,16 +219,16 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
 #endif
     printf("start create resultStatistics...\n");
 
-	int rsta1_size = (int)rsta1.size() > 5 ? 5 : (int)rsta1.size();
-	int rsta2_size = (int)rsta2.size() > 13 ? 13 : (int)rsta2.size();
-	int rsta3_size = (int)rsta3.size() > 10 ? 10 : (int)rsta3.size();
-	int rsta4_size = (int)rsta4.size() > 11 ? 11 : (int)rsta4.size();
-	int rsta5_size = (int)rsta5.size() > 13 ? 13 : (int)rsta5.size();
+	int rsta1_size = (int)rsta1.size() > 11 ? 11 : (int)rsta1.size();
+	int rsta2_size = (int)rsta2.size() > 19 ? 19 : (int)rsta2.size();
+	int rsta3_size = (int)rsta3.size() > 21 ? 21 : (int)rsta3.size();
+	int rsta4_size = (int)rsta4.size() > 20 ? 20 : (int)rsta4.size();
+	int rsta5_size = (int)rsta5.size() > 18 ? 18 : (int)rsta5.size();
 #ifdef DLT
 	int bsta1_size = (int)bsta1.size();
 	int bsta2_size = (int)bsta2.size();
 #else
-	int rsta6_size = (int)rsta6.size() > 8 ? 8 : (int)rsta6.size();
+	int rsta6_size = (int)rsta6.size() > 13 ? 13 : (int)rsta6.size();
 	int bsta_size = (int)bsta.size() > 1 ? 1 : (int)bsta.size();
 #endif
 
