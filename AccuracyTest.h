@@ -37,7 +37,7 @@ class AccuracyTest
 
         void rearrangePredictResult(std::vector<resultStatistics> *resultSta, int top);
 
-		std::string printPredictResult(std::vector<resultStatistics> resultSta);
+        std::string printPredictResult(std::vector<resultStatistics> resultSta);
 
         std::vector<resultStatistics> getMaxProbabilityPredictResult(int id);
 
@@ -64,7 +64,7 @@ class AccuracyTest
 
         void startAccuracyTest3();
 
-		void startAccuracyTest4();
+        void startAccuracyTest4();
 
         bool writeAccuracyData2File(std::string data, int index);
 

@@ -192,18 +192,17 @@ vector<resultStatistics> AccuracyTest::getMaxProbabilityPredictResult(int id)
     vector<blueballStatistics> bsta = calculateBlueBallProbability(mResult->mB0, id);
 #endif
     //printf("start create resultStatistics...\n");
-
-	int rsta1_size = (int)rsta1.size() > 11 ? 11 : (int)rsta1.size();
-	int rsta2_size = (int)rsta2.size() > 19 ? 19 : (int)rsta2.size();
-	int rsta3_size = (int)rsta3.size() > 21 ? 21 : (int)rsta3.size();
-	int rsta4_size = (int)rsta4.size() > 20 ? 20 : (int)rsta4.size();
-	int rsta5_size = (int)rsta5.size() > 18 ? 18 : (int)rsta5.size();
+    int rsta1_size = (int)rsta1.size() > 11 ? 11 : (int)rsta1.size();
+    int rsta2_size = (int)rsta2.size() > 19 ? 19 : (int)rsta2.size();
+    int rsta3_size = (int)rsta3.size() > 21 ? 21 : (int)rsta3.size();
+    int rsta4_size = (int)rsta4.size() > 20 ? 20 : (int)rsta4.size();
+    int rsta5_size = (int)rsta5.size() > 18 ? 18 : (int)rsta5.size();
 #ifdef DLT
-	int bsta1_size = (int)bsta1.size();
-	int bsta2_size = (int)bsta2.size();
+    int bsta1_size = (int)bsta1.size();
+    int bsta2_size = (int)bsta2.size();
 #else
-	int rsta6_size = (int)rsta6.size() > 13 ? 13 : (int)rsta6.size();
-	int bsta_size = (int)bsta.size() > 1 ? 1 : (int)bsta.size();
+    int rsta6_size = (int)rsta6.size() > 13 ? 13 : (int)rsta6.size();
+    int bsta_size = (int)bsta.size() > 1 ? 1 : (int)bsta.size();
 #endif
 
     for(int i = 0; i < rsta1_size; i++) {
@@ -579,8 +578,10 @@ vector< sptr(RedBall) > AccuracyTest::getRedBallListFromDatabase(char *field, in
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, CR_G);
-				int i = 0;
-				if (id != 0) i = id - PREDICT_BASE;
+                int i = 0;
+
+                if(id != 0) { i = id - PREDICT_BASE; }
+
                 for(i; i < (int)lines.size(); i++) {
                     RedNumbers rn = (RedNumbers) atoi(lines[i].c_str());
                     sptr(RedBall) rb = make(RedBall, rn);
@@ -611,8 +612,10 @@ vector< sptr(BlueBall) > AccuracyTest::getBlueBallListFromDatabase(char *field, 
 
             if(!StringUtil::StringIsEmpty(str)) {
                 StringUtil::StringSplit(lines, str, CR_G);
-				int i = 0;
-				if (id != 0) i = id - PREDICT_BASE;
+                int i = 0;
+
+                if(id != 0) { i = id - PREDICT_BASE; }
+
                 for(i; i < (int)lines.size(); i++) {
                     BlueNumbers bn = (BlueNumbers) atoi(lines[i].c_str());
                     sptr(BlueBall) bb = make(BlueBall, bn);
@@ -683,11 +686,13 @@ void AccuracyTest::startAccuracyTest()
 {
     string data = "";
 #if 1
+
     for(int i = PREDICT_BASE; i < TABALE_LENGTH - 1; i++) {
-		printf("\r===>>[ %d/%d ]", i, TABALE_LENGTH);
+        printf("\r===>>[ %d/%d ]", i, TABALE_LENGTH);
         vector<resultStatistics> rsta = getMaxProbabilityPredictResult(i);
         sptr(Result) actualResult = getResultFromDatabase(i + 1);
-		int location = 0;
+        int location = 0;
+
         for(int j = 0; j < (int)rsta.size(); j++) {
             if(is2ResultsEqual(actualResult, rsta[j].result, 1)) {
                 location = j + 1;
@@ -695,43 +700,45 @@ void AccuracyTest::startAccuracyTest()
             }
         }
 
-		char buf[64];
-		memset(buf, 0, 64);
-		sprintf(buf, "%d/%d/%0.4f\n", location, (int)rsta.size(), (float)location / (int)rsta.size());
-		data += string(buf);
+        char buf[64];
+        memset(buf, 0, 64);
+        sprintf(buf, "%d/%d/%0.4f\n", location, (int)rsta.size(), (float)location / (int)rsta.size());
+        data += string(buf);
     }
 
     writeAccuracyData2File(data, 11);
 #else
-	vector<resultStatistics> rsta;
-	for(int i = 1; i < 12; i++) {
-		for(int j = 2; j < 21; j++) {
-			for(int k = 4; k < 25; k++) {
-				for(int m = 10; m < 30; m++) {
-					for(int n = 15; n < 33; n++) {	
-						for(int r = 21; r < 34; r++) {
-							if(i < j && j < k && k < m && m < n && n < r) {
-								sptr(Result) result = make(Result, (RedNumbers)i, (RedNumbers)j, (RedNumbers)k,
-														   (RedNumbers)m, (RedNumbers)n, (RedNumbers)r, (BlueNumbers)1);
-								float prob = 0.1;
-								resultStatistics sta;
-								sta.result = result;
-								sta.probability = prob;
-								rsta.push_back(sta);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+    vector<resultStatistics> rsta;
 
-	string content = printPredictResult(rsta);
-	
+    for(int i = 1; i < 12; i++) {
+        for(int j = 2; j < 21; j++) {
+            for(int k = 4; k < 25; k++) {
+                for(int m = 10; m < 30; m++) {
+                    for(int n = 15; n < 33; n++) {
+                        for(int r = 21; r < 34; r++) {
+                            if(i < j && j < k && k < m && m < n && n < r) {
+                                sptr(Result) result = make(Result, (RedNumbers)i, (RedNumbers)j, (RedNumbers)k,
+                                                           (RedNumbers)m, (RedNumbers)n, (RedNumbers)r, (BlueNumbers)1);
+                                float prob = 0.1;
+                                resultStatistics sta;
+                                sta.result = result;
+                                sta.probability = prob;
+                                rsta.push_back(sta);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    string content = printPredictResult(rsta);
+
     for(int i = PREDICT_BASE; i < TABALE_LENGTH - 1; i++) {
-		printf("\r===>>[ %d/%d ]", i, TABALE_LENGTH);
+        printf("\r===>>[ %d/%d ]", i, TABALE_LENGTH);
         sptr(Result) actualResult = getResultFromDatabase(i + 1);
-		int location = 0;
+        int location = 0;
+
         for(int j = 0; j < (int)rsta.size(); j++) {
             if(is2ResultsEqual(actualResult, rsta[j].result, 1)) {
                 location = j + 1;
@@ -739,14 +746,13 @@ void AccuracyTest::startAccuracyTest()
             }
         }
 
-		char buf[64];
-		memset(buf, 0, 64);
-		sprintf(buf, "%d/%d/%0.4f\n", location, (int)rsta.size(), (float)location / (int)rsta.size());
-		data += string(buf);
+        char buf[64];
+        memset(buf, 0, 64);
+        sprintf(buf, "%d/%d/%0.4f\n", location, (int)rsta.size(), (float)location / (int)rsta.size());
+        data += string(buf);
     }
 
-	writeAccuracyData2File(data, 12);
-
+    writeAccuracyData2File(data, 12);
     // write data to file
     FILE *fp;
     fp = fopen("./ssq_results/predict_results_all.txt", "w+");
@@ -762,7 +768,6 @@ void AccuracyTest::startAccuracyTest()
     }
 
     fclose(fp);
-
 #endif
 }
 
@@ -808,12 +813,22 @@ void AccuracyTest::startAccuracyTest3()
 
         for(int i = PREDICT_BASE; i < TABALE_LENGTH - 1; i++) {
             sptr(Result) mResult = getResultFromDatabase(i);
+#ifndef DLT
             vector<blueballStatistics> bsta = calculateBlueBallProbability(mResult->mB0, i);
+#else
+            vector<blueballStatistics> bsta = calculateBlueBallProbability(mResult->mB1, i);
+#endif
             sptr(Result) actualResult = getResultFromDatabase(i + 1);
             int location = 0;
 
             for(int j = 0; j < (int)bsta.size(); j++) {
+#ifndef DLT
+
                 if(bsta[j].blueball->mNum == actualResult->mB0->mNum) {
+#else
+
+                if(bsta[j].blueball->mNum == actualResult->mB1->mNum) {
+#endif
                     location = j + 1;
                     break;
                 }
@@ -832,55 +847,52 @@ void AccuracyTest::startAccuracyTest3()
 
 void AccuracyTest::startAccuracyTest4()
 {
-	for (int j = 1; j < 7; j++) {
-		char field[8];
-		memset(field, 0, 8);
-		sprintf(field, "rb%d", j);
-		
-		string data = "";
-		vector< sptr(RedBall) > mList = getRedBallListFromDatabase(field, 0);
-		int size = (int) mList.size();
+    for(int j = 1; j < 7; j++) {
+        char field[8];
+        memset(field, 0, 8);
+        sprintf(field, "rb%d", j);
+        string data = "";
+        vector< sptr(RedBall) > mList = getRedBallListFromDatabase(field, 0);
+        int size = (int) mList.size();
 
-		for (int i = 0; i < size; i++) {
-			RedNumbers num = mList[i]->mNum;
-			int unit = mList[i]->mUnit;
-			int decade = mList[i]->mDecade;
-			Parity jiou = mList[i]->mJiou;
-			BigOrSmall daxiao = mList[i]->mDaxiao;
-			PrimeOrComposite zhihe = mList[i]->mZhihe;
-			Elememts wuxing = mList[i]->mWuxing;
+        for(int i = 0; i < size; i++) {
+            RedNumbers num = mList[i]->mNum;
+            int unit = mList[i]->mUnit;
+            int decade = mList[i]->mDecade;
+            Parity jiou = mList[i]->mJiou;
+            BigOrSmall daxiao = mList[i]->mDaxiao;
+            PrimeOrComposite zhihe = mList[i]->mZhihe;
+            Elememts wuxing = mList[i]->mWuxing;
+            char buf[128];
+            memset(buf, 0, 128);
+            sprintf(buf, "%d/%d/%d/%d/%d/%d/%d\n", num, unit, decade, jiou, daxiao, zhihe, wuxing);
+            data += string(buf);
+        }
 
-			char buf[128];
-			memset(buf, 0, 128);
-			sprintf(buf, "%d/%d/%d/%d/%d/%d/%d\n", num, unit, decade, jiou, daxiao, zhihe, wuxing);
-			data += string(buf);
-		}
+        writeAccuracyData2File(data, j + 20);
+    }
 
-		writeAccuracyData2File(data, j+20);
-	}
+    {
+        string data1 = "";
+        vector< sptr(BlueBall) > mList1 = getBlueBallListFromDatabase(FIELD_BB1, 0);
+        int size1 = (int) mList1.size();
 
-	{
-		string data1 = "";
-		vector< sptr(BlueBall) > mList1 = getBlueBallListFromDatabase(FIELD_BB1, 0);
-		int size1 = (int) mList1.size();
+        for(int i = 0; i < size1; i++) {
+            BlueNumbers num1 = mList1[i]->mNum;
+            int unit1 = mList1[i]->mUnit;
+            int decade1 = mList1[i]->mDecade;
+            Parity jiou1 = mList1[i]->mJiou;
+            BigOrSmall daxiao1 = mList1[i]->mDaxiao;
+            PrimeOrComposite zhihe1 = mList1[i]->mZhihe;
+            Elememts wuxing1 = mList1[i]->mWuxing;
+            char buf1[128];
+            memset(buf1, 0, 128);
+            sprintf(buf1, "%d/%d/%d/%d/%d/%d/%d\n", num1, unit1, decade1, jiou1, daxiao1, zhihe1, wuxing1);
+            data1 += string(buf1);
+        }
 
-		for (int i = 0; i < size1; i++) {
-			BlueNumbers num1 = mList1[i]->mNum;
-			int unit1 = mList1[i]->mUnit;
-			int decade1 = mList1[i]->mDecade;
-			Parity jiou1 = mList1[i]->mJiou;
-			BigOrSmall daxiao1 = mList1[i]->mDaxiao;
-			PrimeOrComposite zhihe1 = mList1[i]->mZhihe;
-			Elememts wuxing1 = mList1[i]->mWuxing;
-
-			char buf1[128];
-			memset(buf1, 0, 128);
-			sprintf(buf1, "%d/%d/%d/%d/%d/%d/%d\n", num1, unit1, decade1, jiou1, daxiao1, zhihe1, wuxing1);
-			data1 += string(buf1);
-		}
-
-		writeAccuracyData2File(data1, 27);
-	}	
+        writeAccuracyData2File(data1, 27);
+    }
 }
 
 bool AccuracyTest::writeAccuracyData2File(string data, int index)

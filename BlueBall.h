@@ -171,6 +171,7 @@ class BlueBall
                 case BLUE_NUM_TWELVE:
                     setVariableValue(num, 2, 1, EVEN, BIG, COMPOSITE, WATER);
                     break;
+#ifndef DLT
 
                 case BLUE_NUM_THIRTEEN:
                     setVariableValue(num, 3, 1, ODD, BIG, PRIME, WATER);
@@ -187,6 +188,7 @@ class BlueBall
                 case BLUE_NUM_SIXTEEN:
                     setVariableValue(num, 6, 1, EVEN, BIG, COMPOSITE, WOOD);
                     break;
+#endif
 
                 default:
                     break;

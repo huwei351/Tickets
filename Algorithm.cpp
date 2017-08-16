@@ -148,8 +148,9 @@ bool Algorithm::sortByCount2(const bnumStatistics &bs1, const bnumStatistics &bs
 void Algorithm::rearrangePredictResult(std::vector<resultStatistics> *resultSta, int top)
 {
     std::sort(resultSta->begin(), resultSta->end(), sortByPro);
-	if (top != 0)
-    	resultSta->erase(resultSta->begin() + top, resultSta->end());
+
+    if(top != 0)
+    { resultSta->erase(resultSta->begin() + top, resultSta->end()); }
 }
 
 std::string Algorithm::printPredictResult(std::vector<resultStatistics> resultSta)
@@ -218,18 +219,17 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
     tempBuf = "";
 #endif
     printf("start create resultStatistics...\n");
-
-	int rsta1_size = (int)rsta1.size() > 11 ? 11 : (int)rsta1.size();
-	int rsta2_size = (int)rsta2.size() > 19 ? 19 : (int)rsta2.size();
-	int rsta3_size = (int)rsta3.size() > 21 ? 21 : (int)rsta3.size();
-	int rsta4_size = (int)rsta4.size() > 20 ? 20 : (int)rsta4.size();
-	int rsta5_size = (int)rsta5.size() > 18 ? 18 : (int)rsta5.size();
+    int rsta1_size = (int)rsta1.size() > 11 ? 11 : (int)rsta1.size();
+    int rsta2_size = (int)rsta2.size() > 19 ? 19 : (int)rsta2.size();
+    int rsta3_size = (int)rsta3.size() > 21 ? 21 : (int)rsta3.size();
+    int rsta4_size = (int)rsta4.size() > 20 ? 20 : (int)rsta4.size();
+    int rsta5_size = (int)rsta5.size() > 18 ? 18 : (int)rsta5.size();
 #ifdef DLT
-	int bsta1_size = (int)bsta1.size();
-	int bsta2_size = (int)bsta2.size();
+    int bsta1_size = (int)bsta1.size();
+    int bsta2_size = (int)bsta2.size();
 #else
-	int rsta6_size = (int)rsta6.size() > 13 ? 13 : (int)rsta6.size();
-	int bsta_size = (int)bsta.size() > 1 ? 1 : (int)bsta.size();
+    int rsta6_size = (int)rsta6.size() > 13 ? 13 : (int)rsta6.size();
+    int bsta_size = (int)bsta.size() > 1 ? 1 : (int)bsta.size();
 #endif
 
     for(int i = 0; i < rsta1_size; i++) {
