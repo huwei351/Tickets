@@ -142,22 +142,68 @@ int32_t main(int32_t argc, char *argv[])
         printf("	%d	=> Predict Latest DLT Result\n", 1);
         printf("	%d	=> Compare Actual Result with Predict Result\n", 2);
         printf("    %d  => Set Default num/wuxing Weight\n", 3);
-        printf("    %d  => Start SSQ Predict Accuracy Test\n", 4);
+        printf("    %d  => Start DLT Predict Accuracy Test\n", 4);
         printf("	%d	=> Quit Program\n", PRE_QUIT);
         selection = app_get_choice("Select Function");
 
         switch(selection) {
             case 1: {
+                    printf("\nPleaes Slelect DLT Predict Result Display Numbers:\n");
+                    printf("    %d  => All Results\n", 0);
+                    printf("    %d  => 10 Results\n", 10);
+                    printf("    %d  => 20 Results\n", 20);
+                    printf("    %d  => 50 Results\n", 50);
+                    printf("    %d  => Quit Program\n", PRE_QUIT);
+                    int choice = app_get_choice("Select Numbers");
+                    ai->updateDatabase();
+                    ai->getMaxProbabilityPredictResult(choice);
                 }
+                break;
 
             case 2: {
                 }
+                break;
 
             case 3: {
+                    printf("\nSet Num/Wuxing Weight (default: 0.5-0.5)\n");
+                    printf("Current Weight Num-Wuxing: %0.3f-%0.3f, Please Select:\n", num_weight, wuxing_weight);
+                    printf("    %d  => Num-Wuxing: 0.4-0.6\n", 1);
+                    printf("    %d  => Num-Wuxing: 0.3-0.7\n", 2);
+                    printf("    %d  => Num-Wuxing: 0.2-0.8\n", 3);
+                    printf("    %d  => Num-Wuxing: 0.1-0.9\n", 4);
+                    printf("    %d  => Type Other Choices\n", 5);
+                    printf("    %d  => Reset To Default (0.5-0.5)\n", 6);
+                    printf("    %d  => Quit Program\n", PRE_QUIT);
+                    int choice = app_get_choice("Select Numbers");
+
+                    if(choice == 1) {
+                        ai->setNumAndWuxingWeight(0.4, 0.6);
+                    } else if(choice == 2) {
+                        ai->setNumAndWuxingWeight(0.3, 0.7);
+                    } else if(choice == 3) {
+                        ai->setNumAndWuxingWeight(0.2, 0.8);
+                    } else if(choice == 4) {
+                        ai->setNumAndWuxingWeight(0.1, 0.9);
+                    } else if(choice == 5) {
+                        //TODO
+                    } else if(choice == 6) {
+                        ai->setNumAndWuxingWeight(0.5, 0.5);
+                    } else if(choice == PRE_QUIT) {
+                        break;
+                    } else {
+                        printf("Unknown choice\n");
+                    }
                 }
+                break;
 
             case 4: {
+                    printf("Accuracy Test Started...\n");
+                    at->startAccuracyTest();
+                    //at->startAccuracyTest2();
+                    //at->startAccuracyTest3();
+                    //at->startAccuracyTest4();
                 }
+                break;
 
             case PRE_QUIT: {
                     printf("Quit DLT Submenu\n");

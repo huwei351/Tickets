@@ -225,8 +225,8 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
     int rsta4_size = (int)rsta4.size() > 20 ? 20 : (int)rsta4.size();
     int rsta5_size = (int)rsta5.size() > 18 ? 18 : (int)rsta5.size();
 #ifdef DLT
-    int bsta1_size = (int)bsta1.size();
-    int bsta2_size = (int)bsta2.size();
+    int bsta1_size = (int)bsta1.size() > 3 ? 3 : (int)bsta1.size();
+    int bsta2_size = (int)bsta2.size() > 3 ? 3 : (int)bsta2.size();
 #else
     int rsta6_size = (int)rsta6.size() > 13 ? 13 : (int)rsta6.size();
     int bsta_size = (int)bsta.size() > 1 ? 1 : (int)bsta.size();

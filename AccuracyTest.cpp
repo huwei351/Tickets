@@ -198,8 +198,8 @@ vector<resultStatistics> AccuracyTest::getMaxProbabilityPredictResult(int id)
     int rsta4_size = (int)rsta4.size() > 20 ? 20 : (int)rsta4.size();
     int rsta5_size = (int)rsta5.size() > 18 ? 18 : (int)rsta5.size();
 #ifdef DLT
-    int bsta1_size = (int)bsta1.size();
-    int bsta2_size = (int)bsta2.size();
+    int bsta1_size = (int)bsta1.size() > 3 ? 3 : (int)bsta1.size();
+    int bsta2_size = (int)bsta2.size() > 3 ? 3 : (int)bsta2.size();
 #else
     int rsta6_size = (int)rsta6.size() > 13 ? 13 : (int)rsta6.size();
     int bsta_size = (int)bsta.size() > 1 ? 1 : (int)bsta.size();
@@ -649,7 +649,12 @@ bool AccuracyTest::is2ResultsEqual(sptr(Result) r1, sptr(Result) r2, int level)
         return same && r1->mB0->mNum == r2->mB0->mNum;
 #endif
     } else if(level == 1) {
-        return same;
+#ifdef DLT
+		return same && (r1->mB1->mNum == r2->mB1->mNum || r1->mB2->mNum == r2->mB2->mNum);
+#else
+		return same;
+#endif
+
     } else {
         printf("Invalid level!\n");
         return false;
@@ -709,7 +714,7 @@ void AccuracyTest::startAccuracyTest()
     writeAccuracyData2File(data, 11);
 #else
     vector<resultStatistics> rsta;
-
+#ifndef DLT
     for(int i = 1; i < 12; i++) {
         for(int j = 2; j < 21; j++) {
             for(int k = 4; k < 25; k++) {
@@ -731,6 +736,31 @@ void AccuracyTest::startAccuracyTest()
             }
         }
     }
+#else
+	for(int i = 1; i < 17; i++) {
+		for(int j = 2; j < 24; j++) {
+			for(int k = 8; k < 31; k++) {
+				for(int m = 15; m < 35; m++) {
+					for(int n = 24; n < 36; n++) {
+						for(int r = 1; r < 10; r++) {
+							for(int s = 4; s < 13; s++) {
+								if(i < j && j < k && k < m && m < n && r < s) {
+									sptr(Result) result = make(Result, (RedNumbers)i, (RedNumbers)j, (RedNumbers)k,
+															   (RedNumbers)m, (RedNumbers)n, (BlueNumbers)r, (BlueNumbers)s);
+									float prob = 0.1;
+									resultStatistics sta;
+									sta.result = result;
+									sta.probability = prob;
+									rsta.push_back(sta);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+#endif
 
     string content = printPredictResult(rsta);
 
@@ -751,19 +781,24 @@ void AccuracyTest::startAccuracyTest()
         sprintf(buf, "%d/%d/%0.4f\n", location, (int)rsta.size(), (float)location / (int)rsta.size());
         data += string(buf);
     }
-
+#ifndef DLT
     writeAccuracyData2File(data, 12);
+	char *file = "./ssq_results/predict_results_all.txt";
+#else
+    writeAccuracyData2File(data, 13);
+	char *file = "./dlt_results/predict_results_dlt_all.txt";
+#endif
     // write data to file
     FILE *fp;
-    fp = fopen("./ssq_results/predict_results_all.txt", "w+");
+    fp = fopen(file, "w+");
 
     if(fp == NULL) {
-        printf("open file predict_results_all.txt fail!\n");
+        printf("open file %s fail!\n", file);
         fclose(fp);
     }
 
     if(fwrite(content.c_str(), content.length(), 1, fp) < 1) {
-        printf("write file predict_results_all.txt fail!\n");
+        printf("write file %s fail!\n", file);
         fclose(fp);
     }
 
@@ -824,11 +859,12 @@ void AccuracyTest::startAccuracyTest3()
             for(int j = 0; j < (int)bsta.size(); j++) {
 #ifndef DLT
 
-                if(bsta[j].blueball->mNum == actualResult->mB0->mNum) {
+                if(bsta[j].blueball->mNum == actualResult->mB0->mNum)
 #else
 
-                if(bsta[j].blueball->mNum == actualResult->mB1->mNum) {
+                if(bsta[j].blueball->mNum == actualResult->mB1->mNum)
 #endif
+				{
                     location = j + 1;
                     break;
                 }
@@ -847,7 +883,12 @@ void AccuracyTest::startAccuracyTest3()
 
 void AccuracyTest::startAccuracyTest4()
 {
-    for(int j = 1; j < 7; j++) {
+#ifdef DLT
+	for(int j = 1; j < 6; j++)
+#else
+    for(int j = 1; j < 7; j++)
+#endif
+	{
         char field[8];
         memset(field, 0, 8);
         sprintf(field, "rb%d", j);
@@ -872,9 +913,21 @@ void AccuracyTest::startAccuracyTest4()
         writeAccuracyData2File(data, j + 20);
     }
 
-    {
+#ifdef DLT
+    for(int j = 1; j < 3; j++)
+#else
+	for(int j = 2; j < 3; j++)
+#endif
+	{
+        char field1[8];
+        memset(field1, 0, 8);
+#ifdef DLT
+        sprintf(field1, "bb%d", j);
+#else
+		sprintf(field1, "%s", "bb");
+#endif
         string data1 = "";
-        vector< sptr(BlueBall) > mList1 = getBlueBallListFromDatabase(FIELD_BB1, 0);
+        vector< sptr(BlueBall) > mList1 = getBlueBallListFromDatabase(field1, 0);
         int size1 = (int) mList1.size();
 
         for(int i = 0; i < size1; i++) {
@@ -891,7 +944,7 @@ void AccuracyTest::startAccuracyTest4()
             data1 += string(buf1);
         }
 
-        writeAccuracyData2File(data1, 27);
+        writeAccuracyData2File(data1, j + 25);
     }
 }
 
