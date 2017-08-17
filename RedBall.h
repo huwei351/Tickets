@@ -275,6 +275,7 @@ class RedBall
                     setVariableValue(num, 3, 3, ODD, BIG, COMPOSITE, METAL);
                     break;
 #ifdef DLT
+
                 case RED_NUM_THIRTY_FOUR:
                     setVariableValue(num, 4, 3, EVEN, BIG, COMPOSITE, METAL);
                     break;
@@ -283,6 +284,7 @@ class RedBall
                     setVariableValue(num, 5, 3, ODD, BIG, COMPOSITE, EARTH);
                     break;
 #endif
+
                 default:
                     break;
             }

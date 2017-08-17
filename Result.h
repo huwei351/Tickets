@@ -48,36 +48,6 @@ class Result
         sptr(BlueBall) mB0;
 #endif
 
-#ifdef DLT
-        typedef enum {
-            BLUE_RATIO_UNKNOWN = -1,
-            ZERO_AND_TWO = 0,
-            ONE_AND_ONE,
-            TWO_AND_ZERO
-        } BlueRatio;
-
-        typedef enum {
-            RED_RATIO_UNKNOWN = -1,
-            ZERO_AND_FIVE = 0,
-            ONE_AND_FOUR,
-            TWO_AND_THREE,
-            THREE_AND_TWO,
-            FOUR_AND_ONE,
-            FIVE_AND_ZERO
-        } RedRatio;
-#else
-        typedef enum {
-            RED_RATIO_UNKNOWN = -1,
-            ZERO_AND_SIX = 0,
-            ONE_AND_FIVE,
-            TWO_AND_FOUR,
-            THREE_AND_THREE,
-            FOUR_AND_TWO,
-            FIVE_AND_ONE,
-            SIX_AND_ZERO
-        } RedRatio;
-#endif
-
         /* Red ball sum */
         int mRedSum;
 

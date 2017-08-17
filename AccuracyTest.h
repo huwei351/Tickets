@@ -23,6 +23,8 @@ class AccuracyTest
 
         sptr(Result) getResultFromDatabase(int id);
 
+        std::vector<sptr(Result)> getResultListFromDatabase(int begin, int end);
+
         static bool sortByPro(const resultStatistics &rs1, const resultStatistics &rs2);
 
         static bool sortByPro1(const redballStatistics &rs1, const redballStatistics &rs2);
@@ -65,6 +67,8 @@ class AccuracyTest
         void startAccuracyTest3();
 
         void startAccuracyTest4();
+
+        void startAccuracyTest5();
 
         bool writeAccuracyData2File(std::string data, int index);
 

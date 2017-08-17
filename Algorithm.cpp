@@ -295,6 +295,68 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
     return resultSta;
 }
 
+std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult2(int top)
+{
+    std::vector<resultStatistics> rsta;
+#ifndef DLT //SSQ
+
+    for(int i = 1; i < 12; i++) {
+        for(int j = 2; j < 21; j++) {
+            for(int k = 4; k < 25; k++) {
+                for(int m = 10; m < 30; m++) {
+                    for(int n = 15; n < 33; n++) {
+                        for(int r = 21; r < 34; r++) {
+                            if(i < j && j < k && k < m && m < n && n < r) {
+                                sptr(Result) result = make(Result, (RedNumbers)i, (RedNumbers)j, (RedNumbers)k,
+                                                           (RedNumbers)m, (RedNumbers)n, (RedNumbers)r, (BlueNumbers)1);
+                                float prob = calculateResultProbability(result);
+                                resultStatistics sta;
+                                sta.result = result;
+                                sta.probability = prob;
+                                rsta.push_back(sta);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+#else //DLT
+
+    for(int i = 1; i < 17; i++) {
+        for(int j = 2; j < 24; j++) {
+            for(int k = 8; k < 31; k++) {
+                for(int m = 15; m < 35; m++) {
+                    for(int n = 24; n < 36; n++) {
+                        for(int r = 1; r < 10; r++) {
+                            for(int s = 4; s < 13; s++) {
+                                if(i < j && j < k && k < m && m < n && r < s) {
+                                    sptr(Result) result = make(Result, (RedNumbers)i, (RedNumbers)j, (RedNumbers)k,
+                                                               (RedNumbers)m, (RedNumbers)n, (BlueNumbers)r, (BlueNumbers)s);
+                                    float prob = calculateResultProbability(result);
+                                    resultStatistics sta;
+                                    sta.result = result;
+                                    sta.probability = prob;
+                                    rsta.push_back(sta);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+#endif
+    return rsta;
+}
+
+float Algorithm::calculateResultProbability(sptr(Result) result)
+{
+    return 0.1;
+}
+
 std::vector<redballStatistics> Algorithm::calculateRedBallProbability(sptr(RedBall) rb, std::string &content)
 {
     std::vector<rnumStatistics> rnumList;

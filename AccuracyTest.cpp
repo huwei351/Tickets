@@ -107,6 +107,62 @@ sptr(Result) AccuracyTest::getResultFromDatabase(int id)
     return result;
 }
 
+vector<sptr(Result)> AccuracyTest::getResultListFromDatabase(int begin, int end)
+{
+    string str;
+    vector<string> rlines;
+    vector<sptr(Result)> resultList;
+
+    if(mMySqlOperator != NULL) {
+        if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+#ifdef DLT
+            str = mMySqlOperator->SelectData(TABLE_DLT, NULL, end, "ASC");
+#else
+            str = mMySqlOperator->SelectData(TABLE_SSQ, NULL, end, "ASC");
+#endif
+
+            if(!StringUtil::StringIsEmpty(str)) {
+                StringUtil::StringSplit(rlines, str, ROW_G);
+
+                for(int i = begin - 1; i < end; i++) {
+                    vector<string> clines;
+                    StringUtil::StringSplit(clines, rlines[i], COLUMN_G);
+                    int qid = atoi(clines[1].c_str());
+                    string date = clines[2];
+                    RedNumbers r1 = (RedNumbers) atoi(clines[3].c_str());
+                    RedNumbers r2 = (RedNumbers) atoi(clines[4].c_str());
+                    RedNumbers r3 = (RedNumbers) atoi(clines[5].c_str());
+                    RedNumbers r4 = (RedNumbers) atoi(clines[6].c_str());
+                    RedNumbers r5 = (RedNumbers) atoi(clines[7].c_str());
+#ifdef DLT
+                    BlueNumbers b1 = (BlueNumbers) atoi(clines[8].c_str());
+                    BlueNumbers b2 = (BlueNumbers) atoi(clines[9].c_str());
+                    //printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, b1=%d, b2=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, b1, b2);
+#else
+                    RedNumbers r6 = (RedNumbers) atoi(clines[8].c_str());
+                    BlueNumbers b0 = (BlueNumbers) atoi(clines[9].c_str());
+                    //printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, r6, b0);
+#endif
+                    sptr(Result) result = make(Result, make(RedBall, r1, REDBALL_FIRST), make(RedBall, r2, REDBALL_SECOND),
+                                               make(RedBall, r3, REDBALL_THIRD), make(RedBall, r4, REDBALL_FOURTH), make(RedBall, r5, REDBALL_FIFTH),
+#ifdef DLT
+                                               make(BlueBall, b1, BLUEBALL_FIRST), make(BlueBall, b2, BLUEBALL_SECOND));
+#else
+                                               make(RedBall, r6, REDBALL_SIXTH), make(BlueBall, b0, BLUEBALL_FIRST));
+#endif
+                    result->setDate(date);
+                    result->setQid(qid);
+                    resultList.push_back(result);
+                }
+            }
+        }
+
+        mMySqlOperator->CloseMySQLConn();
+    }
+
+    return resultList;
+}
+
 bool AccuracyTest::sortByPro(const resultStatistics &rs1, const resultStatistics &rs2)
 {
     return rs1.probability > rs2.probability;
@@ -650,11 +706,10 @@ bool AccuracyTest::is2ResultsEqual(sptr(Result) r1, sptr(Result) r2, int level)
 #endif
     } else if(level == 1) {
 #ifdef DLT
-		return same && (r1->mB1->mNum == r2->mB1->mNum || r1->mB2->mNum == r2->mB2->mNum);
+        return same && (r1->mB1->mNum == r2->mB1->mNum || r1->mB2->mNum == r2->mB2->mNum);
 #else
-		return same;
+        return same;
 #endif
-
     } else {
         printf("Invalid level!\n");
         return false;
@@ -715,6 +770,7 @@ void AccuracyTest::startAccuracyTest()
 #else
     vector<resultStatistics> rsta;
 #ifndef DLT
+
     for(int i = 1; i < 12; i++) {
         for(int j = 2; j < 21; j++) {
             for(int k = 4; k < 25; k++) {
@@ -736,32 +792,34 @@ void AccuracyTest::startAccuracyTest()
             }
         }
     }
-#else
-	for(int i = 1; i < 17; i++) {
-		for(int j = 2; j < 24; j++) {
-			for(int k = 8; k < 31; k++) {
-				for(int m = 15; m < 35; m++) {
-					for(int n = 24; n < 36; n++) {
-						for(int r = 1; r < 10; r++) {
-							for(int s = 4; s < 13; s++) {
-								if(i < j && j < k && k < m && m < n && r < s) {
-									sptr(Result) result = make(Result, (RedNumbers)i, (RedNumbers)j, (RedNumbers)k,
-															   (RedNumbers)m, (RedNumbers)n, (BlueNumbers)r, (BlueNumbers)s);
-									float prob = 0.1;
-									resultStatistics sta;
-									sta.result = result;
-									sta.probability = prob;
-									rsta.push_back(sta);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-#endif
 
+#else
+
+    for(int i = 1; i < 17; i++) {
+        for(int j = 2; j < 24; j++) {
+            for(int k = 8; k < 31; k++) {
+                for(int m = 15; m < 35; m++) {
+                    for(int n = 24; n < 36; n++) {
+                        for(int r = 1; r < 10; r++) {
+                            for(int s = 4; s < 13; s++) {
+                                if(i < j && j < k && k < m && m < n && r < s) {
+                                    sptr(Result) result = make(Result, (RedNumbers)i, (RedNumbers)j, (RedNumbers)k,
+                                                               (RedNumbers)m, (RedNumbers)n, (BlueNumbers)r, (BlueNumbers)s);
+                                    float prob = 0.1;
+                                    resultStatistics sta;
+                                    sta.result = result;
+                                    sta.probability = prob;
+                                    rsta.push_back(sta);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+#endif
     string content = printPredictResult(rsta);
 
     for(int i = PREDICT_BASE; i < TABALE_LENGTH - 1; i++) {
@@ -781,12 +839,13 @@ void AccuracyTest::startAccuracyTest()
         sprintf(buf, "%d/%d/%0.4f\n", location, (int)rsta.size(), (float)location / (int)rsta.size());
         data += string(buf);
     }
+
 #ifndef DLT
     writeAccuracyData2File(data, 12);
-	char *file = "./ssq_results/predict_results_all.txt";
+    char *file = "./ssq_results/predict_results_all.txt";
 #else
     writeAccuracyData2File(data, 13);
-	char *file = "./dlt_results/predict_results_dlt_all.txt";
+    char *file = "./dlt_results/predict_results_dlt_all.txt";
 #endif
     // write data to file
     FILE *fp;
@@ -861,10 +920,9 @@ void AccuracyTest::startAccuracyTest3()
 
                 if(bsta[j].blueball->mNum == actualResult->mB0->mNum)
 #else
-
                 if(bsta[j].blueball->mNum == actualResult->mB1->mNum)
 #endif
-				{
+                {
                     location = j + 1;
                     break;
                 }
@@ -884,11 +942,12 @@ void AccuracyTest::startAccuracyTest3()
 void AccuracyTest::startAccuracyTest4()
 {
 #ifdef DLT
-	for(int j = 1; j < 6; j++)
+
+    for(int j = 1; j < 6; j++)
 #else
     for(int j = 1; j < 7; j++)
 #endif
-	{
+    {
         char field[8];
         memset(field, 0, 8);
         sprintf(field, "rb%d", j);
@@ -914,17 +973,18 @@ void AccuracyTest::startAccuracyTest4()
     }
 
 #ifdef DLT
+
     for(int j = 1; j < 3; j++)
 #else
-	for(int j = 2; j < 3; j++)
+    for(int j = 2; j < 3; j++)
 #endif
-	{
+    {
         char field1[8];
         memset(field1, 0, 8);
 #ifdef DLT
         sprintf(field1, "bb%d", j);
 #else
-		sprintf(field1, "%s", "bb");
+        sprintf(field1, "%s", "bb");
 #endif
         string data1 = "";
         vector< sptr(BlueBall) > mList1 = getBlueBallListFromDatabase(field1, 0);
@@ -945,6 +1005,133 @@ void AccuracyTest::startAccuracyTest4()
         }
 
         writeAccuracyData2File(data1, j + 25);
+    }
+}
+
+void AccuracyTest::startAccuracyTest5()
+{
+    vector<int> ilist;
+    ilist.push_back(0);
+    vector<sptr(Result)> rlist = getResultListFromDatabase(1, TABALE_LENGTH);
+    int size = (int)rlist.size();
+
+    for(int i = 0; i < size - 1; i++) {
+        if(rlist[i]->mQid / 1000 != rlist[i + 1]->mQid / 1000) {
+            ilist.push_back(i + 1);
+        }
+    }
+
+    for(int j = 1; j < (int)ilist.size(); j++) {
+        printf("j=%d\n", j);
+        string data = "";
+
+        for(int k = ilist[j - 1]; k < ilist[j]; k++) {
+            RedNumbers r1_num = rlist[k]->mR1->mNum;
+            int r1_unit = rlist[k]->mR1->mUnit;
+            int r1_decade = rlist[k]->mR1->mDecade;
+            Parity r1_jiou = rlist[k]->mR1->mJiou;
+            BigOrSmall r1_daxiao = rlist[k]->mR1->mDaxiao;
+            PrimeOrComposite r1_zhihe = rlist[k]->mR1->mZhihe;
+            Elememts r1_wuxing = rlist[k]->mR1->mWuxing;
+            RedNumbers r2_num = rlist[k]->mR2->mNum;
+            int r2_unit = rlist[k]->mR2->mUnit;
+            int r2_decade = rlist[k]->mR2->mDecade;
+            Parity r2_jiou = rlist[k]->mR2->mJiou;
+            BigOrSmall r2_daxiao = rlist[k]->mR2->mDaxiao;
+            PrimeOrComposite r2_zhihe = rlist[k]->mR2->mZhihe;
+            Elememts r2_wuxing = rlist[k]->mR2->mWuxing;
+            RedNumbers r3_num = rlist[k]->mR3->mNum;
+            int r3_unit = rlist[k]->mR3->mUnit;
+            int r3_decade = rlist[k]->mR3->mDecade;
+            Parity r3_jiou = rlist[k]->mR3->mJiou;
+            BigOrSmall r3_daxiao = rlist[k]->mR3->mDaxiao;
+            PrimeOrComposite r3_zhihe = rlist[k]->mR3->mZhihe;
+            Elememts r3_wuxing = rlist[k]->mR3->mWuxing;
+            RedNumbers r4_num = rlist[k]->mR4->mNum;
+            int r4_unit = rlist[k]->mR4->mUnit;
+            int r4_decade = rlist[k]->mR4->mDecade;
+            Parity r4_jiou = rlist[k]->mR4->mJiou;
+            BigOrSmall r4_daxiao = rlist[k]->mR4->mDaxiao;
+            PrimeOrComposite r4_zhihe = rlist[k]->mR4->mZhihe;
+            Elememts r4_wuxing = rlist[k]->mR4->mWuxing;
+            RedNumbers r5_num = rlist[k]->mR5->mNum;
+            int r5_unit = rlist[k]->mR5->mUnit;
+            int r5_decade = rlist[k]->mR5->mDecade;
+            Parity r5_jiou = rlist[k]->mR5->mJiou;
+            BigOrSmall r5_daxiao = rlist[k]->mR5->mDaxiao;
+            PrimeOrComposite r5_zhihe = rlist[k]->mR5->mZhihe;
+            Elememts r5_wuxing = rlist[k]->mR5->mWuxing;
+#ifndef DLT
+            RedNumbers r6_num = rlist[k]->mR6->mNum;
+            int r6_unit = rlist[k]->mR6->mUnit;
+            int r6_decade = rlist[k]->mR6->mDecade;
+            Parity r6_jiou = rlist[k]->mR6->mJiou;
+            BigOrSmall r6_daxiao = rlist[k]->mR6->mDaxiao;
+            PrimeOrComposite r6_zhihe = rlist[k]->mR6->mZhihe;
+            Elememts r6_wuxing = rlist[k]->mR6->mWuxing;
+            BlueNumbers b_num = rlist[k]->mB0->mNum;
+            int b_unit = rlist[k]->mB0->mUnit;
+            int b_decade = rlist[k]->mB0->mDecade;
+            Parity b_jiou = rlist[k]->mB0->mJiou;
+            BigOrSmall b_daxiao = rlist[k]->mB0->mDaxiao;
+            PrimeOrComposite b_zhihe = rlist[k]->mB0->mZhihe;
+            Elememts b_wuxing = rlist[k]->mB0->mWuxing;
+#else
+            BlueNumbers b1_num = rlist[k]->mB1->mNum;
+            int b1_unit = rlist[k]->mB1->mUnit;
+            int b1_decade = rlist[k]->mB1->mDecade;
+            Parity b1_jiou = rlist[k]->mB1->mJiou;
+            BigOrSmall b1_daxiao = rlist[k]->mB1->mDaxiao;
+            PrimeOrComposite b1_zhihe = rlist[k]->mB1->mZhihe;
+            Elememts b1_wuxing = rlist[k]->mB1->mWuxing;
+            BlueNumbers b2_num = rlist[k]->mB2->mNum;
+            int b2_unit = rlist[k]->mB2->mUnit;
+            int b2_decade = rlist[k]->mB2->mDecade;
+            Parity b2_jiou = rlist[k]->mB2->mJiou;
+            BigOrSmall b2_daxiao = rlist[k]->mB2->mDaxiao;
+            PrimeOrComposite b2_zhihe = rlist[k]->mB2->mZhihe;
+            Elememts b2_wuxing = rlist[k]->mB2->mWuxing;
+#endif
+            int qid = rlist[k]->mQid;
+            int redSum = rlist[k]->mRedSum;
+            int unitSum = rlist[k]->mUnitSum;
+            int redSumAverage = rlist[k]->mRedSumAverage;
+            RedRatio jiouRatio = rlist[k]->mJiouRatio;
+            RedRatio daxiaoRatio = rlist[k]->mDaxiaoRatio;
+            RedRatio zhiheRatio = rlist[k]->mZhiheRatio;
+#ifdef DLT
+            BlueRatio blueJiouRatio = rlist[k]->mBlueJiouRatio;
+            BlueRatio blueDaxiaoRatio = rlist[k]->mBlueDaxiaoRatio;
+            BlueRatio blueZhiheRatio = rlist[k]->mBlueZhiheRatio;
+#endif
+            char buf[256];
+            memset(buf, 0, 256);
+#ifdef DLT
+            sprintf(buf, "%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+#else
+            sprintf(buf, "%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d,%d/%d,%d,%d,%d,%d,%d\n",
+#endif
+                    qid, r1_num, r1_unit, r1_decade, r1_jiou, r1_daxiao, r1_zhihe, r1_wuxing,
+                    r2_num, r2_unit, r2_decade, r2_jiou, r2_daxiao, r2_zhihe, r2_wuxing,
+                    r3_num, r3_unit, r3_decade, r3_jiou, r3_daxiao, r3_zhihe, r3_wuxing,
+                    r4_num, r4_unit, r4_decade, r4_jiou, r4_daxiao, r4_zhihe, r4_wuxing,
+                    r5_num, r5_unit, r5_decade, r5_jiou, r5_daxiao, r5_zhihe, r5_wuxing,
+#ifdef DLT
+                    b1_num, b1_unit, b1_decade, b1_jiou, b1_daxiao, b1_zhihe, b1_wuxing,
+                    b2_num, b2_unit, b2_decade, b2_jiou, b2_daxiao, b2_zhihe, b2_wuxing,
+#else
+                    r6_num, r6_unit, r6_decade, r6_jiou, r6_daxiao, r6_zhihe, r6_wuxing,
+                    b_num, b_unit, b_decade, b_jiou, b_daxiao, b_zhihe, b_wuxing,
+#endif
+                    redSum, unitSum, redSumAverage, jiouRatio, daxiaoRatio, zhiheRatio
+#ifdef DLT
+                    , blueJiouRatio, blueDaxiaoRatio, blueZhiheRatio
+#endif
+                   );
+            data += string(buf);
+        }
+
+        writeAccuracyData2File(data, j + 300);
     }
 }
 

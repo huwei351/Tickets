@@ -294,7 +294,112 @@ def globalAnalyseFiles():
 			plt.savefig("barfig_" + bytes(fileindex) + ".jpg")
 			plt.show()
 
-
+def everyYearResultFiles():
+	pathDir =  os.listdir(TEST_DIR)
+	for allDir in pathDir:
+		pro_0 = []
+		pro_1 = []
+		pro_2 = []
+		pro_3 = [0, 0]
+		pro_4 = [0, 0]
+		pro_5 = [0, 0]
+		pro_6 = []
+		filename = os.path.join('%s/%s' % (TEST_DIR, allDir))
+		fileindex = string.atoi((filename.strip().split(TEST_FILE_HEAD)[1]).strip().split(".")[0])
+		print("filename = " + filename + ", fileindex = " + bytes(fileindex))
+		if fileindex > 300:
+			file = open(filename, 'r')
+			linesList = file.readlines()
+			linesList = [line.strip().split('/') for line in linesList]
+			file.close()    
+			arr0 = [x[0] for x in linesList]
+			arr1 = [x[1].strip().split(',') for x in linesList]
+			arr2 = [x[2].strip().split(',') for x in linesList]
+			arr3 = [x[3].strip().split(',') for x in linesList]
+			arr4 = [x[4].strip().split(',') for x in linesList]
+			arr5 = [x[5].strip().split(',') for x in linesList]
+			arr6 = [x[6].strip().split(',') for x in linesList]
+			arr7 = [x[7].strip().split(',') for x in linesList]
+			arr8 = [x[8].strip().split(',') for x in linesList]
+			arr8_0 = [string.atoi(x[0]) for x in arr8]
+			arr8_1 = [string.atoi(x[1]) for x in arr8]
+			arr8_2 = [string.atoi(x[2]) for x in arr8]
+			arr8_3 = [string.atoi(x[3]) for x in arr8]
+			arr8_4 = [string.atoi(x[4]) for x in arr8]
+			arr8_5 = [string.atoi(x[5]) for x in arr8]
+			print("redSum avg = " + bytes(Math.avg(arr8_0)))
+			print("unitSum avg = " + bytes(Math.avg(arr8_1)))
+			print ("jiouRatio : (0:6) count = " + bytes(arr8_3.count(0)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(0))/len(arr8_3)) + ")")
+			print ("jiouRatio : (1:5) count = " + bytes(arr8_3.count(1)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(1))/len(arr8_3)) + ")")
+			print ("jiouRatio : (2:4) count = " + bytes(arr8_3.count(2)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(2))/len(arr8_3)) + ")")
+			print ("jiouRatio : (3:3) count = " + bytes(arr8_3.count(3)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(3))/len(arr8_3)) + ")")
+			print ("jiouRatio : (4:2) count = " + bytes(arr8_3.count(4)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(4))/len(arr8_3)) + ")")
+			print ("jiouRatio : (5:1) count = " + bytes(arr8_3.count(5)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(5))/len(arr8_3)) + ")")
+			print ("jiouRatio : (6:0) count = " + bytes(arr8_3.count(6)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(6))/len(arr8_3)) + ")")
+			print ("daxiaoRatio : (0:6) count = " + bytes(arr8_4.count(0)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(0))/len(arr8_4)) + ")")
+			print ("daxiaoRatio : (1:5) count = " + bytes(arr8_4.count(1)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(1))/len(arr8_4)) + ")")
+			print ("daxiaoRatio : (2:4) count = " + bytes(arr8_4.count(2)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(2))/len(arr8_4)) + ")")
+			print ("daxiaoRatio : (3:3) count = " + bytes(arr8_4.count(3)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(3))/len(arr8_4)) + ")")
+			print ("daxiaoRatio : (4:2) count = " + bytes(arr8_4.count(4)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(4))/len(arr8_4)) + ")")
+			print ("daxiaoRatio : (5:1) count = " + bytes(arr8_4.count(5)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(5))/len(arr8_4)) + ")")
+			print ("daxiaoRatio : (6:0) count = " + bytes(arr8_4.count(6)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(6))/len(arr8_4)) + ")")
+			print ("zhiheRatio : (0:6) count = " + bytes(arr8_5.count(0)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(0))/len(arr8_5)) + ")")
+			print ("zhiheRatio : (1:5) count = " + bytes(arr8_5.count(1)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(1))/len(arr8_5)) + ")")
+			print ("zhiheRatio : (2:4) count = " + bytes(arr8_5.count(2)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(2))/len(arr8_5)) + ")")
+			print ("zhiheRatio : (3:3) count = " + bytes(arr8_5.count(3)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(3))/len(arr8_5)) + ")")
+			print ("zhiheRatio : (4:2) count = " + bytes(arr8_5.count(4)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(4))/len(arr8_5)) + ")")
+			print ("zhiheRatio : (5:1) count = " + bytes(arr8_5.count(5)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(5))/len(arr8_5)) + ")")
+			print ("zhiheRatio : (6:0) count = " + bytes(arr8_5.count(6)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(6))/len(arr8_5)) + ")")
+'''
+			for i in range(1, max(arr0)+1):
+				pro_0 += [arr0.count(i)]
+				print ("pro_0 : " + bytes(i) + ", count = " + bytes(arr0.count(i)) + "/" + bytes(len(arr0)) + "(" + bytes(float(arr0.count(i))/len(arr0)) + ")")
+			for i in range(max(arr1)+1):
+				pro_1 += [arr1.count(i)]
+				print ("pro_1 : " + bytes(i) + ", count = " + bytes(arr1.count(i)) + "/" + bytes(len(arr1)) + "(" + bytes(float(arr1.count(i))/len(arr1)) + ")")
+			for i in range(max(arr2)+1):
+				pro_2 += [arr2.count(i)]
+				print ("pro_2 : " + bytes(i) + ", count = " + bytes(arr2.count(i)) + "/" + bytes(len(arr2)) + "(" + bytes(float(arr2.count(i))/len(arr2)) + ")")
+			pro_3[0] = arr3.count(0)
+			pro_3[1] = arr3.count(1)
+			pro_4[0] = arr4.count(0)
+			pro_4[1] = arr4.count(1)
+			pro_5[0] = arr5.count(0)
+			pro_5[1] = arr5.count(1)
+			print ("pro_3 :  (ODD) zero_count = " + bytes(arr3.count(0)) + "/" + bytes(len(arr3)) + "(" + bytes(float(arr3.count(0))/len(arr3)) + ")")
+			print ("pro_3 :  (EVEN) one_count = " + bytes(arr3.count(1)) + "/" + bytes(len(arr3)) + "(" + bytes(float(arr3.count(1))/len(arr3)) + ")")
+			print ("pro_4 :  (BIG) zero_count = " + bytes(arr4.count(0)) + "/" + bytes(len(arr4)) + "(" + bytes(float(arr4.count(0))/len(arr4)) + ")")
+			print ("pro_4 :  (SMALL) one_count = " + bytes(arr4.count(1)) + "/" + bytes(len(arr4)) + "(" + bytes(float(arr4.count(1))/len(arr4)) + ")")
+			print ("pro_5 :  (PRIME) zero_count = " + bytes(arr5.count(0)) + "/" + bytes(len(arr5)) + "(" + bytes(float(arr5.count(0))/len(arr5)) + ")")
+			print ("pro_5 :  (COMPOSITE) one_count = " + bytes(arr5.count(1)) + "/" + bytes(len(arr5)) + "(" + bytes(float(arr5.count(1))/len(arr5)) + ")")
+			for i in range(5):
+				pro_6 += [arr6.count(i)]
+				print ("pro_6 : " + bytes(i) + ", count = " + bytes(arr6.count(i)) + "/" + bytes(len(arr6)) + "(" + bytes(float(arr6.count(i))/len(arr6)) + ")")
+			plt.figure()
+			plt.subplot(421)
+			plt.bar(range(1, max(arr0)+1), pro_0)
+			plt.xticks(np.arange(len(pro_0))+0.5, range(1, max(arr0)))
+			plt.subplot(422)
+			plt.bar(range(max(arr1)+1), pro_1)
+			plt.xticks(np.arange(len(pro_1))+0.5, range(max(arr1)))
+			plt.subplot(423)
+			plt.bar(range(max(arr2)+1), pro_2)
+			plt.xticks(np.arange(len(pro_2))+0.5, range(max(arr2)))
+			plt.subplot(424)
+			plt.bar(range(2), pro_3)
+			plt.xticks(np.arange(2)+0.5, range(2))
+			plt.subplot(425)
+			plt.bar(range(2), pro_4)
+			plt.xticks(np.arange(2)+0.5, range(2))
+			plt.subplot(426)
+			plt.bar(range(2), pro_5)
+			plt.xticks(np.arange(2)+0.5, range(2))
+			plt.subplot(427)
+			plt.bar(range(5), pro_6)
+			plt.xticks(np.arange(len(pro_6))+0.5, range(5))
+			plt.savefig("barfig_" + bytes(fileindex) + ".jpg")
+			plt.show()
+'''
 class Math:  
 	#求极差  
 	@staticmethod  
@@ -375,4 +480,5 @@ def test():
 #barFile(11)
 #barFiles()
 #analyseResultFile(11)
-globalAnalyseFiles()
+#globalAnalyseFiles()
+everyYearResultFiles()

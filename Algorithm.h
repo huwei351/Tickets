@@ -86,6 +86,10 @@ class Algorithm
 
         std::vector<resultStatistics> getMaxProbabilityPredictResult(int top);
 
+        std::vector<resultStatistics> getMaxProbabilityPredictResult2(int top);
+
+        float calculateResultProbability(sptr(Result) result);
+
         std::vector<redballStatistics> calculateRedBallProbability(sptr(RedBall) rb, std::string &content);
 
         std::vector<blueballStatistics> calculateBlueBallProbability(sptr(BlueBall) bb, std::string &content);
