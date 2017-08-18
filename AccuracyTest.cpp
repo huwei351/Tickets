@@ -1022,7 +1022,7 @@ void AccuracyTest::startAccuracyTest5()
     }
 	ilist.push_back(TABALE_LENGTH);
     for(int j = 1; j < (int)ilist.size(); j++) {
-        printf("j=%d\n", j);
+        printf("ilist[%d]=%d\n", j, ilist[j]);
         string data = "";
 
         for(int k = ilist[j - 1]; k < ilist[j]; k++) {
