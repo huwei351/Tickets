@@ -300,20 +300,29 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult2(int top
     std::vector<resultStatistics> rsta;
 #ifndef DLT //SSQ
 
-    for(int i = 1; i < 12; i++) {
-        for(int j = 2; j < 21; j++) {
-            for(int k = 4; k < 25; k++) {
-                for(int m = 10; m < 30; m++) {
-                    for(int n = 15; n < 33; n++) {
-                        for(int r = 21; r < 34; r++) {
+    for(int i = 1; i < 7; i++) {
+        for(int j = 2; j < 9; j++) {
+            for(int k = 13; k < 21; k++) {
+                for(int m = 16; m < 24; m++) {
+                    for(int n = 19; n < 25; n++) {
+                        for(int r = 24; r < 34; r++) {
                             if(i < j && j < k && k < m && m < n && n < r) {
                                 sptr(Result) result = make(Result, (RedNumbers)i, (RedNumbers)j, (RedNumbers)k,
                                                            (RedNumbers)m, (RedNumbers)n, (RedNumbers)r, (BlueNumbers)1);
                                 float prob = calculateResultProbability(result);
-                                resultStatistics sta;
-                                sta.result = result;
-                                sta.probability = prob;
-                                rsta.push_back(sta);
+                                int redSum = result->getRedSum();
+                                int unitSum = result->getUnitSum();
+                                RedRatio jiouRatio = result->getJiouRatio();
+                                RedRatio daxiaoRatio = result->getDaxiaoRatio();
+                                RedRatio zhiheRatio = result->getZhiheRatio();
+
+                                if(redSum > 73 && redSum < 119 && unitSum > 15 && unitSum < 26 &&
+                                    jiouRatio == FOUR_AND_TWO && daxiaoRatio == FOUR_AND_TWO && zhiheRatio == TWO_AND_FOUR) {
+                                    resultStatistics sta;
+                                    sta.result = result;
+                                    sta.probability = prob;
+                                    rsta.push_back(sta);
+                                }
                             }
                         }
                     }
@@ -349,6 +358,8 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult2(int top
     }
 
 #endif
+    std::string printContent = printPredictResult(rsta);// after reaffange
+    writeLatestPredictResult2File(printContent);
     return rsta;
 }
 

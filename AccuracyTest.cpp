@@ -1020,7 +1020,9 @@ void AccuracyTest::startAccuracyTest5()
             ilist.push_back(i + 1);
         }
     }
-	ilist.push_back(TABALE_LENGTH);
+
+    ilist.push_back(TABALE_LENGTH);
+
     for(int j = 1; j < (int)ilist.size(); j++) {
         printf("ilist[%d]=%d\n", j, ilist[j]);
         string data = "";

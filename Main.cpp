@@ -78,7 +78,7 @@ int32_t main(int32_t argc, char *argv[])
                     printf("    %d  => Quit Program\n", PRE_QUIT);
                     int choice = app_get_choice("Select Numbers");
                     ai->updateDatabase();
-                    ai->getMaxProbabilityPredictResult(choice);
+                    ai->getMaxProbabilityPredictResult2(choice);
                 }
                 break;
 
