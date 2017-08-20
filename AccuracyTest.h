@@ -70,6 +70,8 @@ class AccuracyTest
 
         void startAccuracyTest5();
 
+        void startAccuracyTest6();
+
         bool writeAccuracyData2File(std::string data, int index);
 
     private:

@@ -1,5 +1,6 @@
 #-*- coding: UTF-8 -*-
 
+import string
 import mysql.connector
 from bs4 import BeautifulSoup
 import requests
@@ -83,4 +84,104 @@ def select_title(date):#这个是利用标题去重的，虽然按照区域划�
     }
     cur.execute(sql,value)
     return  cur.fetchall()[0]
-                                                            
+
+def select_result(rid):
+    sql= 'SELECT * FROM dlt_result WHERE rid = %(rid)s'
+    value = {
+        'rid':rid
+    }
+    cur.execute(sql,value)
+    return  cur.fetchone()
+
+def get_win_level(presult, aresult):
+    red = 0
+    blue = 0
+    level = 0
+    if (presult[6] == aresult[5] and presult[7] == aresult[6]):
+        blue = 2
+    elif ((presult[6] == aresult[5] and presult[7] != aresult[6]) or (presult[6] != aresult[5] and presult[7] == aresult[6]) or (presult[6] == aresult[6] and presult[7] != aresult[5]) or (presult[7] == aresult[5] and presult[6] != aresult[6])):
+        blue = 1
+    for i in range(5):
+        for j in range(1, 6):
+            if(presult[j] == aresult[i]):
+                red += 1
+                break
+    if (blue == 2):
+        if red == 5:
+            level = 1
+        elif red == 4:
+            level = 3
+        elif red == 3:
+            level = 4
+        elif red == 2:
+            level = 5
+        else:
+            level = 6  
+    elif (blue == 1):
+        if red == 5:
+            level = 2
+        elif red == 4:
+            level = 4
+        elif red == 3:
+            level = 5
+        elif red == 2:
+            level = 6
+    else:
+        if red == 5:
+            level = 3
+        elif red == 4:
+            level = 5
+        elif red == 3:
+            level = 6
+    return level
+
+def calculate_income(qid):
+    aresult = list(select_result(qid)[3:])
+    print("第" + bytes(qid) + "开奖结果为：")
+    print(aresult)
+    filename = "./dlt_results/" + bytes(qid) + "-predict.txt"
+    print("filename = " + filename)
+    file = open(filename, 'r')
+    linesList = file.readlines()
+    linesList = [line.strip().split(' ') for line in linesList]
+    linesList = [line[:9] for line in linesList]
+    file.close()
+    level_one = []
+    level_two = []
+    level_three = []
+    level_four = []
+    level_five = []
+    level_six = []
+    for i in range(1, len(linesList)):
+        del linesList[i][6]
+        linesList[i][0] = linesList[i][0][14:len(linesList[i][0])-1]
+        presult = [string.atoi(line) for line in linesList[i]]
+        level = get_win_level(presult, aresult)
+        if (level == 1):
+            level_one += [presult[0]]
+        elif (level == 2):
+            level_two += [presult[0]] 
+        elif (level == 3):
+            level_three += [presult[0]]
+        elif (level == 4):
+            level_four += [presult[0]]
+        elif (level == 5):
+            level_five += [presult[0]]
+        elif (level == 6):
+            level_six += [presult[0]]
+    print("一等奖" + bytes(len(level_one)) + "注")
+    print(level_one)
+    print("二等奖" + bytes(len(level_two)) + "注")
+    print(level_two)
+    print("三等奖" + bytes(len(level_three)) + "注")
+    print(level_three)
+    print("四等奖" + bytes(len(level_four)) + "注")
+    print(level_four)
+    print("五等奖" + bytes(len(level_five)) + "注")
+    print(level_five)
+    print("六等奖" + bytes(len(level_six)) + "注")
+    print(level_six)
+    income = (len(level_one)*5000000 + len(level_two)*100000)*0.8 + len(level_three)*3000 + len(level_four)*200 + len(level_five)*10 + len(level_six)*5
+    print("总共投注" + bytes(len(linesList)) + "注, 共花费" + bytes(len(linesList)*2) + "元")
+    print("中奖总金额" + bytes(income) + "元， 净利润" + bytes(income-len(linesList)*2) + "元")
+    return 0

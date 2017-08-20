@@ -83,6 +83,8 @@ int32_t main(int32_t argc, char *argv[])
                 break;
 
             case 2: {
+                    ai->updateDatabase();
+                    ai->comparePredictResultWithActualResult();
                 }
                 break;
 
@@ -162,6 +164,8 @@ int32_t main(int32_t argc, char *argv[])
                 break;
 
             case 2: {
+                    ai->updateDatabase();
+                    ai->comparePredictResultWithActualResult();
                 }
                 break;
 

@@ -1137,6 +1137,10 @@ void AccuracyTest::startAccuracyTest5()
     }
 }
 
+void AccuracyTest::startAccuracyTest6()
+{
+}
+
 bool AccuracyTest::writeAccuracyData2File(string data, int index)
 {
     char buf[16];

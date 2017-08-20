@@ -534,6 +534,13 @@ std::vector<blueballStatistics> Algorithm::calculateBlueBallProbability(sptr(Blu
 
 void Algorithm::comparePredictResultWithActualResult()
 {
+    int qid = mLatestResult->getQid();
+    char cqid[128];
+    sprintf(cqid, "%d", qid);
+    sptr(Callpy) py = make(Callpy);
+    int res = py->runPythonFunction(std::string("calculate_income"), std::string("1") + std::string("\n") + std::string(cqid) + std::string("\n"));
+
+    if(res) { printf("call python function calculate_income fail\n"); }
 }
 
 void Algorithm::printRedballNumberProbability(std::vector<rnumStatistics> *sta, int total, BallType ballType)
