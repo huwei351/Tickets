@@ -295,20 +295,89 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult(int top)
     return resultSta;
 }
 
-std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult2(int top)
+std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult2(bool all)
 {
     std::vector<resultStatistics> rsta;
 #ifndef DLT //SSQ
+    int count = bn_max - bn_min + 1;
 
-    for(int i = 1; i < 7; i++) {
-        for(int j = 2; j < 9; j++) {
-            for(int k = 13; k < 21; k++) {
-                for(int m = 16; m < 24; m++) {
-                    for(int n = 19; n < 25; n++) {
-                        for(int r = 24; r < 34; r++) {
+    for(int i = rn1_min; i < rn1_max + 1; i++) {
+        for(int j = rn2_min; j < rn2_max + 1; j++) {
+            for(int k = rn3_min; k < rn3_max + 1; k++) {
+                for(int m = rn4_min; m < rn4_max + 1; m++) {
+                    for(int n = rn5_min; n < rn5_max + 1; n++) {
+                        for(int r = rn6_min; r < rn6_max + 1; r++) {
                             if(i < j && j < k && k < m && m < n && n < r) {
+                                int bn;
+
+                                switch(count % (bn_max - bn_min + 1)) {
+                                    case 0:
+                                        bn = bn_min;
+                                        break;
+
+                                    case 1:
+                                        bn = (bn_min + 1) > bn_max ? bn_max : (bn_min + 1);
+                                        break;
+
+                                    case 2:
+                                        bn = (bn_min + 2) > bn_max ? bn_max : (bn_min + 2);
+                                        break;
+
+                                    case 3:
+                                        bn = (bn_min + 3) > bn_max ? bn_max : (bn_min + 3);
+                                        break;
+
+                                    case 4:
+                                        bn = (bn_min + 4) > bn_max ? bn_max : (bn_min + 4);
+                                        break;
+
+                                    case 5:
+                                        bn = (bn_min + 5) > bn_max ? bn_max : (bn_min + 5);
+                                        break;
+
+                                    case 6:
+                                        bn = (bn_min + 6) > bn_max ? bn_max : (bn_min + 6);
+                                        break;
+
+                                    case 7:
+                                        bn = (bn_min + 7) > bn_max ? bn_max : (bn_min + 7);
+                                        break;
+
+                                    case 8:
+                                        bn = (bn_min + 8) > bn_max ? bn_max : (bn_min + 8);
+                                        break;
+
+                                    case 9:
+                                        bn = (bn_min + 9) > bn_max ? bn_max : (bn_min + 9);
+                                        break;
+
+                                    case 10:
+                                        bn = (bn_min + 10) > bn_max ? bn_max : (bn_min + 10);
+                                        break;
+
+                                    case 11:
+                                        bn = (bn_min + 11) > bn_max ? bn_max : (bn_min + 11);
+                                        break;
+
+                                    case 12:
+                                        bn = (bn_min + 12) > bn_max ? bn_max : (bn_min + 12);
+                                        break;
+
+                                    case 13:
+                                        bn = (bn_min + 13) > bn_max ? bn_max : (bn_min + 13);
+                                        break;
+
+                                    case 14:
+                                        bn = (bn_min + 14) > bn_max ? bn_max : (bn_min + 14);
+                                        break;
+
+                                    case 15:
+                                        bn = (bn_min + 15) > bn_max ? bn_max : (bn_min + 15);
+                                        break;
+                                }
+
                                 sptr(Result) result = make(Result, (RedNumbers)i, (RedNumbers)j, (RedNumbers)k,
-                                                           (RedNumbers)m, (RedNumbers)n, (RedNumbers)r, (BlueNumbers)1);
+                                                           (RedNumbers)m, (RedNumbers)n, (RedNumbers)r, (BlueNumbers)bn);
                                 float prob = calculateResultProbability(result);
                                 int redSum = result->getRedSum();
                                 int unitSum = result->getUnitSum();
@@ -316,13 +385,22 @@ std::vector<resultStatistics> Algorithm::getMaxProbabilityPredictResult2(int top
                                 RedRatio daxiaoRatio = result->getDaxiaoRatio();
                                 RedRatio zhiheRatio = result->getZhiheRatio();
 
-                                if(redSum > 73 && redSum < 119 && unitSum > 15 && unitSum < 26 &&
-                                    jiouRatio == FOUR_AND_TWO && daxiaoRatio == FOUR_AND_TWO && zhiheRatio == TWO_AND_FOUR) {
+                                if(all) {
                                     resultStatistics sta;
                                     sta.result = result;
                                     sta.probability = prob;
                                     rsta.push_back(sta);
+                                } else {
+                                    if(redSum > rnsum_min && redSum < rnsum_max && unitSum > unitsum_min && unitSum < unitsum_max &&
+                                        jiouRatio == red_jiou_ratio && daxiaoRatio == red_daxiao_ratio && zhiheRatio == red_zhihe_ratio) {
+                                        resultStatistics sta;
+                                        sta.result = result;
+                                        sta.probability = prob;
+                                        rsta.push_back(sta);
+                                    }
                                 }
+
+                                count++;
                             }
                         }
                     }

@@ -86,7 +86,7 @@ class Algorithm
 
         std::vector<resultStatistics> getMaxProbabilityPredictResult(int top);
 
-        std::vector<resultStatistics> getMaxProbabilityPredictResult2(int top);
+        std::vector<resultStatistics> getMaxProbabilityPredictResult2(bool all = false);
 
         float calculateResultProbability(sptr(Result) result);
 
@@ -138,7 +138,44 @@ class Algorithm
         sptr(Result) mLatestResult;
         float NUM_WEIGHT;
         float WUXING_WEIGHT;
-
+        int rn1_min = 1;
+        int rn1_max = 28;
+        int rn2_min = 2;
+        int rn2_max = 29;
+        int rn3_min = 3;
+        int rn3_max = 30;
+        int rn4_min = 4;
+        int rn4_max = 31;
+        int rn5_min = 5;
+        int rn5_max = 32;
+#ifndef DLT
+        int rn6_min = 6;
+        int rn6_max = 33;
+        int bn_min = 1;
+        int bn_max = 16;
+        int rnsum_min = 21;
+        int rnsum_max = 183;
+        int unitsum_min = 3;
+        int unitsum_max = 51;
+        RedRatio red_jiou_ratio = FOUR_AND_TWO;
+        RedRatio red_daxiao_ratio = FOUR_AND_TWO;
+        RedRatio red_zhihe_ratio = FOUR_AND_TWO;
+#else
+        int bn1_min = 1;
+        int bn1_max = 11;
+        int bn2_min = 2;
+        int bn2_max = 12;
+        int rnsum_min = 15;
+        int rnsum_max = 183;
+        int unitsum_min = 3;
+        int unitsum_max = 51;
+        RedRatio red_jiou_ratio = THREE_AND_TWO;
+        RedRatio red_daxiao_ratio = THREE_AND_TWO;
+        RedRatio red_zhihe_ratio = THREE_AND_TWO;
+        BlueRatio blue_jiou_ratio = ZERO_AND_TWO;
+        BlueRatio blue_daxiao_ratio = ZERO_AND_TWO;
+        BlueRatio blue_zhihe_ratio = ZERO_AND_TWO;
+#endif
 };
 
 #endif
