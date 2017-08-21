@@ -446,6 +446,15 @@ float Algorithm::calculateResultProbability(sptr(Result) result)
     return 0.1;
 }
 
+void Algorithm::calculateEveryElememtRange()
+{
+    /* for redball */
+    /* for blueball */
+    /* for redball sum */
+    /* for redball unit sum */
+    /* for redball ratio */
+}
+
 std::vector<redballStatistics> Algorithm::calculateRedBallProbability(sptr(RedBall) rb, std::string &content)
 {
     std::vector<rnumStatistics> rnumList;

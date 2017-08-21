@@ -90,6 +90,8 @@ class Algorithm
 
         float calculateResultProbability(sptr(Result) result);
 
+        void calculateEveryElememtRange();
+
         std::vector<redballStatistics> calculateRedBallProbability(sptr(RedBall) rb, std::string &content);
 
         std::vector<blueballStatistics> calculateBlueBallProbability(sptr(BlueBall) bb, std::string &content);
