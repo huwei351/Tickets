@@ -24,6 +24,11 @@ Algorithm::Algorithm(sptr(MySqlOperator) mysqloperator, sptr(MyConfig) myconfig)
     mMySqlOperator = mysqloperator;
     NUM_WEIGHT = mMyConfig->getNumWeight();
     WUXING_WEIGHT = mMyConfig->getWuxingWeight();
+#ifdef DLT
+    TABLE_LENGTH = mMySqlOperator->getDatabaseTableLength(TABLE_DLT);
+#else
+    TABLE_LENGTH = mMySqlOperator->getDatabaseTableLength(TABLE_SSQ);
+#endif
 }
 
 Algorithm::~Algorithm()
@@ -55,7 +60,7 @@ bool Algorithm::updateDatabase()
 
     if(res == 0) {
         mLatestResult = getLatestResultFromDatabase();
-        writeActualLatestResult2LastPredictFile();
+        //writeActualLatestResult2LastPredictFile();
         return true;
     } else if(res == -2) {
         printf("Database already updated to latest!\n");
@@ -113,6 +118,62 @@ sptr(Result) Algorithm::getLatestResultFromDatabase()
     }
 
     return result;
+}
+
+std::vector<sptr(Result)> Algorithm::getResultListFromDatabase(int begin, int end)
+{
+    std::string str;
+    std::vector<std::string> rlines;
+    std::vector<sptr(Result)> resultList;
+
+    if(mMySqlOperator != NULL) {
+        if(mMySqlOperator->ConnMySQL(HOST, PORT, DATABASE, USER, PASSWORD, CHARSET) == 0) {
+#ifdef DLT
+            str = mMySqlOperator->SelectData(TABLE_DLT, NULL, end, "ASC");
+#else
+            str = mMySqlOperator->SelectData(TABLE_SSQ, NULL, end, "ASC");
+#endif
+
+            if(!StringUtil::StringIsEmpty(str)) {
+                StringUtil::StringSplit(rlines, str, ROW_G);
+
+                for(int i = begin - 1; i < end; i++) {
+                    std::vector<std::string> clines;
+                    StringUtil::StringSplit(clines, rlines[i], COLUMN_G);
+                    int qid = atoi(clines[1].c_str());
+                    std::string date = clines[2];
+                    RedNumbers r1 = (RedNumbers) atoi(clines[3].c_str());
+                    RedNumbers r2 = (RedNumbers) atoi(clines[4].c_str());
+                    RedNumbers r3 = (RedNumbers) atoi(clines[5].c_str());
+                    RedNumbers r4 = (RedNumbers) atoi(clines[6].c_str());
+                    RedNumbers r5 = (RedNumbers) atoi(clines[7].c_str());
+#ifdef DLT
+                    BlueNumbers b1 = (BlueNumbers) atoi(clines[8].c_str());
+                    BlueNumbers b2 = (BlueNumbers) atoi(clines[9].c_str());
+                    //printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, b1=%d, b2=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, b1, b2);
+#else
+                    RedNumbers r6 = (RedNumbers) atoi(clines[8].c_str());
+                    BlueNumbers b0 = (BlueNumbers) atoi(clines[9].c_str());
+                    //printf("LatestResultFromDatabase: qid=%d, date=%s, r1=%d, r2=%d, r3=%d, r4=%d, r5=%d, r6=%d, b0=%d\n", qid, date.c_str(), r1, r2, r3, r4, r5, r6, b0);
+#endif
+                    sptr(Result) result = make(Result, make(RedBall, r1, REDBALL_FIRST), make(RedBall, r2, REDBALL_SECOND),
+                                               make(RedBall, r3, REDBALL_THIRD), make(RedBall, r4, REDBALL_FOURTH), make(RedBall, r5, REDBALL_FIFTH),
+#ifdef DLT
+                                               make(BlueBall, b1, BLUEBALL_FIRST), make(BlueBall, b2, BLUEBALL_SECOND));
+#else
+                                               make(RedBall, r6, REDBALL_SIXTH), make(BlueBall, b0, BLUEBALL_FIRST));
+#endif
+                    result->setDate(date);
+                    result->setQid(qid);
+                    resultList.push_back(result);
+                }
+            }
+        }
+
+        mMySqlOperator->CloseMySQLConn();
+    }
+
+    return resultList;
 }
 
 bool Algorithm::sortByPro(const resultStatistics &rs1, const resultStatistics &rs2)
@@ -449,10 +510,102 @@ float Algorithm::calculateResultProbability(sptr(Result) result)
 void Algorithm::calculateEveryElememtRange()
 {
     /* for redball */
-    /* for blueball */
-    /* for redball sum */
-    /* for redball unit sum */
-    /* for redball ratio */
+    int qid = mLatestResult->mQid;
+    std::vector<sptr(Result)> rlist = getResultListFromDatabase(TABLE_LENGTH - qid % 1000 + 1, TABLE_LENGTH);
+    int size = (int)rlist.size();//size must >= 10
+    std::vector<float> red1Avg;
+    std::vector<float> red2Avg;
+    std::vector<float> red3Avg;
+    std::vector<float> red4Avg;
+    std::vector<float> red5Avg;
+#ifdef DLT
+    std::vector<float> blue1Avg;
+    std::vector<float> blue2Avg;
+#else
+    std::vector<float> red6Avg;
+    std::vector<float> blueAvg;
+#endif
+    std::vector<float> redSumAvg;
+    std::vector<float> unitSumAvg;
+
+    for(int i = size - 9; i < size + 1; i++) {
+        int rnum1_sum = 0;
+        int rnum2_sum = 0;
+        int rnum3_sum = 0;
+        int rnum4_sum = 0;
+        int rnum5_sum = 0;
+#ifndef DLT
+        int rnum6_sum = 0;
+        int bnum_sum = 0;
+#else
+        int bnum1_sum = 0;
+        int bnum2_sum = 0;
+#endif
+        int redsum_sum = 0;
+        int unitsum_sum = 0;
+
+        for(int j = 0; j < i; j++) {
+            RedNumbers rnum1 = rlist[j]->mR1->mNum;
+            rnum1_sum += (int)rnum1;
+            RedNumbers rnum2 = rlist[j]->mR2->mNum;
+            rnum1_sum += (int)rnum1;
+            RedNumbers rnum3 = rlist[j]->mR3->mNum;
+            rnum1_sum += (int)rnum1;
+            RedNumbers rnum4 = rlist[j]->mR4->mNum;
+            rnum1_sum += (int)rnum1;
+            RedNumbers rnum5 = rlist[j]->mR5->mNum;
+            rnum1_sum += (int)rnum1;
+#ifdef DLT
+            BlueNumbers bnum1 = rlist[j]->mB1->mNum;
+            bnum1_sum += (int)bnum1;
+            BlueNumbers bnum2 = rlist[j]->mB2->mNum;
+            bnum2_sum += (int)bnum2;
+#else
+            RedNumbers rnum6 = rlist[j]->mR6->mNum;
+            rnum6_sum += (int)rnum6;
+            BlueNumbers bnum = rlist[j]->mB0->mNum;
+            bnum_sum += (int)bnum;
+#endif
+            int redsum = rlist[j]->mRedSum;
+            redsum_sum += redsum;
+            int unitsum = rlist[j]->mUnitSum;
+            unitsum_sum += unitsum;
+        }
+
+        float rnum1_avg = (float)rnum1_sum / i;
+        red1Avg.push_back(rnum1_avg);
+        float rnum2_avg = (float)rnum2_sum / i;
+        red2Avg.push_back(rnum2_avg);
+        float rnum3_avg = (float)rnum3_sum / i;
+        red3Avg.push_back(rnum3_avg);
+        float rnum4_avg = (float)rnum4_sum / i;
+        red4Avg.push_back(rnum4_avg);
+        float rnum5_avg = (float)rnum5_sum / i;
+        red5Avg.push_back(rnum5_avg);
+#ifdef DLT
+        float bnum1_avg = (float)bnum1_sum / i;
+        blue1Avg.push_back(bnum1_avg);
+        float bnum2_avg = (float)bnum2_sum / i;
+        blue2Avg.push_back(bnum2_avg);
+#else
+        float rnum6_avg = (float)rnum6_sum / i;
+        red6Avg.push_back(rnum6_avg);
+        float bnum_avg = (float)bnum_sum / i;
+        blueAvg.push_back(bnum_avg);
+#endif
+        float redsum_avg = (float)redsum_sum / i;
+        redSumAvg.push_back(redsum_avg);
+        float unitsum_avg = (float)unitsum_sum / i;
+        unitSumAvg.push_back(unitsum_avg);
+    }
+
+    /* for red1 range */
+    std::vector<float> slopel1;
+
+    for(int i = 0; i < red1Avg.size(); i++) {
+        float slope = red1Avg[i + 1] - red1Avg[i];
+        slopel1.push_back(slope);
+    }
 }
 
 std::vector<redballStatistics> Algorithm::calculateRedBallProbability(sptr(RedBall) rb, std::string &content)

@@ -68,6 +68,8 @@ class Algorithm
 
         sptr(Result) getLatestResultFromDatabase();
 
+        std::vector<sptr(Result)> getResultListFromDatabase(int begin, int end);
+
         static bool sortByPro(const resultStatistics &rs1, const resultStatistics &rs2);
 
         static bool sortByPro1(const redballStatistics &rs1, const redballStatistics &rs2);
@@ -140,6 +142,7 @@ class Algorithm
         sptr(Result) mLatestResult;
         float NUM_WEIGHT;
         float WUXING_WEIGHT;
+        int TABLE_LENGTH;
         int rn1_min = 1;
         int rn1_max = 28;
         int rn2_min = 2;
