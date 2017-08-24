@@ -1,10 +1,8 @@
+INCLUDE_PATH = -I"C:\Program Files\MySQL\MySQL Server 5.7\include" -I"C:\Python27\include" $(SRCFILES)
 
-CFLAGS = -Wall -Wstrict-prototypes -DWINDOWS -lpthread   \
-	-IC:\Program Files\MySQL\MySQL Server 5.7\include    \
-	-L/usr/lib/x86_64-linux-gnu -lmysqlclient -lpthread -lm -lrt -ldl    \
-	-IC:\Python27\include     \
-	-fno-strict-aliasing -D_FORTIFY_SOURCE=2 -g -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -lpthread -ldl  -lutil -lm  -lpython2.7    \
-	-L/usr/lib/python2.7/config-x86_64-linux-gnu -L/usr/lib -lpthread -ldl  -lutil -lm  -lpython2.7 -Xlinker -export-dynamic -Wl,-O1 -Wl,-Bsymbolic-functions
+LIB_PATH = -lpthreadVC2 -L"C:\Python27\libs" -lpython27 -L"C:\Program Files\MySQL\MySQL Server 5.7\lib" -llibmysql
+
+C_FLAGS = -g -std=c++0x -DWINDOWS
 
 SRCFILES = Algorithm.cpp Main.cpp MySqlOperator.cpp StringUtil.cpp Callpy.cpp Config.cpp MyConfig.cpp AccuracyTest.cpp
 
@@ -13,8 +11,8 @@ OFILES = Algorithm.o Main.o MySqlOperator.o StringUtil.o Callpy.o Config.o MyCon
 TARGET = tickets_ssq
 
 all:
-	g++ -g -c -std=c++0x -DWINDOWS -I"C:\Program Files\MySQL\MySQL Server 5.7\include" -I"C:\Python27\include" $(SRCFILES)
-	g++ -o $(TARGET) $(OFILES) -L"C:\Python27\libs" -lpython27 -L"C:\Program Files\MySQL\MySQL Server 5.7\lib" -llibmysql
+	g++ -c $(C_FLAGS) $(INCLUDE_PATH) $(SRCFILES) 
+	g++ -o $(TARGET) $(OFILES) $(LIB_PATH)
 
 
 .PHONY : clean
