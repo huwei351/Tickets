@@ -216,7 +216,8 @@ void Algorithm::rearrangePredictResult(std::vector<resultStatistics> *resultSta,
 
 std::string Algorithm::printPredictResult(std::vector<resultStatistics> resultSta)
 {
-    std::string content = "\n";
+    //std::string content = "\n";
+    std::string content = "";
     char temp[512];
     memset(temp, 0, 512);
 
@@ -230,11 +231,11 @@ std::string Algorithm::printPredictResult(std::vector<resultStatistics> resultSt
 #ifdef DLT
         BlueNumbers bnum1 = result->mB1->mNum;
         BlueNumbers bnum2 = result->mB2->mNum;
-        sprintf(temp, "PredictResult[%02d] %02d %02d %02d %02d %02d + %02d %02d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, bnum1, bnum2, resultSta[i].probability);
+        sprintf(temp, "PredictResult[%03d] %02d %02d %02d %02d %02d + %02d %02d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, bnum1, bnum2, resultSta[i].probability);
 #else
         RedNumbers rnum6 = result->mR6->mNum;
         BlueNumbers bnum = result->mB0->mNum;
-        sprintf(temp, "PredictResult[%02d] %02d %02d %02d %02d %02d %02d + %02d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
+        sprintf(temp, "PredictResult[%03d] %02d %02d %02d %02d %02d %02d + %02d  probability = %0.3f\n", i + 1, rnum1, rnum2, rnum3, rnum4, rnum5, rnum6, bnum, resultSta[i].probability);
 #endif
         content += std::string(temp);
         memset(temp, 0, 512);
