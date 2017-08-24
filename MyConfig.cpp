@@ -1,10 +1,12 @@
 #include <sys/types.h>
 #include <unistd.h>
-#include <grp.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#ifndef WINDOWS
+#include <grp.h>
 #include <sys/mman.h>
 #include <sys/ioctl.h>
-#include <fcntl.h>
+#endif
 
 #include <string>
 #include <iostream>

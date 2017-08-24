@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string>
 #include <iostream>
-
+#include <math.h>
 #ifdef WINDOWS
 #include <Python.h>
 #else

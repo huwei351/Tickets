@@ -2,6 +2,9 @@
 #ifndef MY_CONFIG_H
 #define MY_CONFIG_H
 #include <string>
+#ifdef WINDOWS
+#define HAVE_STRUCT_TIMESPEC
+#endif
 #include <pthread.h>
 
 #include "Config.h"

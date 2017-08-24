@@ -1182,8 +1182,13 @@ bool Algorithm::writeLatestPredictResult2File(std::string data)
     // check if dir exist
     if(access(dirname.c_str(), F_OK)) {
         printf("dir %s not exist, try to create it\n", dirname.c_str());
+#ifdef __linux__
 
-        if(mkdir(dirname.c_str(), 00755)) {
+        if(mkdir(dirname.c_str(), 00755))
+#else
+        if(_mkdir(dirname.c_str()))
+#endif
+        {
             printf("create dir %s fail!\n", dirname.c_str());
             return false;
         }

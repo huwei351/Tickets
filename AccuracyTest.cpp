@@ -1150,8 +1150,13 @@ bool AccuracyTest::writeAccuracyData2File(string data, int index)
     // check if dir exist
     if(access(TEST_DIR, F_OK)) {
         printf("dir %s not exist, try to create it\n", TEST_DIR);
+#ifdef __linux__
 
-        if(mkdir(TEST_DIR, 00755)) {
+        if(mkdir(TEST_DIR, 00755))
+#else
+        if(_mkdir(TEST_DIR))
+#endif
+        {
             printf("create dir %s fail!\n", TEST_DIR);
             return false;
         }
