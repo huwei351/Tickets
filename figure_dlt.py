@@ -832,7 +832,7 @@ def scatterEveryYearResultFile(fileindex):
 		pro8 += [Math.avg(arr8_0)]
 		pro8_1 += [Math.avg(arr8_1)]
 	plt.figure()
-	plt.scatter(index, pro1, s=20, c="black")
+	#plt.scatter(index, pro1, s=20, c="black")
 	#plt.scatter(index, pro2, s=20, c="yellow")
 	#plt.scatter(index, pro3, s=20, c="red")
 	#plt.scatter(index, pro4, s=20, c="gold")
@@ -840,7 +840,7 @@ def scatterEveryYearResultFile(fileindex):
 	#plt.scatter(index, pro6, s=20, c="coral")
 	#plt.scatter(index, pro7, s=20, c="blue")
 	#plt.scatter(index, pro8, s=20, c="yellow")
-	#plt.scatter(index, pro8_1, s=20, c="red")
+	plt.scatter(index, pro8_1, s=20, c="red")
 	plt.savefig("test.png")
 	plt.show()
 
@@ -913,5 +913,5 @@ class Math:
 #analyseResultFile(11)
 #globalAnalyseFiles()
 #everyYearResultFiles()
-everyYearResultFile(311)
-#scatterEveryYearResultFile(311)
+#everyYearResultFile(311)
+scatterEveryYearResultFile(311)
