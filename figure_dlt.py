@@ -369,11 +369,15 @@ def everyYearResultFiles():
 			arr8_3 = [string.atoi(x[3]) for x in arr8]
 			arr8_4 = [string.atoi(x[4]) for x in arr8]
 			arr8_5 = [string.atoi(x[5]) for x in arr8]
-			arr = arr1_0 + arr2_0 + arr3_0 + arr4_0 + arr5_0 + arr6_0
-			for i in range(1,34):
+			arr8_6 = [string.atoi(x[6]) for x in arr8]
+			arr8_7 = [string.atoi(x[7]) for x in arr8]
+			arr8_8 = [string.atoi(x[8]) for x in arr8]
+			arr = arr1_0 + arr2_0 + arr3_0 + arr4_0 + arr5_0
+			barr = arr6_0 + arr7_0
+			for i in range(1,36):
 				print ("redNum : " + bytes(i) + ", count = " + bytes(arr.count(i)) + "/" + bytes(len(arr)) + "(" + bytes(float(arr.count(i))/len(arr)) + ")")
-			for i in range(1, 17):
-				print ("blueNum : " + bytes(i) + ", count = " + bytes(arr7_0.count(i)) + "/" + bytes(len(arr7_0)) + "(" + bytes(float(arr7_0.count(i))/len(arr7_0)) + ")")
+			for i in range(1, 13):
+				print ("blueNum : " + bytes(i) + ", count = " + bytes(barr.count(i)) + "/" + bytes(len(barr)) + "(" + bytes(float(barr.count(i))/len(barr)) + ")")
 			for i in range(min(arr1_0), max(arr1_0)+1):
 				print ("Red1 Num : " + bytes(i) + ", count = " + bytes(arr1_0.count(i)) + "/" + bytes(len(arr1_0)) + "(" + bytes(float(arr1_0.count(i))/len(arr1_0)) + ")")
 			for i in range(10):
@@ -450,58 +454,65 @@ def everyYearResultFiles():
 				print ("Red5 Wuxing : " + bytes(i) + ", count = " + bytes(arr5_6.count(i)) + "/" + bytes(len(arr5_6)) + "(" + bytes(float(arr5_6.count(i))/len(arr5_6)) + ")")
 			print("Red5 Num Avg  = " + bytes(Math.avg(arr5_0)))
 			for i in range(min(arr6_0), max(arr6_0)+1):
-				print ("Red6 Num : " + bytes(i) + ", count = " + bytes(arr6_0.count(i)) + "/" + bytes(len(arr6_0)) + "(" + bytes(float(arr6_0.count(i))/len(arr6_0)) + ")")
+				print ("Blue1 Num : " + bytes(i) + ", count = " + bytes(arr6_0.count(i)) + "/" + bytes(len(arr6_0)) + "(" + bytes(float(arr6_0.count(i))/len(arr6_0)) + ")")
 			for i in range(10):
-				print ("Red6 Unit : " + bytes(i) + ", count = " + bytes(arr6_1.count(i)) + "/" + bytes(len(arr6_1)) + "(" + bytes(float(arr6_1.count(i))/len(arr6_1)) + ")")
-			for i in range(4):
-				print ("Red6 Decade : " + bytes(i) + ", count = " + bytes(arr6_2.count(i)) + "/" + bytes(len(arr6_2)) + "(" + bytes(float(arr6_2.count(i))/len(arr6_2)) + ")")
-			print ("Red6 Jiou : (ODD) zero_count = " + bytes(arr6_3.count(0)) + "/" + bytes(len(arr6_3)) + "(" + bytes(float(arr6_3.count(0))/len(arr6_3)) + ")")
-			print ("Red6 Jiou : (EVEN) one_count = " + bytes(arr6_3.count(1)) + "/" + bytes(len(arr6_3)) + "(" + bytes(float(arr6_3.count(1))/len(arr6_3)) + ")")
-			print ("Red6 Daxiao : (BIG) zero_count = " + bytes(arr6_4.count(0)) + "/" + bytes(len(arr6_4)) + "(" + bytes(float(arr6_4.count(0))/len(arr6_4)) + ")")
-			print ("Red6 Daxiao : (SMALL) one_count = " + bytes(arr6_4.count(1)) + "/" + bytes(len(arr6_4)) + "(" + bytes(float(arr6_4.count(1))/len(arr6_4)) + ")")
-			print ("Red6 Zhihe : (PRIME) zero_count = " + bytes(arr6_5.count(0)) + "/" + bytes(len(arr6_5)) + "(" + bytes(float(arr6_5.count(0))/len(arr6_5)) + ")")
-			print ("Red6 Zhihe : (COMPOSITE) one_count = " + bytes(arr6_5.count(1)) + "/" + bytes(len(arr6_5)) + "(" + bytes(float(arr6_5.count(1))/len(arr6_5)) + ")")
+				print ("Blue1 Unit : " + bytes(i) + ", count = " + bytes(arr6_1.count(i)) + "/" + bytes(len(arr6_1)) + "(" + bytes(float(arr6_1.count(i))/len(arr6_1)) + ")")
+			for i in range(2):
+				print ("Blue1 Decade : " + bytes(i) + ", count = " + bytes(arr6_2.count(i)) + "/" + bytes(len(arr6_2)) + "(" + bytes(float(arr6_2.count(i))/len(arr6_2)) + ")")
+			print ("Blue1 Jiou : (ODD) zero_count = " + bytes(arr6_3.count(0)) + "/" + bytes(len(arr6_3)) + "(" + bytes(float(arr6_3.count(0))/len(arr6_3)) + ")")
+			print ("Blue1 Jiou : (EVEN) one_count = " + bytes(arr6_3.count(1)) + "/" + bytes(len(arr6_3)) + "(" + bytes(float(arr6_3.count(1))/len(arr6_3)) + ")")
+			print ("Blue1 Daxiao : (BIG) zero_count = " + bytes(arr6_4.count(0)) + "/" + bytes(len(arr6_4)) + "(" + bytes(float(arr6_4.count(0))/len(arr6_4)) + ")")
+			print ("Blue1 Daxiao : (SMALL) one_count = " + bytes(arr6_4.count(1)) + "/" + bytes(len(arr6_4)) + "(" + bytes(float(arr6_4.count(1))/len(arr6_4)) + ")")
+			print ("Blue1 Zhihe : (PRIME) zero_count = " + bytes(arr6_5.count(0)) + "/" + bytes(len(arr6_5)) + "(" + bytes(float(arr6_5.count(0))/len(arr6_5)) + ")")
+			print ("Blue1 Zhihe : (COMPOSITE) one_count = " + bytes(arr6_5.count(1)) + "/" + bytes(len(arr6_5)) + "(" + bytes(float(arr6_5.count(1))/len(arr6_5)) + ")")
 			for i in range(5):
-				print ("Red6 Wuxing : " + bytes(i) + ", count = " + bytes(arr6_6.count(i)) + "/" + bytes(len(arr6_6)) + "(" + bytes(float(arr6_6.count(i))/len(arr6_6)) + ")")
-			print("Red6 Num Avg  = " + bytes(Math.avg(arr6_0)))
+				print ("Blue1 Wuxing : " + bytes(i) + ", count = " + bytes(arr6_6.count(i)) + "/" + bytes(len(arr6_6)) + "(" + bytes(float(arr6_6.count(i))/len(arr6_6)) + ")")
+			print("Blue1 Num Avg  = " + bytes(Math.avg(arr6_0)))
 			for i in range(min(arr7_0), max(arr7_0)+1):
-				print ("Blue Num : " + bytes(i) + ", count = " + bytes(arr7_0.count(i)) + "/" + bytes(len(arr7_0)) + "(" + bytes(float(arr7_0.count(i))/len(arr7_0)) + ")")
+				print ("Blue2 Num : " + bytes(i) + ", count = " + bytes(arr7_0.count(i)) + "/" + bytes(len(arr7_0)) + "(" + bytes(float(arr7_0.count(i))/len(arr7_0)) + ")")
 			for i in range(10):
-				print ("Blue Unit : " + bytes(i) + ", count = " + bytes(arr7_1.count(i)) + "/" + bytes(len(arr7_1)) + "(" + bytes(float(arr7_1.count(i))/len(arr7_1)) + ")")
-			for i in range(4):
-				print ("Blue Decade : " + bytes(i) + ", count = " + bytes(arr7_2.count(i)) + "/" + bytes(len(arr7_2)) + "(" + bytes(float(arr7_2.count(i))/len(arr7_2)) + ")")
-			print ("Blue Jiou : (ODD) zero_count = " + bytes(arr7_3.count(0)) + "/" + bytes(len(arr7_3)) + "(" + bytes(float(arr7_3.count(0))/len(arr7_3)) + ")")
-			print ("Blue Jiou : (EVEN) one_count = " + bytes(arr7_3.count(1)) + "/" + bytes(len(arr7_3)) + "(" + bytes(float(arr7_3.count(1))/len(arr7_3)) + ")")
-			print ("Blue Daxiao : (BIG) zero_count = " + bytes(arr7_4.count(0)) + "/" + bytes(len(arr7_4)) + "(" + bytes(float(arr7_4.count(0))/len(arr7_4)) + ")")
-			print ("Blue Daxiao : (SMALL) one_count = " + bytes(arr7_4.count(1)) + "/" + bytes(len(arr7_4)) + "(" + bytes(float(arr7_4.count(1))/len(arr7_4)) + ")")
-			print ("Blue Zhihe : (PRIME) zero_count = " + bytes(arr7_5.count(0)) + "/" + bytes(len(arr7_5)) + "(" + bytes(float(arr7_5.count(0))/len(arr7_5)) + ")")
-			print ("Blue Zhihe : (COMPOSITE) one_count = " + bytes(arr7_5.count(1)) + "/" + bytes(len(arr7_5)) + "(" + bytes(float(arr7_5.count(1))/len(arr7_5)) + ")")
+				print ("Blue2 Unit : " + bytes(i) + ", count = " + bytes(arr7_1.count(i)) + "/" + bytes(len(arr7_1)) + "(" + bytes(float(arr7_1.count(i))/len(arr7_1)) + ")")
+			for i in range(2):
+				print ("Blue2 Decade : " + bytes(i) + ", count = " + bytes(arr7_2.count(i)) + "/" + bytes(len(arr7_2)) + "(" + bytes(float(arr7_2.count(i))/len(arr7_2)) + ")")
+			print ("Blue2 Jiou : (ODD) zero_count = " + bytes(arr7_3.count(0)) + "/" + bytes(len(arr7_3)) + "(" + bytes(float(arr7_3.count(0))/len(arr7_3)) + ")")
+			print ("Blue2 Jiou : (EVEN) one_count = " + bytes(arr7_3.count(1)) + "/" + bytes(len(arr7_3)) + "(" + bytes(float(arr7_3.count(1))/len(arr7_3)) + ")")
+			print ("Blue2 Daxiao : (BIG) zero_count = " + bytes(arr7_4.count(0)) + "/" + bytes(len(arr7_4)) + "(" + bytes(float(arr7_4.count(0))/len(arr7_4)) + ")")
+			print ("Blue2 Daxiao : (SMALL) one_count = " + bytes(arr7_4.count(1)) + "/" + bytes(len(arr7_4)) + "(" + bytes(float(arr7_4.count(1))/len(arr7_4)) + ")")
+			print ("Blue2 Zhihe : (PRIME) zero_count = " + bytes(arr7_5.count(0)) + "/" + bytes(len(arr7_5)) + "(" + bytes(float(arr7_5.count(0))/len(arr7_5)) + ")")
+			print ("Blue2 Zhihe : (COMPOSITE) one_count = " + bytes(arr7_5.count(1)) + "/" + bytes(len(arr7_5)) + "(" + bytes(float(arr7_5.count(1))/len(arr7_5)) + ")")
 			for i in range(5):
-				print ("Blue Wuxing : " + bytes(i) + ", count = " + bytes(arr7_6.count(i)) + "/" + bytes(len(arr7_6)) + "(" + bytes(float(arr7_6.count(i))/len(arr7_6)) + ")")
-			print("Blue Num Avg = " + bytes(Math.avg(arr7_0)))
+				print ("Blue2 Wuxing : " + bytes(i) + ", count = " + bytes(arr7_6.count(i)) + "/" + bytes(len(arr7_6)) + "(" + bytes(float(arr7_6.count(i))/len(arr7_6)) + ")")
+			print("Blue2 Num Avg = " + bytes(Math.avg(arr7_0)))
 			print("RedSum avg = " + bytes(Math.avg(arr8_0)))
 			print("UnitSum avg = " + bytes(Math.avg(arr8_1)))
-			print ("jiouRatio : (0:6) count = " + bytes(arr8_3.count(0)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(0))/len(arr8_3)) + ")")
-			print ("jiouRatio : (1:5) count = " + bytes(arr8_3.count(1)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(1))/len(arr8_3)) + ")")
-			print ("jiouRatio : (2:4) count = " + bytes(arr8_3.count(2)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(2))/len(arr8_3)) + ")")
-			print ("jiouRatio : (3:3) count = " + bytes(arr8_3.count(3)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(3))/len(arr8_3)) + ")")
-			print ("jiouRatio : (4:2) count = " + bytes(arr8_3.count(4)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(4))/len(arr8_3)) + ")")
-			print ("jiouRatio : (5:1) count = " + bytes(arr8_3.count(5)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(5))/len(arr8_3)) + ")")
-			print ("jiouRatio : (6:0) count = " + bytes(arr8_3.count(6)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(6))/len(arr8_3)) + ")")
-			print ("daxiaoRatio : (0:6) count = " + bytes(arr8_4.count(0)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(0))/len(arr8_4)) + ")")
-			print ("daxiaoRatio : (1:5) count = " + bytes(arr8_4.count(1)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(1))/len(arr8_4)) + ")")
-			print ("daxiaoRatio : (2:4) count = " + bytes(arr8_4.count(2)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(2))/len(arr8_4)) + ")")
-			print ("daxiaoRatio : (3:3) count = " + bytes(arr8_4.count(3)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(3))/len(arr8_4)) + ")")
-			print ("daxiaoRatio : (4:2) count = " + bytes(arr8_4.count(4)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(4))/len(arr8_4)) + ")")
-			print ("daxiaoRatio : (5:1) count = " + bytes(arr8_4.count(5)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(5))/len(arr8_4)) + ")")
-			print ("daxiaoRatio : (6:0) count = " + bytes(arr8_4.count(6)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(6))/len(arr8_4)) + ")")
-			print ("zhiheRatio : (0:6) count = " + bytes(arr8_5.count(0)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(0))/len(arr8_5)) + ")")
-			print ("zhiheRatio : (1:5) count = " + bytes(arr8_5.count(1)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(1))/len(arr8_5)) + ")")
-			print ("zhiheRatio : (2:4) count = " + bytes(arr8_5.count(2)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(2))/len(arr8_5)) + ")")
-			print ("zhiheRatio : (3:3) count = " + bytes(arr8_5.count(3)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(3))/len(arr8_5)) + ")")
-			print ("zhiheRatio : (4:2) count = " + bytes(arr8_5.count(4)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(4))/len(arr8_5)) + ")")
-			print ("zhiheRatio : (5:1) count = " + bytes(arr8_5.count(5)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(5))/len(arr8_5)) + ")")
-			print ("zhiheRatio : (6:0) count = " + bytes(arr8_5.count(6)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(6))/len(arr8_5)) + ")")
+			print ("jiouRatio : (0:5) count = " + bytes(arr8_3.count(0)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(0))/len(arr8_3)) + ")")
+			print ("jiouRatio : (1:4) count = " + bytes(arr8_3.count(1)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(1))/len(arr8_3)) + ")")
+			print ("jiouRatio : (2:3) count = " + bytes(arr8_3.count(2)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(2))/len(arr8_3)) + ")")
+			print ("jiouRatio : (3:2) count = " + bytes(arr8_3.count(3)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(3))/len(arr8_3)) + ")")
+			print ("jiouRatio : (4:1) count = " + bytes(arr8_3.count(4)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(4))/len(arr8_3)) + ")")
+			print ("jiouRatio : (5:0) count = " + bytes(arr8_3.count(5)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(5))/len(arr8_3)) + ")")
+			print ("daxiaoRatio : (0:5) count = " + bytes(arr8_4.count(0)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(0))/len(arr8_4)) + ")")
+			print ("daxiaoRatio : (1:4) count = " + bytes(arr8_4.count(1)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(1))/len(arr8_4)) + ")")
+			print ("daxiaoRatio : (2:3) count = " + bytes(arr8_4.count(2)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(2))/len(arr8_4)) + ")")
+			print ("daxiaoRatio : (3:2) count = " + bytes(arr8_4.count(3)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(3))/len(arr8_4)) + ")")
+			print ("daxiaoRatio : (4:1) count = " + bytes(arr8_4.count(4)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(4))/len(arr8_4)) + ")")
+			print ("daxiaoRatio : (5:0) count = " + bytes(arr8_4.count(5)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(5))/len(arr8_4)) + ")")
+			print ("zhiheRatio : (0:5) count = " + bytes(arr8_5.count(0)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(0))/len(arr8_5)) + ")")
+			print ("zhiheRatio : (1:4) count = " + bytes(arr8_5.count(1)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(1))/len(arr8_5)) + ")")
+			print ("zhiheRatio : (2:3) count = " + bytes(arr8_5.count(2)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(2))/len(arr8_5)) + ")")
+			print ("zhiheRatio : (3:2) count = " + bytes(arr8_5.count(3)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(3))/len(arr8_5)) + ")")
+			print ("zhiheRatio : (4:1) count = " + bytes(arr8_5.count(4)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(4))/len(arr8_5)) + ")")
+			print ("zhiheRatio : (5:0) count = " + bytes(arr8_5.count(5)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(5))/len(arr8_5)) + ")")
+			print ("BlueJiouRatio : (0:2) count = " + bytes(arr8_3.count(0)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(0))/len(arr8_3)) + ")")
+			print ("BlueJiouRatio : (1:1) count = " + bytes(arr8_3.count(1)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(1))/len(arr8_3)) + ")")
+			print ("BlueJiouRatio : (2:0) count = " + bytes(arr8_3.count(2)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(2))/len(arr8_3)) + ")")
+			print ("BlueDaxiaoRatio : (0:2) count = " + bytes(arr8_4.count(0)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(0))/len(arr8_4)) + ")")
+			print ("BlueDaxiaoRatio : (1:1) count = " + bytes(arr8_4.count(1)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(1))/len(arr8_4)) + ")")
+			print ("BlueDaxiaoRatio : (2:0) count = " + bytes(arr8_4.count(2)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(2))/len(arr8_4)) + ")")
+			print ("BlueZhiheRatio : (0:2) count = " + bytes(arr8_5.count(0)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(0))/len(arr8_5)) + ")")
+			print ("BlueZhiheRatio : (1:1) count = " + bytes(arr8_5.count(1)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(1))/len(arr8_5)) + ")")
+			print ("BlueZhiheRatio : (2:0) count = " + bytes(arr8_5.count(2)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(2))/len(arr8_5)) + ")")
+
 
 def everyYearResultFile(fileindex):
 	filename = TEST_DIR + "/" + TEST_FILE_HEAD + bytes(fileindex) + ".txt"
@@ -574,11 +585,12 @@ def everyYearResultFile(fileindex):
 	arr8_3 = [string.atoi(x[3]) for x in arr8]
 	arr8_4 = [string.atoi(x[4]) for x in arr8]
 	arr8_5 = [string.atoi(x[5]) for x in arr8]
-	arr = arr1_0 + arr2_0 + arr3_0 + arr4_0 + arr5_0 + arr6_0
-	for i in range(1,34):
+	arr = arr1_0 + arr2_0 + arr3_0 + arr4_0 + arr5_0
+	barr = arr6_0 + arr7_0
+	for i in range(1,36):
 		print ("redNum : " + bytes(i) + ", count = " + bytes(arr.count(i)) + "/" + bytes(len(arr)) + "(" + bytes(float(arr.count(i))/len(arr)) + ")")
-	for i in range(1, 17):
-		print ("blueNum : " + bytes(i) + ", count = " + bytes(arr7_0.count(i)) + "/" + bytes(len(arr7_0)) + "(" + bytes(float(arr7_0.count(i))/len(arr7_0)) + ")")
+	for i in range(1, 13):
+		print ("blueNum : " + bytes(i) + ", count = " + bytes(barr.count(i)) + "/" + bytes(len(barr)) + "(" + bytes(float(barr.count(i))/len(barr)) + ")")
 	for i in range(min(arr1_0), max(arr1_0)+1):
 		print ("Red1 Num : " + bytes(i) + ", count = " + bytes(arr1_0.count(i)) + "/" + bytes(len(arr1_0)) + "(" + bytes(float(arr1_0.count(i))/len(arr1_0)) + ")")
 	for i in range(10):
@@ -655,58 +667,65 @@ def everyYearResultFile(fileindex):
 		print ("Red5 Wuxing : " + bytes(i) + ", count = " + bytes(arr5_6.count(i)) + "/" + bytes(len(arr5_6)) + "(" + bytes(float(arr5_6.count(i))/len(arr5_6)) + ")")
 	print("Red5 Num Avg  = " + bytes(Math.avg(arr5_0)))
 	for i in range(min(arr6_0), max(arr6_0)+1):
-		print ("Red6 Num : " + bytes(i) + ", count = " + bytes(arr6_0.count(i)) + "/" + bytes(len(arr6_0)) + "(" + bytes(float(arr6_0.count(i))/len(arr6_0)) + ")")
+		print ("Blue1 Num : " + bytes(i) + ", count = " + bytes(arr6_0.count(i)) + "/" + bytes(len(arr6_0)) + "(" + bytes(float(arr6_0.count(i))/len(arr6_0)) + ")")
 	for i in range(10):
-		print ("Red6 Unit : " + bytes(i) + ", count = " + bytes(arr6_1.count(i)) + "/" + bytes(len(arr6_1)) + "(" + bytes(float(arr6_1.count(i))/len(arr6_1)) + ")")
-	for i in range(4):
-		print ("Red6 Decade : " + bytes(i) + ", count = " + bytes(arr6_2.count(i)) + "/" + bytes(len(arr6_2)) + "(" + bytes(float(arr6_2.count(i))/len(arr6_2)) + ")")
-	print ("Red6 Jiou : (ODD) zero_count = " + bytes(arr6_3.count(0)) + "/" + bytes(len(arr6_3)) + "(" + bytes(float(arr6_3.count(0))/len(arr6_3)) + ")")
-	print ("Red6 Jiou : (EVEN) one_count = " + bytes(arr6_3.count(1)) + "/" + bytes(len(arr6_3)) + "(" + bytes(float(arr6_3.count(1))/len(arr6_3)) + ")")
-	print ("Red6 Daxiao : (BIG) zero_count = " + bytes(arr6_4.count(0)) + "/" + bytes(len(arr6_4)) + "(" + bytes(float(arr6_4.count(0))/len(arr6_4)) + ")")
-	print ("Red6 Daxiao : (SMALL) one_count = " + bytes(arr6_4.count(1)) + "/" + bytes(len(arr6_4)) + "(" + bytes(float(arr6_4.count(1))/len(arr6_4)) + ")")
-	print ("Red6 Zhihe : (PRIME) zero_count = " + bytes(arr6_5.count(0)) + "/" + bytes(len(arr6_5)) + "(" + bytes(float(arr6_5.count(0))/len(arr6_5)) + ")")
-	print ("Red6 Zhihe : (COMPOSITE) one_count = " + bytes(arr6_5.count(1)) + "/" + bytes(len(arr6_5)) + "(" + bytes(float(arr6_5.count(1))/len(arr6_5)) + ")")
+		print ("Blue1 Unit : " + bytes(i) + ", count = " + bytes(arr6_1.count(i)) + "/" + bytes(len(arr6_1)) + "(" + bytes(float(arr6_1.count(i))/len(arr6_1)) + ")")
+	for i in range(2):
+		print ("Blue1 Decade : " + bytes(i) + ", count = " + bytes(arr6_2.count(i)) + "/" + bytes(len(arr6_2)) + "(" + bytes(float(arr6_2.count(i))/len(arr6_2)) + ")")
+	print ("Blue1 Jiou : (ODD) zero_count = " + bytes(arr6_3.count(0)) + "/" + bytes(len(arr6_3)) + "(" + bytes(float(arr6_3.count(0))/len(arr6_3)) + ")")
+	print ("Blue1 Jiou : (EVEN) one_count = " + bytes(arr6_3.count(1)) + "/" + bytes(len(arr6_3)) + "(" + bytes(float(arr6_3.count(1))/len(arr6_3)) + ")")
+	print ("Blue1 Daxiao : (BIG) zero_count = " + bytes(arr6_4.count(0)) + "/" + bytes(len(arr6_4)) + "(" + bytes(float(arr6_4.count(0))/len(arr6_4)) + ")")
+	print ("Blue1 Daxiao : (SMALL) one_count = " + bytes(arr6_4.count(1)) + "/" + bytes(len(arr6_4)) + "(" + bytes(float(arr6_4.count(1))/len(arr6_4)) + ")")
+	print ("Blue1 Zhihe : (PRIME) zero_count = " + bytes(arr6_5.count(0)) + "/" + bytes(len(arr6_5)) + "(" + bytes(float(arr6_5.count(0))/len(arr6_5)) + ")")
+	print ("Blue1 Zhihe : (COMPOSITE) one_count = " + bytes(arr6_5.count(1)) + "/" + bytes(len(arr6_5)) + "(" + bytes(float(arr6_5.count(1))/len(arr6_5)) + ")")
 	for i in range(5):
-		print ("Red6 Wuxing : " + bytes(i) + ", count = " + bytes(arr6_6.count(i)) + "/" + bytes(len(arr6_6)) + "(" + bytes(float(arr6_6.count(i))/len(arr6_6)) + ")")
-	print("Red6 Num Avg  = " + bytes(Math.avg(arr6_0)))
+		print ("Blue1 Wuxing : " + bytes(i) + ", count = " + bytes(arr6_6.count(i)) + "/" + bytes(len(arr6_6)) + "(" + bytes(float(arr6_6.count(i))/len(arr6_6)) + ")")
+	print("Blue1 Num Avg  = " + bytes(Math.avg(arr6_0)))
 	for i in range(min(arr7_0), max(arr7_0)+1):
-		print ("Blue Num : " + bytes(i) + ", count = " + bytes(arr7_0.count(i)) + "/" + bytes(len(arr7_0)) + "(" + bytes(float(arr7_0.count(i))/len(arr7_0)) + ")")
+		print ("Blue2 Num : " + bytes(i) + ", count = " + bytes(arr7_0.count(i)) + "/" + bytes(len(arr7_0)) + "(" + bytes(float(arr7_0.count(i))/len(arr7_0)) + ")")
 	for i in range(10):
-		print ("Blue Unit : " + bytes(i) + ", count = " + bytes(arr7_1.count(i)) + "/" + bytes(len(arr7_1)) + "(" + bytes(float(arr7_1.count(i))/len(arr7_1)) + ")")
-	for i in range(4):
-		print ("Blue Decade : " + bytes(i) + ", count = " + bytes(arr7_2.count(i)) + "/" + bytes(len(arr7_2)) + "(" + bytes(float(arr7_2.count(i))/len(arr7_2)) + ")")
-	print ("Blue Jiou : (ODD) zero_count = " + bytes(arr7_3.count(0)) + "/" + bytes(len(arr7_3)) + "(" + bytes(float(arr7_3.count(0))/len(arr7_3)) + ")")
-	print ("Blue Jiou : (EVEN) one_count = " + bytes(arr7_3.count(1)) + "/" + bytes(len(arr7_3)) + "(" + bytes(float(arr7_3.count(1))/len(arr7_3)) + ")")
-	print ("Blue Daxiao : (BIG) zero_count = " + bytes(arr7_4.count(0)) + "/" + bytes(len(arr7_4)) + "(" + bytes(float(arr7_4.count(0))/len(arr7_4)) + ")")
-	print ("Blue Daxiao : (SMALL) one_count = " + bytes(arr7_4.count(1)) + "/" + bytes(len(arr7_4)) + "(" + bytes(float(arr7_4.count(1))/len(arr7_4)) + ")")
-	print ("Blue Zhihe : (PRIME) zero_count = " + bytes(arr7_5.count(0)) + "/" + bytes(len(arr7_5)) + "(" + bytes(float(arr7_5.count(0))/len(arr7_5)) + ")")
-	print ("Blue Zhihe : (COMPOSITE) one_count = " + bytes(arr7_5.count(1)) + "/" + bytes(len(arr7_5)) + "(" + bytes(float(arr7_5.count(1))/len(arr7_5)) + ")")
+		print ("Blue2 Unit : " + bytes(i) + ", count = " + bytes(arr7_1.count(i)) + "/" + bytes(len(arr7_1)) + "(" + bytes(float(arr7_1.count(i))/len(arr7_1)) + ")")
+	for i in range(2):
+		print ("Blue2 Decade : " + bytes(i) + ", count = " + bytes(arr7_2.count(i)) + "/" + bytes(len(arr7_2)) + "(" + bytes(float(arr7_2.count(i))/len(arr7_2)) + ")")
+	print ("Blue2 Jiou : (ODD) zero_count = " + bytes(arr7_3.count(0)) + "/" + bytes(len(arr7_3)) + "(" + bytes(float(arr7_3.count(0))/len(arr7_3)) + ")")
+	print ("Blue2 Jiou : (EVEN) one_count = " + bytes(arr7_3.count(1)) + "/" + bytes(len(arr7_3)) + "(" + bytes(float(arr7_3.count(1))/len(arr7_3)) + ")")
+	print ("Blue2 Daxiao : (BIG) zero_count = " + bytes(arr7_4.count(0)) + "/" + bytes(len(arr7_4)) + "(" + bytes(float(arr7_4.count(0))/len(arr7_4)) + ")")
+	print ("Blue2 Daxiao : (SMALL) one_count = " + bytes(arr7_4.count(1)) + "/" + bytes(len(arr7_4)) + "(" + bytes(float(arr7_4.count(1))/len(arr7_4)) + ")")
+	print ("Blue2 Zhihe : (PRIME) zero_count = " + bytes(arr7_5.count(0)) + "/" + bytes(len(arr7_5)) + "(" + bytes(float(arr7_5.count(0))/len(arr7_5)) + ")")
+	print ("Blue2 Zhihe : (COMPOSITE) one_count = " + bytes(arr7_5.count(1)) + "/" + bytes(len(arr7_5)) + "(" + bytes(float(arr7_5.count(1))/len(arr7_5)) + ")")
 	for i in range(5):
-		print ("Blue Wuxing : " + bytes(i) + ", count = " + bytes(arr7_6.count(i)) + "/" + bytes(len(arr7_6)) + "(" + bytes(float(arr7_6.count(i))/len(arr7_6)) + ")")
-	print("Blue Num Avg = " + bytes(Math.avg(arr7_0)))
+		print ("Blue2 Wuxing : " + bytes(i) + ", count = " + bytes(arr7_6.count(i)) + "/" + bytes(len(arr7_6)) + "(" + bytes(float(arr7_6.count(i))/len(arr7_6)) + ")")
+	print("Blue2 Num Avg = " + bytes(Math.avg(arr7_0)))
 	print("RedSum avg = " + bytes(Math.avg(arr8_0)))
 	print("UnitSum avg = " + bytes(Math.avg(arr8_1)))
-	print ("jiouRatio : (0:6) count = " + bytes(arr8_3.count(0)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(0))/len(arr8_3)) + ")")
-	print ("jiouRatio : (1:5) count = " + bytes(arr8_3.count(1)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(1))/len(arr8_3)) + ")")
-	print ("jiouRatio : (2:4) count = " + bytes(arr8_3.count(2)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(2))/len(arr8_3)) + ")")
-	print ("jiouRatio : (3:3) count = " + bytes(arr8_3.count(3)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(3))/len(arr8_3)) + ")")
-	print ("jiouRatio : (4:2) count = " + bytes(arr8_3.count(4)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(4))/len(arr8_3)) + ")")
-	print ("jiouRatio : (5:1) count = " + bytes(arr8_3.count(5)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(5))/len(arr8_3)) + ")")
-	print ("jiouRatio : (6:0) count = " + bytes(arr8_3.count(6)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(6))/len(arr8_3)) + ")")
-	print ("daxiaoRatio : (0:6) count = " + bytes(arr8_4.count(0)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(0))/len(arr8_4)) + ")")
-	print ("daxiaoRatio : (1:5) count = " + bytes(arr8_4.count(1)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(1))/len(arr8_4)) + ")")
-	print ("daxiaoRatio : (2:4) count = " + bytes(arr8_4.count(2)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(2))/len(arr8_4)) + ")")
-	print ("daxiaoRatio : (3:3) count = " + bytes(arr8_4.count(3)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(3))/len(arr8_4)) + ")")
-	print ("daxiaoRatio : (4:2) count = " + bytes(arr8_4.count(4)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(4))/len(arr8_4)) + ")")
-	print ("daxiaoRatio : (5:1) count = " + bytes(arr8_4.count(5)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(5))/len(arr8_4)) + ")")
-	print ("daxiaoRatio : (6:0) count = " + bytes(arr8_4.count(6)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(6))/len(arr8_4)) + ")")
-	print ("zhiheRatio : (0:6) count = " + bytes(arr8_5.count(0)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(0))/len(arr8_5)) + ")")
-	print ("zhiheRatio : (1:5) count = " + bytes(arr8_5.count(1)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(1))/len(arr8_5)) + ")")
-	print ("zhiheRatio : (2:4) count = " + bytes(arr8_5.count(2)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(2))/len(arr8_5)) + ")")
-	print ("zhiheRatio : (3:3) count = " + bytes(arr8_5.count(3)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(3))/len(arr8_5)) + ")")
-	print ("zhiheRatio : (4:2) count = " + bytes(arr8_5.count(4)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(4))/len(arr8_5)) + ")")
-	print ("zhiheRatio : (5:1) count = " + bytes(arr8_5.count(5)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(5))/len(arr8_5)) + ")")
-	print ("zhiheRatio : (6:0) count = " + bytes(arr8_5.count(6)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(6))/len(arr8_5)) + ")")
+	print ("jiouRatio : (0:5) count = " + bytes(arr8_3.count(0)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(0))/len(arr8_3)) + ")")
+	print ("jiouRatio : (1:4) count = " + bytes(arr8_3.count(1)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(1))/len(arr8_3)) + ")")
+	print ("jiouRatio : (2:3) count = " + bytes(arr8_3.count(2)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(2))/len(arr8_3)) + ")")
+	print ("jiouRatio : (3:2) count = " + bytes(arr8_3.count(3)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(3))/len(arr8_3)) + ")")
+	print ("jiouRatio : (4:1) count = " + bytes(arr8_3.count(4)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(4))/len(arr8_3)) + ")")
+	print ("jiouRatio : (5:0) count = " + bytes(arr8_3.count(5)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(5))/len(arr8_3)) + ")")
+	print ("daxiaoRatio : (0:5) count = " + bytes(arr8_4.count(0)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(0))/len(arr8_4)) + ")")
+	print ("daxiaoRatio : (1:4) count = " + bytes(arr8_4.count(1)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(1))/len(arr8_4)) + ")")
+	print ("daxiaoRatio : (2:3) count = " + bytes(arr8_4.count(2)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(2))/len(arr8_4)) + ")")
+	print ("daxiaoRatio : (3:2) count = " + bytes(arr8_4.count(3)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(3))/len(arr8_4)) + ")")
+	print ("daxiaoRatio : (4:1) count = " + bytes(arr8_4.count(4)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(4))/len(arr8_4)) + ")")
+	print ("daxiaoRatio : (5:0) count = " + bytes(arr8_4.count(5)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(5))/len(arr8_4)) + ")")
+	print ("zhiheRatio : (0:5) count = " + bytes(arr8_5.count(0)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(0))/len(arr8_5)) + ")")
+	print ("zhiheRatio : (1:4) count = " + bytes(arr8_5.count(1)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(1))/len(arr8_5)) + ")")
+	print ("zhiheRatio : (2:3) count = " + bytes(arr8_5.count(2)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(2))/len(arr8_5)) + ")")
+	print ("zhiheRatio : (3:2) count = " + bytes(arr8_5.count(3)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(3))/len(arr8_5)) + ")")
+	print ("zhiheRatio : (4:1) count = " + bytes(arr8_5.count(4)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(4))/len(arr8_5)) + ")")
+	print ("zhiheRatio : (5:0) count = " + bytes(arr8_5.count(5)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(5))/len(arr8_5)) + ")")
+	print ("BlueJiouRatio : (0:2) count = " + bytes(arr8_3.count(0)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(0))/len(arr8_3)) + ")")
+	print ("BlueJiouRatio : (1:1) count = " + bytes(arr8_3.count(1)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(1))/len(arr8_3)) + ")")
+	print ("BlueJiouRatio : (2:0) count = " + bytes(arr8_3.count(2)) + "/" + bytes(len(arr8_3)) + "(" + bytes(float(arr8_3.count(2))/len(arr8_3)) + ")")
+	print ("BlueDaxiaoRatio : (0:2) count = " + bytes(arr8_4.count(0)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(0))/len(arr8_4)) + ")")
+	print ("BlueDaxiaoRatio : (1:1) count = " + bytes(arr8_4.count(1)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(1))/len(arr8_4)) + ")")
+	print ("BlueDaxiaoRatio : (2:0) count = " + bytes(arr8_4.count(2)) + "/" + bytes(len(arr8_4)) + "(" + bytes(float(arr8_4.count(2))/len(arr8_4)) + ")")
+	print ("BlueZhiheRatio : (0:2) count = " + bytes(arr8_5.count(0)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(0))/len(arr8_5)) + ")")
+	print ("BlueZhiheRatio : (1:1) count = " + bytes(arr8_5.count(1)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(1))/len(arr8_5)) + ")")
+	print ("BlueZhiheRatio : (2:0) count = " + bytes(arr8_5.count(2)) + "/" + bytes(len(arr8_5)) + "(" + bytes(float(arr8_5.count(2))/len(arr8_5)) + ")")
+
 
 def scatterEveryYearResultFile(fileindex):
 	filename = TEST_DIR + "/" + TEST_FILE_HEAD + bytes(fileindex) + ".txt"
@@ -791,15 +810,15 @@ def scatterEveryYearResultFile(fileindex):
 		arr8_3 = [string.atoi(x[3]) for x in arr8]
 		arr8_4 = [string.atoi(x[4]) for x in arr8]
 		arr8_5 = [string.atoi(x[5]) for x in arr8]
-		arr = arr1_0 + arr2_0 + arr3_0 + arr4_0 + arr5_0 + arr6_0
+		arr = arr1_0 + arr2_0 + arr3_0 + arr4_0 + arr5_0
 		print("i = " + bytes(i))
 		print("Red1 Num Avg = " + bytes(sum(arr1_0)) + "/" + bytes(len(arr1_0)) + " = " + bytes(Math.avg(arr1_0)))
 		print("Red2 Num Avg = " + bytes(sum(arr2_0)) + "/" + bytes(len(arr2_0)) + " = " + bytes(Math.avg(arr2_0)))
 		print("Red3 Num Avg = " + bytes(sum(arr3_0)) + "/" + bytes(len(arr3_0)) + " = " + bytes(Math.avg(arr3_0)))
 		print("Red4 Num Avg = " + bytes(sum(arr4_0)) + "/" + bytes(len(arr4_0)) + " = " + bytes(Math.avg(arr4_0)))
 		print("Red5 Num Avg = " + bytes(sum(arr5_0)) + "/" + bytes(len(arr5_0)) + " = " + bytes(Math.avg(arr5_0)))
-		print("Red6 Num Avg = " + bytes(sum(arr6_0)) + "/" + bytes(len(arr6_0)) + " = " + bytes(Math.avg(arr6_0)))
-		print("Blue Num Avg = " + bytes(sum(arr7_0)) + "/" + bytes(len(arr7_0)) + " = " + bytes(Math.avg(arr7_0)))
+		print("Blue1 Num Avg = " + bytes(sum(arr6_0)) + "/" + bytes(len(arr6_0)) + " = " + bytes(Math.avg(arr6_0)))
+		print("Blue2 Num Avg = " + bytes(sum(arr7_0)) + "/" + bytes(len(arr7_0)) + " = " + bytes(Math.avg(arr7_0)))
 		print("RedSum Avg = " + bytes(sum(arr8_0)) + "/" + bytes(len(arr8_0)) + " = " + bytes(Math.avg(arr8_0)))
 		print("UnitSum Avg = " + bytes(sum(arr8_1)) + "/" + bytes(len(arr8_1)) + " = " + bytes(Math.avg(arr8_1)))
 		index += [i]
@@ -813,7 +832,7 @@ def scatterEveryYearResultFile(fileindex):
 		pro8 += [Math.avg(arr8_0)]
 		pro8_1 += [Math.avg(arr8_1)]
 	plt.figure()
-	#plt.scatter(index, pro1, s=20, c="black")
+	plt.scatter(index, pro1, s=20, c="black")
 	#plt.scatter(index, pro2, s=20, c="yellow")
 	#plt.scatter(index, pro3, s=20, c="red")
 	#plt.scatter(index, pro4, s=20, c="gold")
@@ -821,7 +840,7 @@ def scatterEveryYearResultFile(fileindex):
 	#plt.scatter(index, pro6, s=20, c="coral")
 	#plt.scatter(index, pro7, s=20, c="blue")
 	#plt.scatter(index, pro8, s=20, c="yellow")
-	plt.scatter(index, pro8_1, s=20, c="red")
+	#plt.scatter(index, pro8_1, s=20, c="red")
 	plt.savefig("test.png")
 	plt.show()
 
@@ -894,5 +913,5 @@ class Math:
 #analyseResultFile(11)
 #globalAnalyseFiles()
 #everyYearResultFiles()
-#everyYearResultFile(315)
-scatterEveryYearResultFile(315)
+everyYearResultFile(311)
+#scatterEveryYearResultFile(311)
