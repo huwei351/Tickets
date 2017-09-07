@@ -197,4 +197,4 @@ def calculate_income(qid,full):
 latest_rid = select_local_latest_result()[1]
 update_database(latest_rid)
 latest_rid = select_local_latest_result()[1]
-calculate_income(latest_rid, 0)  
+calculate_income(latest_rid, 1)
