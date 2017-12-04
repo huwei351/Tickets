@@ -1137,6 +1137,80 @@ def calc_predict_result_accuracy4(qid):
         + "四等奖" + bytes(total_level_four) + "注, " + "五等奖" + bytes(total_level_five) + "注, " + "六等奖" + bytes(total_level_six) + "注")
     print('[汇总] : 总共花费' + bytes(total_cost) + '元, 总中奖总金额' + bytes(total_incom) + '元， 净利润' + bytes(total_gain) + '元')
 
+def calc_predict_result_accuracy5(qid):
+    global list1_num
+    global list1_elem 
+    global list2_num 
+    global list2_elem 
+    global list3_num 
+    global list3_elem 
+    global list4_num 
+    global list4_elem 
+    global list5_num 
+    global list5_elem 
+    global list6_num 
+    global list6_elem
+    global listx_num
+    global listx_elem
+    total_count_list = []
+    total_incom = 0
+    total_cost = 0
+    total_gain = 0
+    total_level_one = 0
+    total_level_two = 0
+    total_level_three = 0
+    total_level_four = 0
+    total_level_five = 0
+    total_level_six = 0
+    latest_rid = select_local_latest_result()[1]
+    for q in range(qid, latest_rid):
+        aresult = list(select_result(q)[3:])
+        print("第" + bytes(q) + "开奖结果为：")
+        print(aresult)
+        tlist = []
+        result_list = []
+        for i in range(7, 8):
+            tup = ()
+            if (i < 7):
+                field = 'rb' + bytes(i)
+                field_name = '红' + bytes(i)
+            else:
+                field = 'bb'
+                field_name = '蓝'
+            print (field_name + '预测为：')
+            predict_field(field, q)
+            list1_elem_items = sorted(list1_elem.items(), key=lambda x:x[1], reverse=True)
+            list2_elem_items = sorted(list2_elem.items(), key=lambda x:x[1], reverse=True)
+            list3_elem_items = sorted(list3_elem.items(), key=lambda x:x[1], reverse=True)
+            list4_elem_items = sorted(list4_elem.items(), key=lambda x:x[1], reverse=True)
+            list5_elem_items = sorted(list5_elem.items(), key=lambda x:x[1], reverse=True)
+            list6_elem_items = sorted(list6_elem.items(), key=lambda x:x[1], reverse=True)
+            listx_elem_items = sorted(listx_elem.items(), key=lambda x:x[1], reverse=True)
+            print "list1_elem_items:", list1_elem_items
+            print "list2_elem_items:", list2_elem_items
+            print "list3_elem_items:", list3_elem_items
+            print "list4_elem_items:", list4_elem_items
+            print "list5_elem_items:", list5_elem_items
+            print "list6_elem_items:", list6_elem_items
+            print "listx_elem_items:", listx_elem_items
+            tup = (list1_elem_items[1][0],)
+            tlist += [tup]
+        print tlist
+        actual_result = list(select_result(q+1)[3:])
+        #print("第" + bytes(q+1) + "开奖结果为：")
+        #print actual_result
+        count = 0
+        for i in range(1):
+            if (tlist[i][0] == get_num_wuxing(actual_result[i])):
+                count += 1
+        total_count_list += [count]
+    print('[汇总] : 总共参与' + bytes(latest_rid-qid) + '期, 6球五行全中' + bytes(total_count_list.count(6)) + '期, 占比' + bytes(float(total_count_list.count(6))/(latest_rid-qid)*100) + '%'\
+        + ', 5球五行全中' + bytes(total_count_list.count(5)) + '期, 占比' + bytes(float(total_count_list.count(5))/(latest_rid-qid)*100) + '%'\
+        + ', 4球五行全中' + bytes(total_count_list.count(4)) + '期, 占比' + bytes(float(total_count_list.count(4))/(latest_rid-qid)*100) + '%'\
+        + ', 3球五行全中' + bytes(total_count_list.count(3)) + '期, 占比' + bytes(float(total_count_list.count(3))/(latest_rid-qid)*100) + '%'\
+        + ', 2球五行全中' + bytes(total_count_list.count(2)) + '期, 占比' + bytes(float(total_count_list.count(2))/(latest_rid-qid)*100) + '%'\
+        + ', 1球五行全中' + bytes(total_count_list.count(1)) + '期, 占比' + bytes(float(total_count_list.count(1))/(latest_rid-qid)*100) + '%'\
+        + ', 0球五行全中' + bytes(total_count_list.count(0)) + '期, 占比' + bytes(float(total_count_list.count(0))/(latest_rid-qid)*100) + '%')
 
 def calculate_income(qid,full):
     aresult = list(select_result(qid)[3:])
@@ -1197,8 +1271,9 @@ update_database(latest_rid)
 latest_rid = select_local_latest_result()[1]
 #calculate_income(latest_rid, 1)
 #predict_result(latest_rid)
-predict_result2(latest_rid)
+#predict_result2(latest_rid)
 #calc_predict_result_accuracy(2017100)
 #calc_predict_result_accuracy2(2017001)
 #calc_predict_result_accuracy3(2017001)
 #calc_predict_result_accuracy4(2017001)
+calc_predict_result_accuracy5(2017001)
