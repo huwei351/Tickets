@@ -173,6 +173,85 @@ def get_num_wuxing(num):
     else:
         return 'Invalid Number'
 
+def num_to_range(num, field):
+    if (field == 'rb1'):
+        if (num >= 1 and num <= 10):
+            return num
+        elif (num == 11 or num == 12):
+            return 11
+        elif (num >= 13 and num <= 28):
+            return 13
+    elif (field == 'rb2'):
+        if (num == 2 or num == 3):
+            return 2
+        elif (num >= 4 and num <= 11):
+            return num
+        elif (num == 12 or num == 13):
+            return 12
+        elif (num == 14 or num == 15 or num == 16):
+            return 14
+        elif (num >= 17 and num <= 29):
+            return 17
+    elif (field == 'rb3'):
+        if (num >= 3 and num <= 7):
+            return 3
+        elif (num == 8 or num == 9):
+            return 8
+        elif (num == 10 or num == 11):
+            return 10
+        elif (num >= 12 and num <=17):
+            return num
+        elif (num == 18 or num == 19):
+            return 18
+        elif (num == 20 or num == 21 or num == 22):
+            return 20
+        elif (num >= 23 and num <= 30):
+            return 23
+    elif (field == 'rb4'):
+        if (num >= 4 and num <= 11):
+            return 4
+        elif (num == 12 or num == 13):
+            return 12
+        elif (num == 14 or num == 15):
+            return 14
+        elif (num == 16 or num == 17):
+            return 16
+        elif (num >= 18 and num <= 22):
+            return num
+        elif (num == 23 or num == 24):
+            return 23
+        elif (num == 25 or num == 26):
+            return 25
+        elif (num >= 27 and num <= 31):
+            return 27
+    elif (field == 'rb5'):
+        if (num >= 5 and num <= 17):
+            return 5
+        elif (num == 18 or num == 19 or num == 20):
+            return 18
+        elif (num == 21 or num == 22):
+            return 21
+        elif (num >= 23 and num <=30):
+            return num
+        elif (num == 31 or num == 32):
+            return 31
+    elif (field == 'rb6'):
+        if (num >= 6 and num <= 20):
+            return 6
+        elif (num == 21 or num == 22 or num == 23):
+            return 21
+        elif (num >= 24 and num <=33):
+            return num
+    elif (field == 'bb'):
+        if (num >= 1 and num <= 4):
+            return 1
+        elif (num >= 5 and num <= 8):
+            return 5
+        elif (num >= 9 and num <= 12):
+            return 9
+        elif (num >= 13 and num <= 16):
+            return 13
+
 def predict_field(field, rid):
     global list1_num
     global list1_elem 
@@ -308,24 +387,173 @@ def predict_field(field, rid):
     print listx_num.items()
     print sorted(listx_elem.items(), key=lambda x:x[1], reverse=True)
 
+def predict_field2(field, rid):
+    global list1_num
+    global list1_elem 
+    global list2_num 
+    global list2_elem 
+    global list3_num 
+    global list3_elem 
+    global list4_num 
+    global list4_elem 
+    global list5_num 
+    global list5_elem 
+    global list6_num 
+    global list6_elem
+    global listx_num
+    global listx_elem
+    dict_num = {}
+    dict_elem = {}
+    r1_list_origin = select_redball_list(field, rid)
+    r1_list = [line[1] for line in r1_list_origin]
+    r1_list_range = [num_to_range(r1,field) for r1 in r1_list]
+    r1_list_len = len(r1_list)
+    r1_list_range_len = len(r1_list_range)
+    print '连续1期相同：'
+    for j in range(r1_list_range_len-1):
+        if (r1_list_range[j] == r1_list_range[r1_list_range_len-1]):
+            dict_num.setdefault(r1_list_range[j+1], 0)
+            dict_num[r1_list_range[j+1]] += 1
+    for j in range(r1_list_len-1):
+        if (get_num_wuxing(r1_list[j]) == get_num_wuxing(r1_list[r1_list_len-1])):
+            dict_elem.setdefault(get_num_wuxing(r1_list[j+1]), 0)
+            dict_elem[get_num_wuxing(r1_list[j+1])] += 1
+    list1_num = dict_num.copy()
+    list1_elem = dict_elem.copy()
+    dict_num.clear()
+    dict_elem.clear()
+    print sorted(list1_num.items(), key=lambda x:x[1], reverse=True)
+    print sorted(list1_elem.items(), key=lambda x:x[1], reverse=True)
+    print '连续2期相同：'
+    for j in range(r1_list_range_len-2):
+        if (r1_list_range[j] == r1_list_range[r1_list_range_len-2] and r1_list_range[j+1] == r1_list_range[r1_list_range_len-1]):
+            dict_num.setdefault(r1_list_range[j+2], 0)
+            dict_num[r1_list_range[j+2]] += 1
+    for j in range(r1_list_len-2):
+        if (get_num_wuxing(r1_list[j]) == get_num_wuxing(r1_list[r1_list_len-2]) and get_num_wuxing(r1_list[j+1]) == get_num_wuxing(r1_list[r1_list_len-1])):
+            dict_elem.setdefault(get_num_wuxing(r1_list[j+2]), 0)
+            dict_elem[get_num_wuxing(r1_list[j+2])] += 1
+    list2_num = dict_num.copy()
+    list2_elem = dict_elem.copy()
+    dict_num.clear()
+    dict_elem.clear()
+    print sorted(list2_num.items(), key=lambda x:x[1], reverse=True)
+    print sorted(list2_elem.items(), key=lambda x:x[1], reverse=True)
+    print '连续3期相同：'
+    for j in range(r1_list_range_len-3):
+        if (r1_list_range[j] == r1_list_range[r1_list_range_len-3] and r1_list_range[j+1] == r1_list_range[r1_list_range_len-2] and r1_list_range[j+2] == r1_list_range[r1_list_range_len-1]):
+            dict_num.setdefault(r1_list_range[j+3], 0)
+            dict_num[r1_list_range[j+3]] += 1
+            print r1_list_origin[j][0]
+    for j in range(r1_list_len-3):
+        if (get_num_wuxing(r1_list[j]) == get_num_wuxing(r1_list[r1_list_len-3]) and get_num_wuxing(r1_list[j+1]) == get_num_wuxing(r1_list[r1_list_len-2]) and \
+            get_num_wuxing(r1_list[j+2]) == get_num_wuxing(r1_list[r1_list_len-1])):
+            dict_elem.setdefault(get_num_wuxing(r1_list[j+3]), 0)
+            dict_elem[get_num_wuxing(r1_list[j+3])] += 1
+    list3_num = dict_num.copy()
+    list3_elem = dict_elem.copy()
+    dict_num.clear()
+    dict_elem.clear()
+    print sorted(list3_num.items(), key=lambda x:x[1], reverse=True)
+    print sorted(list3_elem.items(), key=lambda x:x[1], reverse=True)
+    print '连续4期相同：'
+    for j in range(r1_list_range_len-4):
+        if (r1_list_range[j] == r1_list_range[r1_list_range_len-4] and r1_list_range[j+1] == r1_list_range[r1_list_range_len-3] and \
+            r1_list_range[j+2] == r1_list_range[r1_list_range_len-2] and r1_list_range[j+3] == r1_list_range[r1_list_range_len-1]):
+            dict_num.setdefault(r1_list_range[j+4], 0)
+            dict_num[r1_list_range[j+4]] += 1
+            print r1_list_origin[j][0]
+    for j in range(r1_list_len-4):
+        if (get_num_wuxing(r1_list[j]) == get_num_wuxing(r1_list[r1_list_len-4]) and get_num_wuxing(r1_list[j+1]) == get_num_wuxing(r1_list[r1_list_len-3]) and \
+            get_num_wuxing(r1_list[j+2]) == get_num_wuxing(r1_list[r1_list_len-2]) and get_num_wuxing(r1_list[j+3]) == get_num_wuxing(r1_list[r1_list_len-1])):
+            dict_elem.setdefault(get_num_wuxing(r1_list[j+4]), 0)
+            dict_elem[get_num_wuxing(r1_list[j+4])] += 1
+    list4_num = dict_num.copy()
+    list4_elem = dict_elem.copy()
+    dict_num.clear()
+    dict_elem.clear()
+    print sorted(list4_num.items(), key=lambda x:x[1], reverse=True)
+    print sorted(list4_elem.items(), key=lambda x:x[1], reverse=True)
+    print '连续5期相同：'
+    for j in range(r1_list_range_len-5):
+        if (r1_list_range[j] == r1_list_range[r1_list_range_len-5] and r1_list_range[j+1] == r1_list_range[r1_list_range_len-4] and \
+            r1_list_range[j+2] == r1_list_range[r1_list_range_len-3] and r1_list_range[j+3] == r1_list_range[r1_list_range_len-2] and r1_list_range[j+4] == r1_list_range[r1_list_range_len-1]):
+            dict_num.setdefault(r1_list_range[j+5], 0)
+            dict_num[r1_list_range[j+5]] += 1
+            print r1_list_origin[j][0]
+    for j in range(r1_list_len-5):
+        if (get_num_wuxing(r1_list[j]) == get_num_wuxing(r1_list[r1_list_len-5]) and get_num_wuxing(r1_list[j+1]) == get_num_wuxing(r1_list[r1_list_len-4]) and \
+            get_num_wuxing(r1_list[j+2]) == get_num_wuxing(r1_list[r1_list_len-3]) and get_num_wuxing(r1_list[j+3]) == get_num_wuxing(r1_list[r1_list_len-2]) and \
+            get_num_wuxing(r1_list[j+4]) == get_num_wuxing(r1_list[r1_list_len-1])):
+            dict_elem.setdefault(get_num_wuxing(r1_list[j+5]), 0)
+            dict_elem[get_num_wuxing(r1_list[j+5])] += 1
+    list5_num = dict_num.copy()
+    list5_elem = dict_elem.copy()
+    dict_num.clear()
+    dict_elem.clear()
+    print sorted(list5_num.items(), key=lambda x:x[1], reverse=True)
+    print sorted(list5_elem.items(), key=lambda x:x[1], reverse=True)
+    print '连续6期相同：'
+    for j in range(r1_list_range_len-6):
+        if (r1_list_range[j] == r1_list_range[r1_list_range_len-6] and r1_list_range[j+1] == r1_list_range[r1_list_range_len-5] and r1_list_range[j+2] == r1_list_range[r1_list_range_len-4] and \
+            r1_list_range[j+3] == r1_list_range[r1_list_range_len-3] and r1_list_range[j+4] == r1_list_range[r1_list_range_len-2] and r1_list_range[j+5] == r1_list_range[r1_list_range_len-1]):
+            dict_num.setdefault(r1_list_range[j+6], 0)
+            dict_num[r1_list_range[j+6]] += 1
+            print r1_list_origin[j][0]
+    for j in range(r1_list_len-6):
+        if (get_num_wuxing(r1_list[j]) == get_num_wuxing(r1_list[r1_list_len-6]) and get_num_wuxing(r1_list[j+1]) == get_num_wuxing(r1_list[r1_list_len-5]) and \
+            get_num_wuxing(r1_list[j+2]) == get_num_wuxing(r1_list[r1_list_len-4]) and get_num_wuxing(r1_list[j+3]) == get_num_wuxing(r1_list[r1_list_len-3]) and \
+            get_num_wuxing(r1_list[j+4]) == get_num_wuxing(r1_list[r1_list_len-2]) and get_num_wuxing(r1_list[j+5]) == get_num_wuxing(r1_list[r1_list_len-1])):
+            dict_elem.setdefault(get_num_wuxing(r1_list[j+6]), 0)
+            dict_elem[get_num_wuxing(r1_list[j+6])] += 1
+    list6_num = dict_num.copy()
+    list6_elem = dict_elem.copy()
+    dict_num.clear()
+    dict_elem.clear()
+    print sorted(list6_num.items(), key=lambda x:x[1], reverse=True)
+    print sorted(list6_elem.items(), key=lambda x:x[1], reverse=True)
+    print '数字/五行遗漏期数：'
+    for num in list1_num.keys():
+        count = 0
+        for j in range(len(r1_list_range), 0, -1):
+            if (r1_list_range[j-1] == num):
+                break;
+            else:
+                count += 1
+        dict_num[num] = count
+    for elem in list1_elem.keys():
+        count = 0
+        for j in range(len(r1_list), 0, -1):
+            if (get_num_wuxing(r1_list[j-1]) == elem):
+                break;
+            else:
+                count += 1
+        dict_elem[elem] = count
+    listx_num = dict_num.copy()
+    listx_elem = dict_elem.copy()
+    dict_num.clear()
+    dict_elem.clear()
+    print listx_num.items()
+    print sorted(listx_elem.items(), key=lambda x:x[1], reverse=True)
+
 def predict_result(qid):
     aresult = list(select_result(qid)[3:])
     print("第" + bytes(qid) + "开奖结果为：")
     print(aresult)
-    print("第" + bytes(qid+1) + "期红1预测为：")
-    predict_field('rb1', qid)
-    print("第" + bytes(qid+1) + "期红2预测为：")
-    predict_field('rb2', qid)
-    print("第" + bytes(qid+1) + "期红3预测为：")
-    predict_field('rb3', qid)
-    print("第" + bytes(qid+1) + "期红4预测为：")
-    predict_field('rb4', qid)
-    print("第" + bytes(qid+1) + "期红5预测为：")
-    predict_field('rb5', qid)
-    print("第" + bytes(qid+1) + "期红6预测为：")
-    predict_field('rb6', qid)
-    print("第" + bytes(qid+1) + "期蓝预测为：")
-    predict_field('bb', qid)
+    print("****************************** 第" + bytes(qid+1) + "期红1预测为：******************************")
+    predict_field2('rb1', qid)
+    print("****************************** 第" + bytes(qid+1) + "期红2预测为：******************************")
+    predict_field2('rb2', qid)
+    print("****************************** 第" + bytes(qid+1) + "期红3预测为：******************************")
+    predict_field2('rb3', qid)
+    print("****************************** 第" + bytes(qid+1) + "期红4预测为：******************************")
+    predict_field2('rb4', qid)
+    print("****************************** 第" + bytes(qid+1) + "期红5预测为：******************************")
+    predict_field2('rb5', qid)
+    print("****************************** 第" + bytes(qid+1) + "期红6预测为：******************************")
+    predict_field2('rb6', qid)
+    print("****************************** 第" + bytes(qid+1) + "期蓝预测为：******************************")
+    predict_field2('bb', qid)
 
 def clear_list_num_elem():
     global list1_num
@@ -1270,8 +1498,8 @@ latest_rid = select_local_latest_result()[1]
 update_database(latest_rid)
 latest_rid = select_local_latest_result()[1]
 #calculate_income(latest_rid, 1)
-#predict_result(latest_rid)
-predict_result2(latest_rid)
+predict_result(latest_rid)
+#predict_result2(latest_rid)
 #calc_predict_result_accuracy(2017100)
 #calc_predict_result_accuracy2(2017001)
 #calc_predict_result_accuracy3(2017001)
