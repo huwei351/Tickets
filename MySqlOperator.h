@@ -14,10 +14,11 @@
 
 #include "MyConfig.h"
 
-#define HOST "localhost"
+//#define HOST "localhost"
+#define HOST "127.0.0.1"
 #define PORT "3306"
 #define USER "root"
-#define PASSWORD  "huwei351"
+#define PASSWORD  "123456"
 #ifdef DLT
 #define DATABASE "dlt"
 #else

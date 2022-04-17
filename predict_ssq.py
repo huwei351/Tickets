@@ -17,7 +17,7 @@ ELEMENT_EARTH = 'earth'
 
 MYSQL_HOSTS = '127.0.0.1'
 MYSQL_USER = 'root'
-MYSQL_PASSWORD = 'huwei351'
+MYSQL_PASSWORD = '123456'
 MYSQL_PORT = '3306'
 MYSQL_DB = 'ssq'
 
@@ -41,6 +41,7 @@ listx_elem = {}
 
 def update_database(qid):
     res = -2
+    '''
     url='http://kaijiang.zhcw.com/zhcw/html/ssq/list.html'
     html = requests.get(url) 
     content=BeautifulSoup(html.text, 'lxml')
@@ -63,6 +64,31 @@ def update_database(qid):
                 print("rid=" + rid + ", date=" + date + ", rb1=" + rb1 + ", rb2=" + rb2 + ", rb3=" + rb3 + ", rb4=" + rb4 + ", rb5=" + rb5 + ", rb6=" + rb6 + ", bb=" + bb)
                 save_result_into_database(dict)
                 res = 0
+    '''
+    url = 'https://datachart.500.com/ssq/history/newinc/history.php?limit=100&sort=0'
+    html = requests.get(url)
+    html.encoding = 'utf-8'
+    soup = BeautifulSoup(html.text, "html.parser")
+    tbody = soup.find('tbody', id="tdata")
+    tr = tbody.find_all('tr')
+    lens = len(tr)
+    td = tr[0].find_all('td')
+    for page in range(0, lens):
+        td = tr[page].find_all('td')
+        rid = td[0].text
+        rb1 = td[1].text
+        rb2 = td[2].text
+        rb3 = td[3].text
+        rb4 = td[4].text
+        rb5 = td[5].text
+        rb6 = td[6].text
+        bb = td[7].text
+        date = td[15].text
+        dict = {'rid':rid, 'date':date, 'rb1':rb1, 'rb2':rb2, 'rb3':rb3, 'rb4':rb4, 'rb5':rb5, 'rb6':rb6, 'bb':bb}
+        if (rid > bytes(qid)):
+            print("rid=" + rid + ", date=" + date + ", rb1=" + rb1 + ", rb2=" + rb2 + ", rb3=" + rb3 + ", rb4=" + rb4 + ", rb5=" + rb5 + ", rb6=" + rb6 + ", bb=" + bb)
+            save_result_into_database(dict)
+            res = 0
     return res
 
 def save_result_into_database(dict):

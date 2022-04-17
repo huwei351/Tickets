@@ -10,7 +10,7 @@ sys.setdefaultencoding('utf8')
 
 MYSQL_HOSTS = '127.0.0.1'
 MYSQL_USER = 'root'
-MYSQL_PASSWORD = 'huwei351'
+MYSQL_PASSWORD = '123456'
 MYSQL_PORT = '3306'
 MYSQL_DB = 'ssq'
 
@@ -18,6 +18,7 @@ cnx = mysql.connector.connect(user = MYSQL_USER,password= MYSQL_PASSWORD,host =M
 cur = cnx.cursor(buffered=True)
 
 def update_database(qid):
+    '''
     url='http://kaijiang.zhcw.com/zhcw/html/ssq/list_1.html'
     html = requests.get(url) 
     content=BeautifulSoup(html.text, 'lxml')
@@ -39,8 +40,33 @@ def update_database(qid):
             dict = {'rid':rid, 'date':date, 'rb1':rb1, 'rb2':rb2, 'rb3':rb3, 'rb4':rb4, 'rb5':rb5, 'rb6':rb6, 'bb':bb}
             if rid > qid:
                 save_result_into_database(dict)
+'''
+    url = 'https://datachart.500.com/ssq/history/newinc/history.php?limit=100&sort=0'
+    html = requests.get(url)
+    html.encoding = 'utf-8'
+    soup = BeautifulSoup(html.text, "html.parser")
+    tbody = soup.find('tbody', id="tdata")
+    tr = tbody.find_all('tr')
+    lens = len(tr)
+    td = tr[0].find_all('td')
+    for page in range(0, lens):
+        td = tr[page].find_all('td')
+        rid = td[0].text
+        rb1 = td[1].text
+        rb2 = td[2].text
+        rb3 = td[3].text
+        rb4 = td[4].text
+        rb5 = td[5].text
+        rb6 = td[6].text
+        bb = td[7].text
+        date = td[15].text
+        print("rid=" + rid + ", date=" + date + ", rb1=" + rb1 + ", rb2=" + rb2 + ", rb3=" + rb3 + ", rb4=" + rb4 + ", rb5=" + rb5 + ", rb6=" + rb6 + ", bb=" + bb)
+        dict = {'rid':rid, 'date':date, 'rb1':rb1, 'rb2':rb2, 'rb3':rb3, 'rb4':rb4, 'rb5':rb5, 'rb6':rb6, 'bb':bb}
+        if rid > qid:
+            save_result_into_database(dict)
 
 def start_spider():
+    '''
     #theme_url='http://shuangseqiu.cjcp.com.cn/kaijiang/'#爬虫开始的页面
     theme_url='http://kaijiang.zhcw.com/zhcw/html/ssq/list_1.html'
     html = requests.get(theme_url)
@@ -72,6 +98,29 @@ def start_spider():
                 print("rid=" + rid + ", date=" + date + ", rb1=" + rb1 + ", rb2=" + rb2 + ", rb3=" + rb3 + ", rb4=" + rb4 + ", rb5=" + rb5 + ", rb6=" + rb6 + ", bb=" + bb)
                 dict = {'rid':rid, 'date':date, 'rb1':rb1, 'rb2':rb2, 'rb3':rb3, 'rb4':rb4, 'rb5':rb5, 'rb6':rb6, 'bb':bb}
                 save_result_into_database(dict)
+'''
+    url = 'https://datachart.500.com/ssq/history/newinc/history.php?start=03001&end=22041'
+    html = requests.get(url)
+    html.encoding = 'utf-8'
+    soup = BeautifulSoup(html.text, "html.parser")
+    tbody = soup.find('tbody', id="tdata")
+    tr = tbody.find_all('tr')
+    lens = len(tr)
+    td = tr[0].find_all('td')
+    for page in range(0, lens):
+        td = tr[page].find_all('td')
+        rid = td[0].text
+        rb1 = td[1].text
+        rb2 = td[2].text
+        rb3 = td[3].text
+        rb4 = td[4].text
+        rb5 = td[5].text
+        rb6 = td[6].text
+        bb = td[7].text
+        date = td[15].text
+        print("rid=" + rid + ", date=" + date + ", rb1=" + rb1 + ", rb2=" + rb2 + ", rb3=" + rb3 + ", rb4=" + rb4 + ", rb5=" + rb5 + ", rb6=" + rb6 + ", bb=" + bb)
+        dict = {'rid':rid, 'date':date, 'rb1':rb1, 'rb2':rb2, 'rb3':rb3, 'rb4':rb4, 'rb5':rb5, 'rb6':rb6, 'bb':bb}
+        save_result_into_database(dict)
 
 def save_result_into_database(dict):
     date = dict['date']

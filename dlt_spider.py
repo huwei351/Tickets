@@ -10,7 +10,7 @@ sys.setdefaultencoding('utf8')
 
 MYSQL_HOSTS = '127.0.0.1'
 MYSQL_USER = 'root'
-MYSQL_PASSWORD = 'huwei351'
+MYSQL_PASSWORD = '123456'
 MYSQL_PORT = '3306'
 MYSQL_DB = 'dlt'
 
@@ -19,6 +19,7 @@ cur = cnx.cursor(buffered=True)
 
 
 def start_spider():
+    '''
     theme_url='http://www.lottery.gov.cn/historykj/history.jspx?_ltype=dlt'
     html = requests.get(theme_url)
     print(html.status_code)
@@ -48,6 +49,29 @@ def start_spider():
                 print("rid=" + rid + ", date=" + date + ", rb1=" + rb1 + ", rb2=" + rb2 + ", rb3=" + rb3 + ", rb4=" + rb4 + ", rb5=" + rb5 + ", bb1=" + bb1 + ", bb2=" + bb2)
                 dict = {'rid':rid, 'date':date, 'rb1':rb1, 'rb2':rb2, 'rb3':rb3, 'rb4':rb4, 'rb5':rb5, 'bb1':bb1, 'bb2':bb2}
                 save_result_into_database(dict)
+    '''
+    url = 'http://datachart.500.com/dlt/history/newinc/history.php?start=07001&end=22041'
+    html = requests.get(url)
+    html.encoding = 'utf-8'
+    soup = BeautifulSoup(html.text, "html.parser")
+    tbody = soup.find('tbody', id="tdata")
+    tr = tbody.find_all('tr')
+    lens = len(tr)
+    td = tr[0].find_all('td')
+    for page in range(0, lens):
+        td = tr[page].find_all('td')
+        rid = td[0].text
+        rb1 = td[1].text
+        rb2 = td[2].text
+        rb3 = td[3].text
+        rb4 = td[4].text
+        rb5 = td[5].text
+        bb1 = td[6].text
+        bb2 = td[7].text
+        date = td[14].text
+        print("rid=" + rid + ", date=" + date + ", rb1=" + rb1 + ", rb2=" + rb2 + ", rb3=" + rb3 + ", rb4=" + rb4 + ", rb5=" + rb5 + ", bb1=" + bb1 + ", bb2=" + bb2)
+        dict = {'rid':rid, 'date':date, 'rb1':rb1, 'rb2':rb2, 'rb3':rb3, 'rb4':rb4, 'rb5':rb5, 'bb1':bb1, 'bb2':bb2}
+        save_result_into_database(dict)
 
 def save_result_into_database(dict):
     date = dict['date']
